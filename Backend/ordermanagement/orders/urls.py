@@ -2,5 +2,6 @@ from django.urls import path
 from orders import views
 
 urlpatterns = [
-    path('cart/', views.addCart),
+    path('addCart/', views.addCart),
+    path('delCart/', views.delCart),
 ]
