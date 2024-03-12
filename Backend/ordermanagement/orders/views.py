@@ -6,7 +6,19 @@ from rest_framework.decorators import renderer_classes, api_view
 from rest_framework import status
 from rest_framework.response import Response
 import json
+import requests
+import responses
 from django.shortcuts import get_object_or_404
+
+def test_func(arg):
+    resDict = {'data':{}}
+    for i in arg:
+        tmpdict = {}
+        tmpdict[i] = {}
+        tmpdict[i]['product_name'] = f"Product {i}"
+        tmpdict[i]['product_img'] = f"Product {i} Image"
+        resDict['data'].update(tmpdict)
+    return resDict
 
 @csrf_exempt
 @api_view(['POST'])
@@ -31,6 +43,7 @@ def addCart(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
 @csrf_exempt
 @api_view(['DELETE'])
 def delCart(request):
@@ -55,8 +68,14 @@ def delCart(request):
             cart.total_value -= item.amount * item.product_price
             items.delete()
             cart.save()
-            retItems = Cart_item.objects.all()  
+            retItems = Cart_item.objects.filter(user_id=user_id)  
             serializer = CartItemSerializer(retItems, many=True)
+            if not serializer.data:
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                prod_ids = [item.product_id for item in retItems]
+                prodInfo = test_func(prod_ids)
+                for i in serializer.data:
+                    i.update(prodInfo['data'][i['product_id']])
             reqData = {'items': serializer.data, 'cartValue': cart.total_value}
             return Response(reqData, status=status.HTTP_200_OK)
-
