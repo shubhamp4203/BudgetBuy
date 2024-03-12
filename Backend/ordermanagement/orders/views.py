@@ -40,7 +40,7 @@ def addCart(request):
         if serializer.is_valid():
             serializer.save()
             cart.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'prod': serializer.data, 'cartValue': cart.total_value}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -79,3 +79,21 @@ def delCart(request):
                     i.update(prodInfo['data'][i['product_id']])
             reqData = {'items': serializer.data, 'cartValue': cart.total_value}
             return Response(reqData, status=status.HTTP_200_OK)
+
+@csrf_exempt
+@api_view(['GET'])
+def getCart(request):
+    if request.method == 'GET':
+        user_id = request.GET.get('user_id')
+        cart = Cart.objects.filter(user_id=user_id).first()
+        items = Cart_item.objects.filter(user_id=user_id)
+        serializer = CartItemSerializer(items, many=True)
+        if not serializer.data:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            prod_ids = [item.product_id for item in items]
+            prodInfo = test_func(prod_ids)
+            for i in serializer.data:
+                i.update(prodInfo['data'][i['product_id']])
+        reqData = {'items': serializer.data, 'cartValue': cart.total_value}
+        return Response(reqData, status=status.HTTP_200_OK)
