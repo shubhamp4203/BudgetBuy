@@ -43,7 +43,6 @@ def addCart(request):
             return Response({'prod': serializer.data, 'cartValue': cart.total_value}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
 @csrf_exempt
 @api_view(['DELETE'])
 def delCart(request):
@@ -97,3 +96,23 @@ def getCart(request):
                 i.update(prodInfo['data'][i['product_id']])
         reqData = {'items': serializer.data, 'cartValue': cart.total_value}
         return Response(reqData, status=status.HTTP_200_OK)
+    
+@csrf_exempt
+@api_view(['POST'])
+def addOrder(request):
+    data = JSONParser().parse(request)
+    user_id = data['user_id']
+    shipping_address = data['address']
+    payment_method = data['payment_method']
+    cart = get_object_or_404(Cart, user_id=user_id)
+    items = Cart_item.objects.filter(user_id=user_id)
+    order = Order.objects.create(user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, total_value=cart.total_value)
+    order.order_status = "Order Placed"
+    order.save()
+    for item in items:
+        order_item = Order_item.objects.create(order_id=order, product_id=item.product_id, amount=item.amount)
+        order_item.save()
+    items.delete()
+    cart.total_value = 0
+    cart.save()
+    return Response(status=status.HTTP_201_CREATED)
