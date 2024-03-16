@@ -1,13 +1,14 @@
 from django.db import models
 
+
 class Order(models.Model):
     order_id = models.BigAutoField(primary_key=True)
     order_date = models.DateTimeField(auto_now_add=True)
-    order_status = models.CharField(max_length=50)
+    order_status = models.CharField(max_length=50, null=True)
     user_id = models.BigIntegerField()
-    transaction_id = models.BigIntegerField()
-    shipping_address = models.CharField(max_length=200)
+    shipping_address = models.CharField(max_length=200, null=True)
     total_value = models.IntegerField(null=True, default=0)
+    payment_method = models.CharField(max_length=50, null=True)  
 
 class Order_item(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
