@@ -2,7 +2,23 @@ const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 
+//Schema that is used to register or login a new customer
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "please enter your name"],
+  },
+  phone_number: {
+    type: Number,
+    required: [true, "please enter your number"],
+    unique: true,
+    validate: {
+      validator: function (v) {
+        return /^\d{10}$/.test(v.toString());
+      },
+      message: (props) => `${props.value} is not a valid phone number!`,
+    }
+  },
   email: {
     type: String,
     required: [true, "please enter an email"],
@@ -15,19 +31,25 @@ const userSchema = new mongoose.Schema({
     required: [true, "please enter password"],
     minlength: [6, "minimum length is 6"],
   },
+  address: {
+    type: String,
+    required: [true, "please enter an address"],
+  },
+  pin_code: {
+    type: Number,
+    required: [true, "Enter a pincode"],
+    validate:[validator= function (v) {
+      return /^[1-9]{1}[0-9]{2}[0-9]{3}$/.test(v.toString()); // Change "IN" to your country code if necessary
+    },
+    message= (props) => `${props.value} is not a valid pin code!`,
+    ]
+},
+  tags_of_interest: {
+    type:String,
+    required:[true,"please select atleast one tag of interest"],
+    minlength: 1
+  },
 });
-
-//fire a function after a event has done
-// userSchema.post("save", (doc, next) => {
-//   console.log("new user was saved", doc);
-//   next();
-// });
-
-//fire a function before some event
-// userSchema.pre('save',function(next){
-//     console.log("user about to be created",this);
-//     next();
-// })
 
 //fire a function to hash the password before being saved
 userSchema.pre("save", async function (next) {
@@ -36,6 +58,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+//function that authenticates user
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {

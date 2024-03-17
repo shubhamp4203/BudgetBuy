@@ -2,14 +2,17 @@ const User = require("../models/User");
 const JWT = require("jsonwebtoken");
 require("dotenv").config()
 
+//This  function handles all the error that could possibly be there while registering
 const errorHandle = (err) => {
-  let errors = { email: "", password: "" };
-
-  //unique data error handel
+  let errors = { name:"",phone_number:"",email:"", password:"",address:"",pin_code:"",tags_of_interest:""};
+  
+  //this thing is only for the fields that need unique values
   if (err.code) {
-    errors.email = "the email is already registered";
+    errors.email = "the phone number or email is already registered";
+    console.log(err.code);
     return errors;
   }
+
   //all other error handle
   if (err.message.includes("user validation failed")) {
     Object.values(err.errors).forEach(({ properties }) => {
@@ -21,16 +24,18 @@ const errorHandle = (err) => {
 
 const maxAge = 3 * 60 * 60 * 24;
 
-const CreateToken = (id) => {
-  return JWT.sign({ id },process.env.SECRET_KEY ,{
+//creating a JWT token
+const CreateToken = (id, email,name) => {
+  return JWT.sign({ id, email, name},process.env.SECRET_KEY ,{
     expiresIn: maxAge,
-  }); //this secret key is not not shared anywhere and it is kept quite long
+  }); 
 };
 
+//api for registering a new custommer
 module.exports.signup_post = async (req, res) => {
-  const { email, password } = req.body;
+  const { name,phone_number,email, password,address,pin_code,tags_of_interest } = req.body;
   try {
-    const user = await User.create({ email, password });
+    const user = await User.create({ name,phone_number,email, password,address,pin_code,tags_of_interest });
     res.status(201).json({user:user._id});
     console.log(user._id);
   } catch (err) {
@@ -40,14 +45,14 @@ module.exports.signup_post = async (req, res) => {
   console.log("signup post");
 };
 
+//api for logging in
 module.exports.login_post = async (req, res) => {
   console.log("login post");
-  const {email , password}=req.body;
+  const {email ,password}=req.body;
   try{
     const user =await User.login(email,password)
-    const token=await CreateToken(user._id);
+    const token=await CreateToken(user._id,user.email,user.password);
     res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000})
-    console.log(token);
     res.status(201).json({user:user._id});
     console.log('login success');
   }
@@ -56,3 +61,9 @@ module.exports.login_post = async (req, res) => {
     res.status(400).json({});
   }
 };
+
+//api for logging out
+module.exports.logout_post= async (req, res)=>{
+  res.clearCookie('jwt');
+  res.status(200).json({message:'Logged out successfully'});
+}
