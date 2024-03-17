@@ -1,0 +1,140 @@
+.container {
+  width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+  color: #666;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #ff2600;
+  color: white;
+  border: none;
+  border-radius: 17px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.social-sign-up {
+  display: flex;
+  justify-content: space-around; /* Adjusted from space-between to space-around */
+  margin-top: 20px;
+  width: 100%;
+}
+.orText {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Added to center the text */
+  margin: 20px 0;
+  font-size: 14px;
+  color: #666;
+}
+.orText::before,
+.orText::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  width: 5rem; /* This will ensure the line takes up the full width of the container */
+  background-color: #ddd;
+  margin: 0 10px;
+}
+.socialIcons a {
+  padding: 0 10px; /* Added padding to create space between icons */
+}
+
+.social-sign-up a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 40px; */
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  margin: 0 5px;
+  font-size: 16px;
+  text-decoration: none;
+  color: #666;
+}
+
+.social-sign-up a:hover {
+  background-color: #ddd;
+}
+
+.social-sign-up a i {
+  margin-right: 5px;
+}
+
+.or-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.or-text::before,
+.or-text::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+  margin: 0 10px;
+}
+
+.privacy-policy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #666;
+}
+
+.privacy-policy a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.privacy-policy a:hover {
+  text-decoration: underline;
+}
+.socialIcons {
+  display: flex;
+  justify-content: space-between; /* This will give even spaces between the logos */
+  padding: 10px 0; /* This will give padding at the top and bottom */
+  width: 100%; /* This will ensure the logos take up the full width of the container */
+}
