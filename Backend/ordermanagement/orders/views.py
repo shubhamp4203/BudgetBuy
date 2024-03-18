@@ -1,7 +1,8 @@
+from ast import Or
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from orders.models import Order, Cart, Cart_item, Order_item
-from orders.serializers import OrderSerializer, CartSerializer, CartItemSerializer
+from orders.serializers import OrderItemSerializer, OrderSerializer, CartSerializer, CartItemSerializer
 from rest_framework.decorators import renderer_classes, api_view
 from rest_framework import status
 from rest_framework.response import Response
@@ -90,7 +91,7 @@ def getCart(request):
         if not serializer.data:
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
-            prod_ids = [item.product_id for item in items]
+            prod_ids = items.values_list('product_id', flat=True)
             prodInfo = test_func(prod_ids)
             for i in serializer.data:
                 i.update(prodInfo['data'][i['product_id']])
@@ -107,7 +108,7 @@ def addOrder(request):
     cart = get_object_or_404(Cart, user_id=user_id)
     items = Cart_item.objects.filter(user_id=user_id)
     order = Order.objects.create(user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, total_value=cart.total_value)
-    order.order_status = "Order Placed"
+    order.order_status = "order_placed"
     order.save()
     for item in items:
         order_item = Order_item.objects.create(order_id=order, product_id=item.product_id, amount=item.amount)
@@ -116,3 +117,38 @@ def addOrder(request):
     cart.total_value = 0
     cart.save()
     return Response(status=status.HTTP_201_CREATED)
+
+@csrf_exempt
+@api_view(['GET'])
+def getOrder(request):
+    user_id = request.GET.get('user_id')
+    order_status = request.GET.get('status')
+    if(order_status=="ALL"):
+        orders = Order.objects.filter(user_id=user_id)
+    else:
+        orders = Order.objects.filter(user_id=user_id, order_status=order_status)
+    if not orders:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        order_data = OrderSerializer(orders, many=True)
+        reqData = {'orders': order_data.data}
+        return Response(reqData, status=status.HTTP_200_OK)
+    
+@csrf_exempt
+@api_view(['GET'])
+def getOrderItems(request):
+    order_id = request.GET.get('order_id')
+    order = get_object_or_404(Order, order_id=order_id)
+    items = Order_item.objects.filter(order_id=order_id)
+    if not items:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        item_data = OrderItemSerializer(items, many=True)
+        prod_ids = items.values_list('product_id', flat=True)
+        prodInfo = test_func(prod_ids)
+        for i in item_data.data:
+            i.update(prodInfo['data'][i['product_id']])
+        reqData = {'items': item_data.data, 'total_value': order.total_value}
+        return Response(reqData, status=status.HTTP_200_OK)
+        
+
