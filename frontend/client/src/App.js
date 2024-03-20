@@ -1,9 +1,19 @@
-// import logo from "./logo.svg";
-import "./App.css";
-import SignUp from "./component/signup";
+// App.js
+import React from "react";
+import AppRouter from "./AppRouter";
+import Navbar from "./component/NavBar/NavBar";
+import styles from "./App.css";
+import Cart from "./page/cart/Cart";
 
 function App() {
-  return <SignUp />;
+  // return <AppRouter />;
+  return (
+    // <div className={styles.app}>
+    //   <AppRouter />
+    //   <Navbar />
+    // </div>
+    <Cart />
+  );
 }
 
 export default App;

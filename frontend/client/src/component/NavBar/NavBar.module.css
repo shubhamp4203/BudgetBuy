@@ -1,0 +1,32 @@
+.navbar {
+  /* display: flex; */
+  /* justify-content: space-evenly; */
+  /* align-items: center; */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #333;
+  /* padding-inline: 2rem; */
+  padding-block: 1rem;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbarList {
+  list-style-type: none;
+  display: flex;
+  /* padding-inline: 2rem; */
+  margin: 0;
+}
+
+.navbarItem {
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navbarItem:hover {
+  background-color: #555;
+}
