@@ -34,8 +34,20 @@ def addCart(request):
         cart.total_value += data['amount'] * data['product_price']
         if item:
             data['amount'] += item.amount
+            stock_check = requests.post('http://localhost:8001/checkStock/', json={'product_id': product_id, 'amount': data['amount']})
+            stock_check = stock_check.json()
+            if(stock_check['status']):
+                cart.status = "stock_unavailable"
+                cart.out_of_stock += 1
+                data['status'] = "stock_unavailable"
             serializer = CartItemSerializer(item, data=data)
         else:
+            stock_check = requests.post('http://localhost:8001/checkStock/', json={'product_id': product_id, 'amount': data['amount']})
+            stock_check = stock_check.json()
+            if(stock_check['status']):
+                cart.status = "stock_unavailable"
+                cart.out_of_stock += 1
+                data['status'] = "stock_unavailable"
             serializer = CartItemSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -55,6 +67,13 @@ def delCart(request):
             cart = get_object_or_404(Cart, user_id=user_id)
             item = get_object_or_404(Cart_item, product_id=prod_id, user_id=user_id)
             item.amount -= 1
+            stock_check = requests.post('http://localhost:8001/checkStock/', json={'product_id': prod_id, 'amount': item.amount})
+            stock_check = stock_check.json()
+            if not stock_check['status']:
+                item.status = "available"
+                cart.out_of_stock -= 1
+                if cart.out_of_stock == 0:
+                    cart.status = "available"
             cart.total_value -= item.product_price
             retData = {'updatedAmount': item.amount}
             item.save()
@@ -65,6 +84,10 @@ def delCart(request):
             items = Cart_item.objects.filter(user_id=user_id, product_id=prod_id)
             item = items.first()
             cart.total_value -= item.amount * item.product_price
+            if item.status == "stock_unavailable":
+                cart.out_of_stock -= 1
+            if cart.out_of_stock == 0:
+                cart.status = "available"
             items.delete()
             cart.save()
             retItems = Cart_item.objects.filter(user_id=user_id)  
@@ -86,12 +109,13 @@ def getCart(request):
         user_id = request.GET.get('user_id')
         cart = Cart.objects.filter(user_id=user_id).first()
         items = Cart_item.objects.filter(user_id=user_id)
-        serializer = CartItemSerializer(items, many=True)
-        if not serializer.data:
+        if not items:
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             prod_ids = items.values_list('product_id', flat=True)
             prodInfo = test_func(prod_ids)
+            items = Cart_item.objects.filter(user_id=user_id)
+            serializer = CartItemSerializer(items, many=True)
             for i in serializer.data:
                 i.update(prodInfo['data'][i['product_id']])
         reqData = {'items': serializer.data, 'cartValue': cart.total_value}
@@ -114,6 +138,7 @@ def addOrder(request):
         order_item.save()
     items.delete()
     cart.total_value = 0
+    cart.status = "available"
     cart.save()
     return Response(status=status.HTTP_201_CREATED)
 
