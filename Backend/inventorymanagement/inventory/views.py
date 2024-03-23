@@ -34,7 +34,6 @@ def addStock(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
 @csrf_exempt
 @api_view(['GET'])
 def getInventory(request):
@@ -47,6 +46,21 @@ def getInventory(request):
             i['stock'] = inventory.get(product_id=i['product_id']).product_stock
             i['sku_id'] = inventory.get(product_id=i['product_id']).sku_id
         return Response(prod_info, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@csrf_exempt
+@api_view(['POST'])
+def checkStock(request):
+    try:
+        data = JSONParser().parse(request)
+        product_id = data['product_id']
+        amount = data['amount']
+        stock = Inventory.objects.get(product_id=product_id).product_stock
+        if(stock >= amount):
+            return Response({'status': 0}, status=status.HTTP_200_OK)
+        else:
+            return Response({'status': 1}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
