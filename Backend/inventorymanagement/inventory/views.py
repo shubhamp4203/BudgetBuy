@@ -1,5 +1,3 @@
-from math import prod
-from re import S
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from inventory.models import Inventory
