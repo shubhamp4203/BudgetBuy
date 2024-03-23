@@ -1,4 +1,3 @@
-from ast import Or
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from orders.models import Order, Cart, Cart_item, Order_item
@@ -151,4 +150,5 @@ def getOrderItems(request):
         reqData = {'items': item_data.data, 'total_value': order.total_value}
         return Response(reqData, status=status.HTTP_200_OK)
         
+
 
