@@ -136,6 +136,10 @@ def addOrder(request):
     for item in items:
         order_item = Order_item.objects.create(order_id=order, product_id=item.product_id, amount=item.amount)
         order_item.save()
+    update_data = {'products': []}  
+    for item in items:
+        update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})
+    stock_update = requests.post('http://localhost:8001/updateStock/', json=update_data)
     items.delete()
     cart.total_value = 0
     cart.status = "available"

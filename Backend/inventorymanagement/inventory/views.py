@@ -64,4 +64,39 @@ def checkStock(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
+@csrf_exempt
+@api_view(['POST'])
+def updateStock(request):
+    try:
+        data = JSONParser().parse(request)
+        for i in data['products']:
+            inventory = Inventory.objects.get(product_id=i['product_id'])
+            inventory.product_stock -= i['amount']
+            inventory.save()
+        return Response({'message': 'Stock updated successfully'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
+@api_view(['POST'])
+def editStock(request):
+    try:
+        data = JSONParser().parse(request)
+        product_id = data['product_id']
+        new_stock = data['new_stock']
+        type = data['type']
+        if(type == "DELETE"):
+            inventory = Inventory.objects.get(product_id=product_id)
+            if(inventory.product_stock < new_stock):
+                return Response({'error': 'Stock not available'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                inventory.product_stock -= new_stock
+                inventory.save()
+                return Response({'message': 'Stock updated successfully'}, status=status.HTTP_200_OK)
+        else:
+            inventory = Inventory.objects.get(product_id=product_id)
+            inventory.product_stock += new_stock
+            inventory.save()
+            return Response({'message': 'Stock updated successfully'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
