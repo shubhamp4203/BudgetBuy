@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //connection to data base
-const connection=mongoose.connect(process.env.CLUSTER_URL)
+const connection=mongoose.connect(process.env.USER_DB_URL)
 
 app.use(authRoutes);
 app.listen(process.env.PORT);
