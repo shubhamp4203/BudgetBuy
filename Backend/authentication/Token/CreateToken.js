@@ -1,8 +1,14 @@
-const CreateToken = (id) => {
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-    return JWT.sign({ id }, process.env.SECRET_KEY,{
-      expiresIn: maxAge,
-    });
-  };
+const tokencookies = (res, id, email, name) => {
+  const maxAge = 3 * 24 * 60 * 60; // 3 days
+  const token = jwt.sign({ id, email, name }, process.env.SECRET_KEY, {
+    expiresIn: maxAge,
+  });
 
-const maxAge = 3 * 60 * 60 * 24;
+  res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+  return token;
+};
+
+module.exports = tokencookies;
