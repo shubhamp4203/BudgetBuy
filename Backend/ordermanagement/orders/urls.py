@@ -6,6 +6,10 @@ urlpatterns = [
     path('delCart/', views.delCart),
     path('getCart/', views.getCart),
     path('addOrder/', views.addOrder),
-    path('getOrder/', views.getOrder),
-    path('getOrderItem/', views.getOrderItems),
+    path('getUserOrder/', views.getUserOrder),
+    path('getUserOrderItem/', views.getUserOrderItems),
+    path('getSellerOrder/', views.getSellerOrder),
+    path('getSellerOrderItem/', views.getSellerOrderItems),
+    path('createCart/', views.createCart),
+    path('editOrder/', views.editOrderStatus),
 ]
