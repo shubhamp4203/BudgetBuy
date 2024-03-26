@@ -8,11 +8,11 @@ import Cart from "./page/cart/Cart";
 function App() {
   // return <AppRouter />;
   return (
-    // <div className={styles.app}>
-    //   <AppRouter />
-    //   <Navbar />
-    // </div>
-    <Cart />
+    <div className={styles.app}>
+      <AppRouter />
+      <Navbar />
+    </div>
+    // <Cart />
   );
 }
 // // import logo from "./logo.svg";
@@ -24,4 +24,4 @@ function App() {
 //   return (<div><CustHomePage/></div>);
 // }
 
-// export default App;
+export default App;
