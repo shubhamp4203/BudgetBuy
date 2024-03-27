@@ -2,6 +2,7 @@ const User = require("../models/User");
 const JWT = require("jsonwebtoken");
 require("dotenv").config();
 const tokencookies = require("../Token/CreateToken");
+const axios=require("axios")
 
 //This  function handles all the error that could possibly be there while registering
 const errorHandle = (err) => {
@@ -63,6 +64,8 @@ module.exports.signup_post = async (req, res) => {
     });
     res.status(201).json({ user: user._id });
     console.log(user._id);
+    const userId=user._id;
+    await axios.post('',{userId});
   } catch (err) {
     const errors = errorHandle(err);
     res.status(400).json({ errors });
