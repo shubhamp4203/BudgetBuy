@@ -9,6 +9,7 @@ import json
 import requests
 import responses
 from django.shortcuts import get_object_or_404
+from ordermanagement.settings import micro_services
 
 def test_func(arg):
     resDict = {'data':{}}
@@ -47,7 +48,7 @@ def addCart(request):
         cart.total_value += data['amount'] * data['product_price']
         if item:
             data['amount'] += item.amount
-            stock_check = requests.post('http://127.0.0.1:8001/checkStock/', json={'product_id': product_id, 'amount': data['amount']})
+            stock_check = requests.post(f"{micro_services['inventory']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
             stock_check = stock_check.json()
             if(stock_check['status']):
                 cart.status = "stock_unavailable"
@@ -55,7 +56,7 @@ def addCart(request):
                 data['status'] = "stock_unavailable"
             serializer = CartItemSerializer(item, data=data)
         else:
-            stock_check = requests.post('http://127.0.0.1:8001/checkStock/', json={'product_id': product_id, 'amount': data['amount']})
+            stock_check = requests.post(f"{micro_services['inventory']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
             stock_check = stock_check.json()
             if(stock_check['status']):
                 cart.status = "stock_unavailable"
@@ -80,7 +81,7 @@ def delCart(request):
             cart = get_object_or_404(Cart, user_id=user_id)
             item = get_object_or_404(Cart_item, product_id=prod_id, user_id=user_id)
             item.amount -= 1
-            stock_check = requests.post('http://localhost:8001/checkStock/', json={'product_id': prod_id, 'amount': item.amount})
+            stock_check = requests.post(f"{micro_services['inventory']}/checkStock/", json={'product_id': prod_id, 'amount': item.amount})
             stock_check = stock_check.json()
             if not stock_check['status']:
                 item.status = "available"
@@ -171,7 +172,7 @@ def addOrder(request):
     update_data = {'products': []}  
     for item in items:
         update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})
-    stock_update = requests.post('http://localhost:8001/updateStock/', json=update_data)
+    stock_update = requests.post(f"{micro_services['inventory']}/updateStock/", json=update_data)
     items.delete()
     cart.total_value = 0
     cart.status = "available"

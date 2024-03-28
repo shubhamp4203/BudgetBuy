@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-#&aoa*1a3^ol875qcrj=+o=p_-wwrw@9qgbjr!h3fs!642(=7e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.2']
 
+micro_services = {
+    'order': 'http://192.168.1.2:8000',
+}
 
 # Application definition
 
