@@ -6,7 +6,6 @@ module.exports.insertProduct_post = async (req, res) => {
         const newProduct = req.body;
         const imageBuffer = req.file.buffer;
         const base64Image = Buffer.from(imageBuffer).toString("base64");
-
         const collection = await dataConnect();
         const result = await collection.insertOne({ newProduct: newProduct, image: base64Image });
         
