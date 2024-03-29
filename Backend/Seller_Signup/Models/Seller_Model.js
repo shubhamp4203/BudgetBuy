@@ -34,7 +34,7 @@ const SellerSchema = new mongoose.Schema({
     type: String,
     required: [true, "please enter an address"]
   },
-  pin_code: {
+  pincode: {
     type: Number,
     required: [true, "Enter a pincode"],
     validate: [
