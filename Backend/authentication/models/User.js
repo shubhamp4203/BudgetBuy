@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "please enter your name"],
   },
-  phone_number: {
+  contact: {
     type: Number,
     required: [true, "please enter your number"],
     unique: true,
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "please enter an address"],
   },
-  pin_code: {
+  pincode: {
     type: Number,
     required: [true, "Enter a pincode"],
     validate:[validator= function (v) {
@@ -44,8 +44,8 @@ const userSchema = new mongoose.Schema({
     message= (props) => `${props.value} is not a valid pin code!`,
     ]
 },
-  tags_of_interest: {
-    type:String,
+  tags: {
+    type:Array,
     required:[true,"please select atleast one tag of interest"],
     minlength: 1
   },
@@ -58,7 +58,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-//function that authenticates user
+//function that authenticates user while logging in
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {

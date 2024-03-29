@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const JWT = require("jsonwebtoken");
 require("dotenv").config();
 const tokencookies = require("../Token/CreateToken");
 const axios=require("axios")
@@ -8,12 +7,12 @@ const axios=require("axios")
 const errorHandle = (err) => {
   let errors = {
     name: "",
-    phone_number: "",
+    contact: "",
     email: "",
     password: "",
     address: "",
-    pin_code: "",
-    tags_of_interest: "",
+    pincode: "",
+    tags: "",
   };
 
   //this thing is only for the fields that need unique values
@@ -32,61 +31,69 @@ const errorHandle = (err) => {
   return errors;
 };
 
-// const maxAge = 3 * 60 * 60 * 24;
-
-//creating a JWT token
-// const CreateToken = (id, email, name) => {
-//   return JWT.sign({ id, email, name }, process.env.SECRET_KEY, {
-//     expiresIn: maxAge,
-//   });
-// };
-
 //api for registering a new custommer
 module.exports.signup_post = async (req, res) => {
   const {
     name,
-    phone_number,
+    contact,
     email,
     password,
     address,
-    pin_code,
-    tags_of_interest,
+    pincode,
+    tags,
   } = req.body;
   try {
     const user = await User.create({
       name,
-      phone_number,
+      contact,
       email,
       password,
       address,
-      pin_code,
-      tags_of_interest,
+      pincode,
+      tags,
     });
-    res.status(201).json({ user: user._id });
-    console.log(user._id);
-    const userId=user._id;
-    await axios.post('',{userId});
+    res.status(201).json({ user: user });
+    const user_id=user._id
+    await axios.post('http://10.20.30.86:8000/createCart/',{user_id});
   } catch (err) {
     const errors = errorHandle(err);
     res.status(400).json({ errors });
   }
-  console.log("signup post");
 };
 
 //api for logging in
 module.exports.login_post = async (req, res) => {
-  console.log("login post");
   const { email, password } = req.body;
   try {
     const user = await User.login(email, password);
     tokencookies(res, user._id, user.email, user.name);
     res.status(201).json({ user: user._id });
-    console.log("login success");
   } catch (err) {
-    console.log(err);
     res.status(400).json({});
   }
 };
+
+module.exports.updateUser_put=async (req,res)=>{
+  const user_id=req.query.user_id;
+  const user=User.findOne({_id:user_id});
+  if(!user){
+    return res.status(400).json({
+      message: "User not found",
+    });
+  }
+  const newuser=await User.updateOne(
+    {_id:user_id},{
+      $set:{
+        name:req.body.name,
+        email:req.body.email,
+        password:req.body.password,
+        address:req.body.address,
+        pincode:req.body.pincode
+      }
+    }
+  )
+  res.status(201).json({newuser:newuser})
+}
 
 //api for logging out
 module.exports.logout_post = async (req, res) => {
