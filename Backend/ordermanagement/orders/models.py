@@ -5,7 +5,7 @@ class User_Order(models.Model):
     user_order_id = models.BigAutoField(primary_key=True)
     order_date = models.DateTimeField(auto_now_add=True)
     order_status = models.CharField(max_length=50, null=True)
-    user_id = models.BigIntegerField()
+    user_id = models.CharField(max_length=100)   
     shipping_address = models.CharField(max_length=200, null=True)
     total_value = models.IntegerField(null=True, default=0)
     payment_method = models.CharField(max_length=50, null=True) 
@@ -18,12 +18,13 @@ class Seller_Order(models.Model):
     seller_order_id = models.BigAutoField(primary_key=True)
     order_date = models.DateTimeField(auto_now_add=True)
     order_status = models.CharField(max_length=50, null=True)
-    user_id = models.BigIntegerField()
+    user_id = models.CharField(max_length=100)   
     shipping_address = models.CharField(max_length=200, null=True)
     total_value = models.IntegerField(null=True, default=0)
     payment_method = models.CharField(max_length=50, null=True) 
     seller_id = models.BigIntegerField(null=True)
     user_order_id = models.BigIntegerField(null=True)
+    user_email = models.EmailField(max_length=255, null=True)
 
     class Meta:
         db_table = 'seller_order'
@@ -46,10 +47,11 @@ class User_Order_item(models.Model):
         db_table = 'user_order_item'
 
 class Cart(models.Model):
-    user_id = models.BigIntegerField(primary_key=True)
+    user_id = models.CharField(max_length=100, unique=True,primary_key=True)    
     total_value = models.IntegerField(null=True, default=0)
     status = models.CharField(max_length=50, null=True, default="available")
     out_of_stock = models.IntegerField(null=True, default=0)
+    user_email = models.EmailField(max_length=255, null=True, unique = True)
 
     class Meta:
         db_table = 'cart'
