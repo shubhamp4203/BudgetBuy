@@ -1,0 +1,4 @@
+{% autoescape off %}
+The OTP to verify your delivery is : {{user_otp}}
+
+{% endautoescape %}
