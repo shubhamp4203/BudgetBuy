@@ -1,13 +1,13 @@
 // ProductCard.js
 import React from "react";
-import styles from "./productCard.module.css";
+import styles from "./Order.module.css";
 
-const ProductCard = ({ product }) => {
+const Order = ({ product }) => {
   return (
     <div className={styles.productCard}>
-      <div className={styles.imageContainer}>
+      {/* <div className={styles.imageContainer}>
         <img src={product.image} alt={product.name} />
-      </div>
+      </div> */}
       <div className={styles.infoContainer}>
         <h3>{product.name}</h3>
         <p>{product.description}</p>
@@ -17,4 +17,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default Order;

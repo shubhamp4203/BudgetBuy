@@ -21,7 +21,7 @@ const Navbar = () => {
         </li>
         <li className={styles.navbarItem}>
           {/* Replace this with your custom logo component */}
-          <div>Logo</div>
+          Logo
         </li>
         <li className={styles.navbarItem}>
           <FontAwesomeIcon icon={faHeart} />

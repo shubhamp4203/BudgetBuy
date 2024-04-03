@@ -1,8 +1,9 @@
 import { useState } from "react";
-import styles from "./SignUp.module.css";
+import styles from "./UserProfile.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const options = [
   { value: "tag1", label: "Tag 1" },
@@ -11,19 +12,10 @@ const options = [
   // Add more predefined tags as needed
 ];
 
-const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    borderColor: "#ff2600",
-    borderWidth: "1px",
-    boxShadow: "none",
-  }),
-};
-
-export default function Signup() {
+export default function UserProfile() {
   const [name, setName] = useState("");
-  const [useremail, setuserEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
@@ -31,34 +23,48 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      borderColor: "#ff2600",
+      borderWidth: "1px",
+      boxShadow: "none",
+    }),
+  };
+
   const handleTagChange = (selectedOptions) => {
     setSelectedTags(selectedOptions);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // const jwtToken = Cookies.get("jwt");
+
     // Prepare the data to be sent
     const data = {
       name,
-      useremail,
-      password,
+      email,
+      // password,
       address,
       pincode,
       tags: selectedTags,
       contact,
     };
     console.log(data);
+    // console.log("jwt:", jwtToken);
 
     // Send a POST request to your server
-    await fetch("https://84f2-202-129-240-131.ngrok-free.app/signup", {
-      // Replace '/api/signup' with your actual API endpoint
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    const res = await fetch(
+      "https://84f2-202-129-240-131.ngrok-free.app/update",
+      {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
@@ -67,16 +73,15 @@ export default function Signup() {
       .catch((error) => {
         console.error("Error:", error);
       });
-    // alert(`You submitted `);
+    console.log(res);
   };
 
   return (
-    <div className={styles.signupcontainer}>
-      <h1>Sign Up</h1>
-      <div className={styles.signupform}>
+    <div className={styles.container}>
+      <h1>My Profile</h1>
+      <div className={styles.form}>
         <label htmlFor="name">Name</label>
         <input
-          className={styles.input}
           type="text"
           id="name"
           value={name}
@@ -85,26 +90,16 @@ export default function Signup() {
 
         <label htmlFor="email">Email</label>
         <input
-          className={styles.input}
           type="email"
           id="email"
-          value={useremail}
-          onChange={(e) => setuserEmail(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         {/* <br /> */}
 
-        <label htmlFor="password">Password</label>
-        <input
-          className={styles.input}
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
         {/* <br /> */}
         <label htmlFor="address">Address</label>
         <input
-          className={styles.input}
           type="text"
           id="address"
           value={address}
@@ -112,7 +107,6 @@ export default function Signup() {
         />
         <label htmlFor="pincode">Pincode</label>
         <input
-          className={styles.input}
           type="tel"
           id="pincode"
           value={pincode}
@@ -123,12 +117,11 @@ export default function Signup() {
           isMulti
           options={options}
           value={selectedTags}
-          styles={customStyles}
           onChange={handleTagChange}
+          styles={customStyles}
         />
         <label htmlFor="pincode">Contact</label>
         <input
-          className={styles.input}
           type="tel"
           id="contact"
           value={contact}
@@ -141,30 +134,15 @@ export default function Signup() {
           ))}
         </div> */}
 
-        <button className={styles.signupbutton} onClick={handleSubmit}>
-          Sign Up
+        <button className={styles.userprofilebutton} onClick={handleSubmit}>
+          update
         </button>
       </div>
 
-      {/* <div className={styles.socialSignUp}>
-        <div className={styles.orText}>OR</div>
-        <div className={styles.socialIcons}>
-          <a href="http://surl.li/rqecf">
-            <i className="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://myaccount.google.com/?utm_source=sign_in_no_continue&pli=1">
-            <i className="fab fa-google"></i>
-          </a>
-          <a href="https://github.com/topics/login">
-            <i className="fab fa-github"></i>
-          </a>
-        </div>
-      </div> */}
-
-      <div className={styles.privacyPolicy}>
+      {/* <div className={styles.privacyPolicy}>
         By signing up, you agree to our <a href="#">Privacy Policy</a> and{" "}
         <a href="#">Terms of Service</a>
-      </div>
+      </div> */}
     </div>
   );
 }
