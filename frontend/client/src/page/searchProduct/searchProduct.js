@@ -1,4 +1,3 @@
-// SearchProduct.js
 import React, { useState } from "react";
 import SearchBar from "../../component/searchBar/searchBar";
 import ProductList from "../../component/productList/productList";
@@ -16,7 +15,7 @@ function SearchProduct() {
   );
 
   return (
-    <div className="App">
+    <div>
       <SearchBar onSearch={handleSearch} />
       <ProductList products={filteredProducts} />
     </div>

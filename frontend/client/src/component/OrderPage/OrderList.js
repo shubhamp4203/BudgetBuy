@@ -1,16 +1,15 @@
-// ProductList.js
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./productList.module.css";
-import ProductCard from "./productCard"; // Update the import path
+import styles from "./OrderList.module.css";
+import Order from "./Order";
 
-const ProductList = ({ products }) => {
+const OrderList = ({ orders }) => {
   return (
     <div className={styles.container}>
       {/* <div className={styles.productList}> */}
-      {products.map((product) => (
+      {orders.map((product) => (
         <Link to={`/product/${product.id}`} key={product.id}>
-          <ProductCard product={product} />
+          <Order product={product} />
         </Link>
       ))}
     </div>
@@ -18,4 +17,4 @@ const ProductList = ({ products }) => {
   );
 };
 
-export default ProductList;
+export default OrderList;

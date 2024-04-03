@@ -1,31 +1,31 @@
-.signupcontainer {
+.signincontainer {
   width: 300px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-block: 25px;
+  margin-top: 25px;
+  height: 100%;
 }
 
-.signupcontainer h1 {
+.signincontainer h1 {
   color: #ff2600;
 }
-
-.signupform {
+.signinform {
   width: 100%;
   display: flex;
   flex-direction: column;
   /* gap: 0.2rem; */
 }
 
-.signupform label {
+label {
   margin-top: 20px;
   text-align: left;
   font-size: 14px;
   color: #ff2600;
 }
 
-.signupform .input {
+.signinform .input {
   width: 100%;
   padding: 12px 20px;
   margin-top: 5px;
@@ -35,7 +35,7 @@
   font-size: 14px;
 }
 
-.signupbutton {
+button {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
@@ -89,7 +89,7 @@ input[type="submit"]:hover {
   margin: 0 5px;
   font-size: 16px;
   text-decoration: none;
-  color: #666;
+  color: #ff2600;
 }
 
 .social-sign-up a:hover {
@@ -134,7 +134,7 @@ input[type="submit"]:hover {
 }
 .socialIcons {
   display: flex;
-  justify-content: space-between; /* This will give even spaces between the logos */
-  padding: 10px 0; /* This will give padding at the top and bottom */
-  width: 100%; /* This will ensure the logos take up the full width of the container */
+  justify-content: center;
+  padding: 10px 0;
+  width: 100%;
 }

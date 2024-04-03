@@ -31,7 +31,7 @@ const Cart = () => {
           )}
         </p>
       </div>
-      <button>Checkout</button>
+      <button className={styles.cartbutton}>Checkout</button>
     </div>
   );
 };
