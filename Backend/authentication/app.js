@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
-<<<<<<< HEAD
-const authRoutes = require("./routes//authRoute");
-const OauthRoutes = require("./routes/OauthRoutes");
-=======
-const authRoutes = require("./routes/authroute");
->>>>>>> 43b4099125697b2fe78971ed3d108421777dedb0
+const authRoutes = require("./routes/authRoute");
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
