@@ -22,7 +22,7 @@ const customStyles = {
 
 export default function Signup() {
   const [name, setName] = useState("");
-  const [useremail, setuserEmail] = useState("");
+  const [email, setuserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
@@ -40,7 +40,7 @@ export default function Signup() {
     // Prepare the data to be sent
     const data = {
       name,
-      useremail,
+      email,
       password,
       address,
       pincode,
@@ -50,7 +50,7 @@ export default function Signup() {
     console.log(data);
 
     // Send a POST request to your server
-    await fetch("https://84f2-202-129-240-131.ngrok-free.app/signup", {
+    await fetch("http://localhost:8003/signup", {
       // Replace '/api/signup' with your actual API endpoint
       credentials: "include",
       method: "POST",
@@ -88,7 +88,7 @@ export default function Signup() {
           className={styles.input}
           type="email"
           id="email"
-          value={useremail}
+          value={email}
           onChange={(e) => setuserEmail(e.target.value)}
         />
         {/* <br /> */}
