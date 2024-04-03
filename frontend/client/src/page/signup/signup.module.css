@@ -1,38 +1,41 @@
-.container {
+.signupcontainer {
   width: 300px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 100px;
+  margin-block: 25px;
 }
 
-form {
+.signupcontainer h1 {
+  color: #ff2600;
+}
+
+.signupform {
   width: 100%;
   display: flex;
   flex-direction: column;
+  /* gap: 0.2rem; */
 }
 
-label {
+.signupform label {
   margin-top: 20px;
   text-align: left;
   font-size: 14px;
-  color: #666;
+  color: #ff2600;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.signupform .input {
   width: 100%;
   padding: 12px 20px;
   margin-top: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #ff2600;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
 }
 
-button[type="submit"] {
+.signupbutton {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
@@ -115,11 +118,8 @@ input[type="submit"]:hover {
   margin: 0 10px;
 }
 
-.privacy-policy {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+.privacyPolicy {
+  margin-block: 20px;
   font-size: 12px;
   color: #666;
 }

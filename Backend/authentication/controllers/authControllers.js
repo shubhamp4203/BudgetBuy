@@ -2,14 +2,30 @@ const Seller = require("../../Seller_Signup/Models/Seller_Model");
 const User = require("../models/User");
 require("dotenv").config();
 const tokencookies = require("../Token/CreateToken");
-const axios=require("axios")
+const axios = require("axios");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+async function validateGoogleToken(access_token) {
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: access_token,
+      audience: process.env.GOOGLE_CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+    });
+    const payload = ticket.getPayload();
+    return payload;
+  } catch (error) {
+    console.log("Token validation failed:", error);
+    return null;
+  }
+}
 
 //This function handles all the error that could possibly be there while registering
 const errorHandle = (err) => {
   let errors = {
     name: "",
     contact: "",
-    useremail: "",
+    email: "",
     password: "",
     address: "",
     pincode: "",
@@ -18,7 +34,7 @@ const errorHandle = (err) => {
 
   //this thing is only for the fields that need unique values
   if (err.code) {
-    errors.useremail = "the phone number or email is already registered";
+    errors.email = "the phone number or email is already registered";
     console.log(err.code);
     return errors;
   }
@@ -34,40 +50,66 @@ const errorHandle = (err) => {
 
 //api for registering a new custommer
 module.exports.signup_post = async (req, res) => {
-  const {
-    name,
-    contact,
-    useremail,
-    password,
-    address,
-    pincode,
-    tags,
-  } = req.body;
+  const { name, contact, email, password, address, pincode, tags } = req.body;
   try {
     const user = await User.create({
       name,
       contact,
-      useremail,
+      email,
       password,
       address,
       pincode,
       tags,
     });
-    const user_id=user._id;
-    const email=user.useremail;
-    const resp = await axios.post(process.env.CLEAR_CART,{user_id,email});
-    if(resp.status==201) {
-      console.log("cart created successfully");
+    const user_id = user._id;
+    const useremail = user.email;
+    const resp = await axios.post(
+      "https://9c3e-202-129-240-131.ngrok-free.app/createCart/",
+      { user_id, useremail }
+    );
+    if (resp.status == 201) {
       res.status(201).json({ user: user._id });
-    }
-    else {
+    } else {
       console.log(resp);
-      res.status(400).json({ message: "cart creation failed" });
+      res.status(400).json({ error: resp });
     }
   } catch (err) {
     const errors = errorHandle(err);
     console.log(err);
     res.status(400).json({ errors });
+  }
+};
+
+module.exports.callback = async (req, res) => {
+  const code = req.query.code;
+  const url = "https://oauth2.googleapis.com/token";
+  const data = {
+    redirect_uri: "http://localhost:8003/auth/google/callback",
+    code: code,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    grant_type: "authorization_code",
+  };
+  const headers = { "Content-Type": "application/json" };
+
+  try {
+    const response = await axios.post(url, data, { headers: headers });
+    const token_info = response.data;
+    const id_token = await validateGoogleToken(token_info.id_token);
+    console.log(id_token);
+    if (id_token) {
+      const user = await User.findOne({ email: id_token.email });
+      console.log(user);
+      if (user) {
+        res.redirect("http://localhost:3000/");
+      } else {
+        res.redirect("http://localhost:3000/signin");
+      }
+    }
+    // use token_info as needed
+  } catch (error) {
+    console.error(error);
+    // handle error
   }
 };
 
@@ -87,28 +129,27 @@ module.exports.signup_post = async (req, res) => {
   };
 
 module.exports.updateUser_put=async (req,res)=>{
-  const seller_id=req.authdata.id;
-  const seller=User.findOne({_id:seller_id});
-  if(!seller){
+  const user_id=req.authdata.id;
+  const user=User.findOne({_id:user_id});
+  if(!user){
     return res.status(400).json({
-      message: "Seller not found",
+      message: "User not found",
     });
   }
-  const newseller=await Seller.updateOne(
-    {_id:seller_id},{
-      $set:{
-        name:req.body.name,
-        email:req.body.email,
-        address:req.body.address,
-        pincode:req.body.pincode,
-        tags:req.body.tags,
-        contact:req.body.contact
-      }
+  const newuser = await User.updateOne(
+    { _id: user_id },
+    {
+      $set: {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        address: req.body.address,
+        pincode: req.body.pincode,
+      },
     }
-  )
-  console.log("updated seller",newseller)
-  res.status(201).json({newseller:newseller})
-}
+  );
+  res.status(201).json({ newuser: newuser });
+};
 
 //api for logging out
 module.exports.logout_post = async (req, res) => {
