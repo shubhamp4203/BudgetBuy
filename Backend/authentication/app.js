@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const authRoutes = require("./routes/authroute");
+const authRoutes = require("./routes//authRoute");
 const OauthRoutes = require("./routes/OauthRoutes");
 const express = require("express");
 const app = express();
@@ -11,7 +11,10 @@ const cors = require('cors');
 const googleStrategy = require("./googleOauth/googleStrategy");
 
 //loading and using middlewares
-app.use(cors());
+app.use(cors({
+    origin:'https://c686-202-129-240-131.ngrok-free.app',
+    credentials:true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

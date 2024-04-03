@@ -1,14 +1,15 @@
+const Seller = require("../../Seller_Signup/Models/Seller_Model");
 const User = require("../models/User");
 require("dotenv").config();
 const tokencookies = require("../Token/CreateToken");
 const axios=require("axios")
 
-//This  function handles all the error that could possibly be there while registering
+//This function handles all the error that could possibly be there while registering
 const errorHandle = (err) => {
   let errors = {
     name: "",
     contact: "",
-    email: "",
+    useremail: "",
     password: "",
     address: "",
     pincode: "",
@@ -17,7 +18,7 @@ const errorHandle = (err) => {
 
   //this thing is only for the fields that need unique values
   if (err.code) {
-    errors.email = "the phone number or email is already registered";
+    errors.useremail = "the phone number or email is already registered";
     console.log(err.code);
     return errors;
   }
@@ -36,7 +37,7 @@ module.exports.signup_post = async (req, res) => {
   const {
     name,
     contact,
-    email,
+    useremail,
     password,
     address,
     pincode,
@@ -46,53 +47,67 @@ module.exports.signup_post = async (req, res) => {
     const user = await User.create({
       name,
       contact,
-      email,
+      useremail,
       password,
       address,
       pincode,
       tags,
     });
-    res.status(201).json({ user: user });
-    const user_id=user._id
-    await axios.post('http://10.20.30.86:8000/createCart/',{user_id});
+    const user_id=user._id;
+    const email=user.useremail;
+    const resp = await axios.post(process.env.CLEAR_CART,{user_id,email});
+    if(resp.status==201) {
+      console.log("cart created successfully");
+      res.status(201).json({ user: user._id });
+    }
+    else {
+      console.log(resp);
+      res.status(400).json({ message: "cart creation failed" });
+    }
   } catch (err) {
     const errors = errorHandle(err);
+    console.log(err);
     res.status(400).json({ errors });
   }
 };
 
 //api for logging in
-module.exports.login_post = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.login(email, password);
-    tokencookies(res, user._id, user.email, user.name);
-    res.status(201).json({ user: user._id });
-  } catch (err) {
-    res.status(400).json({});
-  }
-};
+  module.exports.login_post = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      const maxAge = 3 * 24 * 60 * 60;
+      const user = await User.login(email, passwo0rd);
+      const token=tokencookies(user._id, user.email, user.name);
+      const cookie=res.cookie("jwt", token, { maxAge: maxAge * 1000, sameSite:None ,httpOnly:true});
+      console.log(token);
+      res.status(201).json({ user: user});
+    } catch (err) {
+      res.status(400).json({});
+    }
+  };
 
 module.exports.updateUser_put=async (req,res)=>{
-  const user_id=req.query.user_id;
-  const user=User.findOne({_id:user_id});
-  if(!user){
+  const seller_id=req.authdata.id;
+  const seller=User.findOne({_id:seller_id});
+  if(!seller){
     return res.status(400).json({
-      message: "User not found",
+      message: "Seller not found",
     });
   }
-  const newuser=await User.updateOne(
-    {_id:user_id},{
+  const newseller=await Seller.updateOne(
+    {_id:seller_id},{
       $set:{
         name:req.body.name,
         email:req.body.email,
-        password:req.body.password,
         address:req.body.address,
-        pincode:req.body.pincode
+        pincode:req.body.pincode,
+        tags:req.body.tags,
+        contact:req.body.contact
       }
     }
   )
-  res.status(201).json({newuser:newuser})
+  console.log("updated seller",newseller)
+  res.status(201).json({newseller:newseller})
 }
 
 //api for logging out
@@ -100,3 +115,7 @@ module.exports.logout_post = async (req, res) => {
   res.clearCookie("jwt");
   res.status(200).json({ message: "Logged out successfully" });
 };
+
+module.exports.forget_password= (req,res)=>{
+  console.log()
+}

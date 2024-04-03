@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
       message: (props) => `${props.value} is not a valid phone number!`,
     }
   },
-  email: {
+  useremail: {
     type: String,
     required: [true, "please enter an email"],
     unique: true,
@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
 },
   tags: {
     type:Array,
-    required:[true,"please select atleast one tag of interest"],
+    // required:[true,"please select atleast one tag of interest"],
     minlength: 1
   },
 });
