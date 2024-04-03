@@ -21,9 +21,9 @@ function CustomerHome() {
   return (
     <>
       <div>
-        <SignedIn>
+        {/* <SignedIn>
           <UserButton afterSignout={() => navigate("/signin")} />
-        </SignedIn>
+        </SignedIn> */}
         <SearchBar onSearch={handleSearch} />
       </div>
       <Feedlist products={filteredProducts} />

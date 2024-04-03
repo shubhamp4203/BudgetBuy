@@ -3,7 +3,7 @@ import styles from "./signin.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { SignInButton,  } from "@clerk/clerk-react";
+import { SignInButton } from "@clerk/clerk-react";
 
 export default function SignIn() {
   // const [name, setName] = useState("");
@@ -11,13 +11,28 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const clientId =
+    "620229975383-5jg3ltg3d1hqjlugeh1qe790q6em19l4.apps.googleusercontent.com";
+  const scope = "email profile";
+  const redirectUrl = "http://localhost:8003/auth/google/callback";
 
-  const handleSignIn = () => {
-    // Redirect to the "/" route after successful sign-in
-    // navigate("/");
-    window.location.href = "/";
-    console.log("Sign in successful");
-  };
+  function generateAuthUrl(clientId, redirectUri, scope) {
+    let authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    authUrl += "?client_id=" + encodeURIComponent(clientId);
+    authUrl += "&redirect_uri=" + encodeURIComponent(redirectUri);
+    authUrl += "&response_type=code";
+    authUrl += "&scope=" + encodeURIComponent(scope);
+    authUrl += "&access_type=offline";
+    return authUrl;
+  }
+
+  const authUrl = generateAuthUrl(clientId, redirectUrl, scope);
+  // const handleSignIn = () => {
+  //   // Redirect to the "/" route after successful sign-in
+  //   // navigate("/");
+  //   window.location.href = "/";
+  //   console.log("Sign in successful");
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,16 +45,13 @@ export default function SignIn() {
     console.log(data);
 
     try {
-      const response = await fetch(
-        "https://84f2-202-129-240-131.ngrok-free.app/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("http://localhost:8003/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const responseData = await response.json();
 
@@ -67,16 +79,13 @@ export default function SignIn() {
       const data = {
         email,
       };
-      const response = await fetch(
-        "https://84f2-202-129-240-131.ngrok-free.app/forgetpassword",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("http://localhost:8003/forgetpassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
       const responseData = await response.json();
       console.log("Success:", responseData);
       if (responseData.status === 200) {
@@ -119,11 +128,14 @@ export default function SignIn() {
       <div className={styles.socialSignUp}>
         <div className={styles.orText}>OR</div>
         <div className={styles.socialIcons}>
+          <a href={authUrl}>
+            <i className="fab fa-google"></i>
+          </a>
           {/* <a href="http://surl.li/rqecf">
             <i className="fab fa-facebook-f"></i>
   </a>*/}
 
-          <SignInButton provider="google" afterSignin={handleSignIn} />
+          {/* <SignInButton provider="google" afterSignin={handleSignIn} /> */}
           {/* <a href="https://github.com/topics/login">
             <i className="fab fa-github"></i>
           </a> */}
