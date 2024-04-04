@@ -21,7 +21,7 @@ function CustomerHome() {
     console.log("thai che");
     try {
       const response = await fetch(
-        "https://e1e4-202-129-240-131.ngrok-free.app/logout",
+        process.env.REACT_APP_URL_AUTHENTICATION + "/logout",
         {
           method: "POST",
           credentials: "include", // "same-origin", "include", "omit"

@@ -1,9 +1,10 @@
 const JWT = require("jsonwebtoken");
 require("dotenv").config();
-const cookieParser = require("cookie-parser");
+const cookie = require("cookie");
 
 const JWTverify = async (req, res, next) => {
-  const token = req.headers.cookie.split("=")[1];
+  const cookies = cookie.parse(req.headers.cookie || "");
+  const token = cookies.jwt;
   console.log(token);
   console.log("NOT FOUND");
   if (!token) {

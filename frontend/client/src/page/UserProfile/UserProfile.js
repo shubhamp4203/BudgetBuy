@@ -55,7 +55,7 @@ export default function UserProfile() {
 
     // Send a POST request to your server
     const res = await fetch(
-      "https://e1e4-202-129-240-131.ngrok-free.app/update",
+      process.env.REACT_APP_URL_AUTHENTICATION + "/update",
       {
         method: "PUT",
         credentials: "include",
@@ -65,9 +65,14 @@ export default function UserProfile() {
         body: JSON.stringify(data),
       }
     );
-    res.ok
-      ? alert("Profile updated successfully")
-      : alert("Failed to update profile");
+    if(res.ok) {
+      console.log("Success");
+      alert("Profile updated successfully");
+    }
+    else {
+      console.log("Error");
+      navigate("/signin");
+    }
   };
 
   return (

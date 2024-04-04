@@ -50,7 +50,7 @@ export default function Signup() {
     console.log(data);
 
     // Send a POST request to your server
-    await fetch("https://e1e4-202-129-240-131.ngrok-free.app/signup", {
+    await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/signup", {
       // Replace '/api/signup' with your actual API endpoint
       credentials: "include",
       method: "POST",

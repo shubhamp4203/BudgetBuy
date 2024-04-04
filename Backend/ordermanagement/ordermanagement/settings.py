@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 micro_services = {
-    'inventory': 'https://99b1-202-129-240-131.ngrok-free.app ',
+    'inventory': 'http://localhost:8003',
+    'product': 'http://localhost:8004',
 }
 
 # Application definition
@@ -75,7 +76,7 @@ TEMPLATES = [
         },
     },
 ]
-
+APPEND_SLASH = False
 WSGI_APPLICATION = 'ordermanagement.wsgi.application'
 
 

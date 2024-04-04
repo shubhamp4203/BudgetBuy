@@ -43,7 +43,7 @@ def getInventory(request):
     seller_id = request.query_params.get('seller_id')
     inventory = Inventory.objects.filter(seller_id=seller_id)
     prod_ids = {'products': list(inventory.values_list('product_id', flat=True))}
-    productInfo = requests.post(f"{micro_services['productInfo']}getproduct", json=prod_ids)
+    productInfo = requests.post(f"{micro_services['productInfo']}/getproduct", json=prod_ids)
     if(productInfo.status_code==200):
         productInfo = productInfo.json()
         print(productInfo)
