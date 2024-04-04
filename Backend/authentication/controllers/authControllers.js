@@ -108,15 +108,18 @@ module.exports.callback = async (req, res) => {
       if (user) {
         const token = tokencookies(user._id, user.email, user.name);
         console.log(token);
-        res.cookie("jwt", token, {
+        res
+          .cookie("jwt", token, {
             httpOnly: true,
             maxAge: 3 * 24 * 60 * 60 * 1000,
             sameSite: "None",
             secure: true,
             path: "/",
             domain: "https://15cf-202-129-240-131.ngrok-free.app/",
-          }).status(201).json({ message: "Login Successfull", user: user });
-          // res.redirect("https://15cf-202-129-240-131.ngrok-free.app/");
+          })
+          .status(201)
+          .json({ message: "Login Successfull", user: user });
+        // res.redirect("https://15cf-202-129-240-131.ngrok-free.app/");
       } else {
         res.redirect("https://15cf-202-129-240-131.ngrok-free.app/signup");
       }
@@ -201,4 +204,19 @@ module.exports.logout_post = async (req, res) => {
 
 module.exports.forget_password = (req, res) => {
   console.log();
+};
+
+module.exports.forgotPassword_post = async (req, res) => {
+  const email = req.body.email;
+  try {
+    const user = await User.findOne({ email: email });
+    if (user) {
+      res.status(200).json({ message: "Email found" });
+    } else {
+      res.status(400).json({ message: "Email not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: "Email not found" });
+  }
 };

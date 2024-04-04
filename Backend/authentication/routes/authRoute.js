@@ -9,5 +9,6 @@ router.post("/login", authController.login_post);
 router.put("/update", auth, authController.updateUser_put);
 router.post("/logout", authController.logout_post);
 router.get("/auth/google/callback", authController.callback);
+router.post("/forgotPassword", authController.forgotPassword_post);
 
 module.exports = router;
