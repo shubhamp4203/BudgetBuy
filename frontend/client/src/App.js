@@ -14,7 +14,7 @@ function App() {
   return (
     <div className={styles.app}>
       <AppRouter />
-      <Navbar />
+      {/* <Navbar /> */}
     </div>
   );
 }

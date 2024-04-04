@@ -4,7 +4,6 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
-const passport = require("passport");
 const cors = require("cors");
 
 //loading and using middlewares
@@ -15,8 +14,8 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
 // app.use(passport.initialize());
 
 //connection to data base

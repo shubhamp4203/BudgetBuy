@@ -55,7 +55,7 @@ export default function UserProfile() {
 
     // Send a POST request to your server
     const res = await fetch(
-      "https://84f2-202-129-240-131.ngrok-free.app/update",
+      "https://e1e4-202-129-240-131.ngrok-free.app/update",
       {
         method: "PUT",
         credentials: "include",
@@ -64,16 +64,10 @@ export default function UserProfile() {
         },
         body: JSON.stringify(data),
       }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-        navigate("/signin");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    console.log(res);
+    );
+    res.ok
+      ? alert("Profile updated successfully")
+      : alert("Failed to update profile");
   };
 
   return (

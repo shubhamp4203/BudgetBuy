@@ -62,16 +62,15 @@ module.exports.signup_post = async (req, res) => {
     });
     const user_id = user._id;
     const useremail = user.email;
-    const resp = await axios.post(
-      "https://9c3e-202-129-240-131.ngrok-free.app/createCart/",
-      { user_id, useremail }
-    );
-    if (resp.status == 201) {
-      res.status(201).json({ user: user._id });
-    } else {
-      console.log(resp);
-      res.status(400).json({ error: resp });
-    }
+    // const resp = await axios.post(
+    //   "https://9c3e-202-129-240-131.ngrok-free.app/createCart/",
+    //   { user_id, useremail }
+    // );
+    // if (resp.status == 201) {
+    res.status(201).json({ user: user._id });
+    // } else {
+    //   console.log(resp);
+    //   res.status(400).json({ error: resp });
   } catch (err) {
     const errors = errorHandle(err);
     res.status(400).json({ errors });
@@ -99,6 +98,11 @@ module.exports.callback = async (req, res) => {
       const user = await User.findOne({ email: id_token.email });
       console.log(user);
       if (user) {
+        const token = tokencookies(user._id, user.email, user.name);
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: 3 * 24 * 60 * 60 * 1000,
+        });
         res.redirect("http://localhost:3000/");
       } else {
         res.redirect("http://localhost:3000/signin");
@@ -116,38 +120,61 @@ module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.login(email, password);
-    tokencookies(res, user._id, user.email, user.name);
+    const token = tokencookies(user._id, user.email, user.name);
+    console.log(token);
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
     res.status(201).json({ user: user._id });
   } catch (err) {
-    res.status(400).json({});
+    res.status(400).json({ error: err.message });
   }
 };
 
 module.exports.updateUser_put = async (req, res) => {
-  const user_id = req.query.user_id;
+  const user_id = req.authdata.id;
   const user = User.findOne({ _id: user_id });
   if (!user) {
-    return res.status(400).json({
+    res.status(400).json({
       message: "User not found",
     });
+    res.redirect("/signin");
+  } else {
+    const newuser = await User.updateOne(
+      { _id: user_id },
+      {
+        $set: {
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password,
+          address: req.body.address,
+          pincode: req.body.pincode,
+          contact: req.body.contact,
+        },
+      }
+    );
+    res.status(201).json({ newuser: newuser });
   }
-  const newuser = await User.updateOne(
-    { _id: user_id },
-    {
-      $set: {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        address: req.body.address,
-        pincode: req.body.pincode,
-      },
-    }
-  );
-  res.status(201).json({ newuser: newuser });
 };
 
 //api for logging out
 module.exports.logout_post = async (req, res) => {
   res.clearCookie("jwt");
   res.status(200).json({ message: "Logged out successfully" });
+};
+
+module.exports.forgotPassword_post = async (req, res) => {
+  const email = req.body.email;
+  try {
+    const user = await User.findOne({ email: email });
+    if (user) {
+      res.status(200).json({ message: "Email found" });
+    } else {
+      res.status(400).json({ message: "Email not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: "Email not found" });
+  }
 };
