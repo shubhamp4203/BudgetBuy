@@ -1,0 +1,13 @@
+.App {
+  text-align: center;
+  padding-top: 2rem;
+}
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* padding: 20px; */
+  margin-top: 2rem;
+  box-sizing: border-box;
+  background-color: black;
+}

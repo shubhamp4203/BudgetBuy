@@ -1,0 +1,43 @@
+/* CartItem.module.css */
+.cartItem {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.productImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.productDetails {
+  flex: 1;
+}
+
+.productName {
+  margin-bottom: 8px;
+}
+
+.quantity {
+  margin-left: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.quantity button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  margin: 0 8px;
+  cursor: pointer;
+}
+
+.quantity span {
+  font-size: 16px;
+  margin: 0 8px;
+}
