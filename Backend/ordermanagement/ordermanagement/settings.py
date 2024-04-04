@@ -25,10 +25,10 @@ SECRET_KEY = 'django-insecure-))$417d-v==*sv3k_*wa^w##b*!2t)otxxcgr+vgy3i!4cccc^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 micro_services = {
-    'inventory': 'http://localhost:8001',
+    'inventory': 'https://99b1-202-129-240-131.ngrok-free.app ',
 }
 
 # Application definition

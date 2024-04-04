@@ -27,9 +27,10 @@ def createCart(request):
     try:
         data = JSONParser().parse(request)
         user_id = data['user_id']
-        email = data['email']
+        email = data['useremail']
         cart = Cart.objects.create(user_id=user_id, user_email=email)
         cart.save()
+        print("print sucecss")
         return Response({'message': 'Cart created successfully'}, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
