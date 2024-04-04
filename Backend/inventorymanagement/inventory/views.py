@@ -4,6 +4,8 @@ from inventory.models import Inventory
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
+import requests
+from inventorymanagement.settings import micro_services
 
 def test_func(arg):
     resDict = {'products':[]}
@@ -23,7 +25,7 @@ def addStock(request):
         data = JSONParser().parse(request)
         products = data['products']
         for product in products:
-            sku_id = product['sku_id']
+            sku_id = product['skuid']
             seller_id = product['seller_id']
             stock = product['stock']
             product_id = product['product_id']
@@ -31,22 +33,29 @@ def addStock(request):
             inventory.save()
         return Response({'message': 'Stock added successfully'}, status=status.HTTP_201_CREATED)
     except Exception as e:
+        print(e)
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 @api_view(['GET'])
 def getInventory(request):
-    try:    
-        seller_id = request.query_params.get('seller_id')
-        inventory = Inventory.objects.filter(seller_id=seller_id)
-        prod_ids = inventory.values_list('product_id', flat=True)
-        prod_info = test_func(list(prod_ids))
-        for i in prod_info['products']:
-            i['stock'] = inventory.get(product_id=i['product_id']).product_stock
-            i['sku_id'] = inventory.get(product_id=i['product_id']).sku_id
-        return Response(prod_info, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    # try:    
+    seller_id = request.query_params.get('seller_id')
+    inventory = Inventory.objects.filter(seller_id=seller_id)
+    prod_ids = {'products': list(inventory.values_list('product_id', flat=True))}
+    productInfo = requests.post(f"{micro_services['productInfo']}/getproduct", json=prod_ids)
+    if(productInfo.status_code==200):
+        productInfo = productInfo.json()
+        print(productInfo)
+        for i in productInfo['result']:
+            i['stock'] = inventory.get(product_id=i['_id']).product_stock
+            i['sku_id'] = inventory.get(product_id=i['_id']).sku_id
+        return Response(productInfo, status=status.HTTP_200_OK)
+    else:
+        print(productInfo)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    # except Exception as e:
+    #     return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 @csrf_exempt
 @api_view(['POST'])

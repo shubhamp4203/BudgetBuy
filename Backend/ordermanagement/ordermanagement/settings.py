@@ -25,10 +25,11 @@ SECRET_KEY = 'django-insecure-))$417d-v==*sv3k_*wa^w##b*!2t)otxxcgr+vgy3i!4cccc^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 micro_services = {
-    'inventory': 'http://localhost:8001',
+    'inventory': 'http://localhost:8003',
+    'product': 'http://localhost:8004',
 }
 
 # Application definition
@@ -75,7 +76,7 @@ TEMPLATES = [
         },
     },
 ]
-
+APPEND_SLASH = False
 WSGI_APPLICATION = 'ordermanagement.wsgi.application'
 
 

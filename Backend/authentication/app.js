@@ -15,7 +15,7 @@ app.use((req, res, next) => {
   // Set Access-Control-Allow-Origin header to allow requests from any origin
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://15cf-202-129-240-131.ngrok-free.app"
+    process.env.FRONTEND
   );
   // Set other CORS headers if needed
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");

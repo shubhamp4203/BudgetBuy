@@ -5,6 +5,7 @@ const axios = require("axios");
 const multer = require('multer');
 const { collection } = require("../../Seller_Signup/Models/Seller_Model");
 const {v2: cloudinary} = require('cloudinary');
+require('dotenv').config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -12,32 +13,6 @@ cloudinary.config({
   api_secret: process.env.API_SECRET
 })
 
-<<<<<<< HEAD
-module.exports.getProduct_post = async (req, res) => {
-  const product_id = req.body.products;
-  const collection = await dataConnect();
-  console.log(product_id);
-  const objectIds = product_id.map((id) => new ObjectId(id.toString()));
-  console.log(objectIds);
-  const query = { _id: { $in: objectIds } };
-  const result = await collection.find(query).toArray();
-  console.log(result);
-  res.status(200).json({ message: "Products fetched successfully", result });
-};
-
-module.exports.insertProduct_post = async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: "Image not uploaded" });
-  }
-  console.log(req.file);
-  const newProduct = req.body;
-  const seller_id = req.body.seller_id;
-  const skuid = req.body.skuid;
-  const stock = req.body.stock;
-  const collection = await dataConnect();
-  try {
-    const imageData = fs.readFileSync(req.file.path);
-=======
 module.exports.insertProduct_post = async (req, res) => {
   if(!req.file){
     return res.status(400).json({message: "Image not uploaded"})
@@ -50,7 +25,6 @@ module.exports.insertProduct_post = async (req, res) => {
     const collection = await dataConnect();
     try {
     const imageData = fs.readFileSync(req.file.path)
->>>>>>> a57ad4a1bc5da2f382b10a3a0f9c547f96dd0b95
     const exist = await collection.findOne({ seller_id, skuid });
     if (!exist) {
       const result = await collection.insertOne({
@@ -75,34 +49,28 @@ module.exports.insertProduct_post = async (req, res) => {
           .status(201)
           .json({ message: "Product inserted successfully", newProduct });
       } else {
-<<<<<<< HEAD
-        res.status(400).json({ message: "Something went wrong" });
-=======
         res.status(400).json({message: "Something went wrong"});
->>>>>>> a57ad4a1bc5da2f382b10a3a0f9c547f96dd0b95
       }
     } else {
       res.status(400).json({ message: "SKU_ID is already in use" });
     }
   } catch (error) {
     console.log(error.message);
-<<<<<<< HEAD
-    const product = await collection.findOneAndDelete({ seller_id, skuid });
-=======
     const product = await collection.findOneAndDelete({seller_id, skuid});
->>>>>>> a57ad4a1bc5da2f382b10a3a0f9c547f96dd0b95
     res.status(500).json({ error: "Failed to insert product" });
   }
 };
 
 module.exports.getProduct_post=async (req,res)=>{
-    const product_id=req.body.products;
-    const collection = await dataConnect();
-    console.log(product_id);
+  const product_id=req.body.products;
+  const collection = await dataConnect();
+  try {
+    // console.log(product_id);
     const objectIds = product_id.map(id => new ObjectId(id.toString()));
-    console.log(objectIds);
+    // console.log(objectIds);
     const query = { _id: { $in: objectIds } };
     const result = await collection.find(query).toArray();
-    console.log(result)
+    // console.log(result)
     res.status(200).json({message: "Products fetched successfully", result});
+  }
 }

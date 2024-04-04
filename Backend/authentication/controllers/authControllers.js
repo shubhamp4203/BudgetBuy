@@ -1,11 +1,10 @@
-const Seller = require("../../Seller_Signup/Models/Seller_Model");
+// const Seller = require("../../Seller_Signup/Models/Seller_Model");
 const User = require("../models/User");
 require("dotenv").config();
 const tokencookies = require("../Token/CreateToken");
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
 async function validateGoogleToken(access_token) {
   try {
     const ticket = await client.verifyIdToken({
@@ -64,13 +63,10 @@ module.exports.signup_post = async (req, res) => {
     console.log("error");
     const user_id = user._id;
     const useremail = user.email;
-    const resp = await axios.post(
-      "https://f4d5-202-129-240-131.ngrok-free.app/createCart/",
-      {
-        user_id,
-        useremail,
-      }
-    );
+    const resp = await axios.post(process.env.ORDER + "/createCart/", {
+      user_id,
+      useremail,
+    });
     if (resp.status == 201) {
       res.status(201).json({ user: user._id });
     } else {
@@ -88,8 +84,7 @@ module.exports.callback = async (req, res) => {
   const code = req.query.code;
   const url = "https://oauth2.googleapis.com/token";
   const data = {
-    redirect_uri:
-      "https://e1e4-202-129-240-131.ngrok-free.app/auth/google/callback",
+    redirect_uri: process.env.AUTHENTICATION + "/auth/google/callback",
     code: code,
     client_id: process.env.GOOGLE_CLIENT_ID,
     client_secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -108,20 +103,20 @@ module.exports.callback = async (req, res) => {
       if (user) {
         const token = tokencookies(user._id, user.email, user.name);
         console.log(token);
+        console.log(req.hostname);
         res
           .cookie("jwt", token, {
             httpOnly: true,
             maxAge: 3 * 24 * 60 * 60 * 1000,
-            sameSite: "None",
-            secure: true,
-            path: "/",
-            domain: "https://15cf-202-129-240-131.ngrok-free.app/",
+            // sameSite: "None",
+            // secure: true,
+            // path: "/",
+            // domain: ".ngrok-free.app",
           })
           .status(201)
-          .json({ message: "Login Successfull", user: user });
-        // res.redirect("https://15cf-202-129-240-131.ngrok-free.app/");
+          .redirect(process.env.FRONTEND + "/");
       } else {
-        res.redirect("https://15cf-202-129-240-131.ngrok-free.app/signup");
+        res.redirect(process.env.FRONTEND + "/signup");
       }
     }
     // use token_info as needed
@@ -137,20 +132,35 @@ module.exports.login_post = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = tokencookies(user._id, user.email, user.name);
-    const cookie = res
-      .cookie("jwt", token, {
-        httpOnly: true,
-        maxAge: 3 * 24 * 60 * 60 * 1000,
-        sameSite: "None",
-        secure: true,
-      })
-      .status(201)
-      .json({ message: "Login Successfull", user: user });
+    console.log("Setting cookie");
+    console.log(req.hostname);
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+      // sameSite: "None",
+      // secure: true,
+      // path: "/",
+      // domain: ".ngrok-free.app",
+    });
+    res.status(200);
+    res.json({ message: "Login Successfull" });
     // console.log(token);
   } catch (err) {
     res.status(400).json({ message: "Login failed", error: err });
   }
 };
+
+// function generateAuthUrl(clientId, redirectUri, scope) {
+//   let authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+//   authUrl += "?client_id=" + encodeURIComponent(clientId);
+//   authUrl += "&redirect_uri=" + encodeURIComponent(redirectUri);
+//   authUrl += "&response_type=code";
+//   authUrl += "&scope=" + encodeURIComponent(scope);
+//   authUrl += "&access_type=offline";
+//   return authUrl;
+// }
+
+// module.exports.
 
 module.exports.updateUser_put = async (req, res) => {
   const user_id = req.authdata.id;
@@ -160,7 +170,6 @@ module.exports.updateUser_put = async (req, res) => {
       res.status(400).json({
         message: "User not found",
       });
-      // res.redirect("https://cb0a-202-129-240-131.ngrok-free.app/signin");
     } else {
       const newuser = await User.updateOne(
         { _id: user_id },

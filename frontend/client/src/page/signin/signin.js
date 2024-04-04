@@ -10,10 +10,10 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const clientId =
-    "620229975383-5jg3ltg3d1hqjlugeh1qe790q6em19l4.apps.googleusercontent.com";
-  const scope = "email profile";
+    process.env.REACT_APP_CLIENT_ID;
+  const scope = "email profile openid";
   const redirectUrl =
-    "https://e1e4-202-129-240-131.ngrok-free.app/auth/google/callback";
+    process.env.REACT_APP_URL_AUTHENTICATION + "/auth/google/callback";
 
   function generateAuthUrl(clientId, redirectUri, scope) {
     let authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -32,7 +32,15 @@ export default function SignIn() {
   //   window.location.href = "/";
   //   console.log("Sign in successful");
   // };
-
+  // const handleOauth = async (e) => {
+  //   const resp = await fetch(authUrl);
+  //   if(resp.status == 200) {
+  //     navigate("/");
+  //   }
+  //   else {
+  //     navigate("/signin");
+  //   }
+  // }
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -45,7 +53,7 @@ export default function SignIn() {
 
     try {
       const response = await fetch(
-        "https://e1e4-202-129-240-131.ngrok-free.app/login",
+        process.env.REACT_APP_URL_AUTHENTICATION + "/login",
         {
           method: "POST",
           credentials: "include", // "same-origin", "include", "omit"
@@ -83,7 +91,7 @@ export default function SignIn() {
         email,
       };
       const response = await fetch(
-        "https://d0fe-202-129-240-131.ngrok-free.app/forgotPassword",
+        process.env.REACT_APP_URL_AUTHENTICATION + "/forgotpassword",
         {
           method: "POST",
           headers: {

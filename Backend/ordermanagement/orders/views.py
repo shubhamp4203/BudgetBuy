@@ -27,9 +27,10 @@ def createCart(request):
     try:
         data = JSONParser().parse(request)
         user_id = data['user_id']
-        email = data['email']
+        email = data['useremail']
         cart = Cart.objects.create(user_id=user_id, user_email=email)
         cart.save()
+        print("print sucecss")
         return Response({'message': 'Cart created successfully'}, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -80,7 +81,7 @@ def getCart(request):
         if not items:
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
-            prod_ids = items.values_list('product_id', flat=True)
+            prod_ids = list(items.values_list('product_id', flat=True))
             prodInfo = test_func(prod_ids)
             items = Cart_item.objects.filter(user_id=user_id)
             serializer = CartItemSerializer(items, many=True)
@@ -88,6 +89,7 @@ def getCart(request):
                 i.update(prodInfo['data'][i['product_id']])
         reqData = {'items': serializer.data, 'cartValue': cart.total_value}
         return Response(reqData, status=status.HTTP_200_OK)
+    
     
 @csrf_exempt
 @api_view(['DELETE'])
