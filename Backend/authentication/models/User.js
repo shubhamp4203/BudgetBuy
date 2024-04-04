@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
 },
   tags: {
     type:Array,
-    required:[true,"please select atleast one tag of interest"],
+    // required:[true,"please select atleast one tag of interest"],
     minlength: 1
   },
 });

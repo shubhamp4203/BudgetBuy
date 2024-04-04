@@ -1,5 +1,6 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
+const multer = require('multer');
 
 const client = new MongoClient(process.env.PRODUCT_CLUSTER_URL);
 async function dataConnect() {
