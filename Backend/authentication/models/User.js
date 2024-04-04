@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
       message: (props) => `${props.value} is not a valid phone number!`,
     }
   },
-  useremail: {
+  email: {
     type: String,
     required: [true, "please enter an email"],
     unique: true,

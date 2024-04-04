@@ -8,5 +8,4 @@ const tokencookies = (id, email, name) => {
   });
   return token;
 };
-
 module.exports = tokencookies;
