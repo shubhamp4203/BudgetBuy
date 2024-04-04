@@ -12,14 +12,17 @@ console.log("Server is running");
 //     credentials:true,
 // }))
 app.use((req, res, next) => {
-    // Set Access-Control-Allow-Origin header to allow requests from any origin
-    res.setHeader('Access-Control-Allow-Origin', 'https://15cf-202-129-240-131.ngrok-free.app');
-    // Set other CORS headers if needed
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-  });
+  // Set Access-Control-Allow-Origin header to allow requests from any origin
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://15cf-202-129-240-131.ngrok-free.app"
+  );
+  // Set other CORS headers if needed
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
 //loading and using middlewares
 // app.use(cors({
 //   origin: function (origin, callback) {
@@ -43,6 +46,7 @@ app.use((req, res, next) => {
 
 // app.options("*", cors());
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(passport.initialize());

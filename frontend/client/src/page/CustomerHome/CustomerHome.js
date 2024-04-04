@@ -17,10 +17,46 @@ function CustomerHome() {
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  async function handlelogout() {
+    console.log("thai che");
+    try {
+      const response = await fetch(
+        "https://e1e4-202-129-240-131.ngrok-free.app/logout",
+        {
+          method: "POST",
+          credentials: "include", // "same-origin", "include", "omit"
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // body: JSON.stringify(data),
+        }
+      );
+      const responseData = await response.json();
+      console.log(responseData.message);
+      if (response.status == 200) {
+        console.log("logged out");
+        navigate("/signin");
+      } else {
+        console.log("Logout failed");
+      }
+      // const responseData = await response.json();
+      // console.log("Success:", responseData);
+      // if (response.ok) {
+      //   navigate("/signin");
+      // } else {
+      //   alert("Email not found");
+      // }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
   return (
     <>
       <div>
+        <div>
+          <button onClick={handlelogout}>log out</button>
+        </div>
         {/* <SignedIn>
           <UserButton afterSignout={() => navigate("/signin")} />
         </SignedIn> */}
@@ -30,5 +66,4 @@ function CustomerHome() {
     </>
   );
 }
-
 export default CustomerHome;
