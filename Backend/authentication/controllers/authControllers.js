@@ -1,4 +1,4 @@
-const Seller = require("../../Seller_Signup/Models/Seller_Model");
+// const Seller = require("../../Seller_Signup/Models/Seller_Model");
 const User = require("../models/User");
 require("dotenv").config();
 const tokencookies = require("../Token/CreateToken");
