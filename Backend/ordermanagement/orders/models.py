@@ -22,7 +22,7 @@ class Seller_Order(models.Model):
     shipping_address = models.CharField(max_length=200, null=True)
     total_value = models.IntegerField(null=True, default=0)
     payment_method = models.CharField(max_length=50, null=True) 
-    seller_id = models.BigIntegerField(null=True)
+    seller_id = models.CharField(max_length=100, null=True)
     user_order_id = models.BigIntegerField(null=True)
     user_email = models.EmailField(max_length=255, null=True)
 
@@ -31,7 +31,7 @@ class Seller_Order(models.Model):
 
 class Seller_Order_item(models.Model):
     seller_order_id = models.ForeignKey(Seller_Order, on_delete=models.CASCADE)
-    product_id = models.BigIntegerField()
+    product_id = models.CharField(max_length=100, null=True)
     amount = models.IntegerField(null=True)
     
     class Meta:
@@ -39,7 +39,7 @@ class Seller_Order_item(models.Model):
 
 class User_Order_item(models.Model):
     user_order_id = models.ForeignKey(User_Order, on_delete=models.CASCADE)
-    product_id = models.BigIntegerField()
+    product_id = models.CharField(max_length=100, null=True)  
     amount = models.IntegerField(null=True)
     item_status = models.CharField(max_length=50, null=True)
     
@@ -58,12 +58,12 @@ class Cart(models.Model):
 
 
 class Cart_item(models.Model):
-    product_id = models.BigIntegerField()
+    product_id = models.CharField(max_length=100, null=True)
     user_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
     amount = models.IntegerField(null=True)
     product_price = models.IntegerField(null=True)
     status = models.CharField(max_length=50, null=True, default="available")
-    seller_id = models.BigIntegerField(null=True)
+    seller_id = models.CharField(max_length=100, null=True)
 
     class Meta:
         db_table = 'cart_item'

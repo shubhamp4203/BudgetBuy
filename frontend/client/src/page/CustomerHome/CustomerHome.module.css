@@ -1,0 +1,36 @@
+.homenav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.navto {
+    text-decoration: none;
+    color: black;
+}
+
+.profbut {
+    margin: 0;
+    width: 4rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    margin-right: 3px;
+}
+
+.profimg {
+    height: 25%;
+}
+
+.proflist {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    font-family: 'Sans-serrif';
+    font-weight: 1000;
+    font-size: x-large;
+    /* text-decoration: none; */
+}

@@ -11,9 +11,9 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.productCard:hover {
-  transform: translateY(-5px);
-}
+/* .productCard:hover {
+  transform: translateY(-50px);
+} */
 
 .productCard img {
   width: 100%;

@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 micro_services = {
-    'order': 'https://1ee9-202-129-240-131.ngrok-free.app',
+    'order': 'http://localhost:8000',
     'productInfo': 'https://3814-202-129-240-131.ngrok-free.app/'
 }
 

@@ -1,22 +1,44 @@
 // ProductDetail.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import products from "../../data/products";
+import style from "./productDetail.module.css";
+// import products from "../../data/products";
 
 const ProductDetail = () => {
   const { productId } = useParams();
-  const product = products.find((p) => p.id === parseInt(productId));
+  // console.log(productId);
+  const product_list = [productId];
+  const [item, setproduct] = useState({});
+  useEffect(() => {
+    const getproduct = async () => {
+      const resp = await fetch("http://localhost:8004" + "/getproduct/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body : JSON.stringify({products: product_list}),
+      });
+      const data = await resp.json();
+      const product = data.result['0'];
+      console.log(product.newProduct);
+      setproduct(product);  
+    }
+    getproduct();
+  }, [])
+  // const product = products.find((p) => p.id === parseInt(productId));
 
-  if (!product) {
-    return <div>Product not found</div>;
-  }
+  // if (!product) {
+  //   return <div>Product not found</div>;
+  // }
 
   return (
-    <div>
-      <h2>{product.name}</h2>
-      <p>{product.description}</p>
-      <p>Price: ${product.price}</p>
-      <img src={product.image} alt={product.name} />
+    <div className={style.productDetails}>
+      {item.newProduct ? <div>
+        <img src={"https://res.cloudinary.com/dt0mkdvqx/image/upload/f_auto,q_auto/v1/product_images/" + item._id} alt={item.newProduct.name} />
+        <p>Name: {item.newProduct.name}</p>
+        <p>Price: {item.newProduct.price}</p>
+        <p>Stock: {item.newProduct.stock}</p>
+      </div> : "Loading..."}
     </div>
   );
 };

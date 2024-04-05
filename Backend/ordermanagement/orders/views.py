@@ -74,22 +74,26 @@ def addCart(request):
 @csrf_exempt
 @api_view(['GET'])
 def getCart(request):
-    if request.method == 'GET':
-        user_id = request.GET.get('user_id')
-        cart = Cart.objects.filter(user_id=user_id).first()
-        items = Cart_item.objects.filter(user_id=user_id)
-        if not items:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+    user_id = request.GET.get('user_id')
+    cart = Cart.objects.get(user_id=user_id)
+    items = Cart_item.objects.filter(user_id=user_id)
+    cart_data = CartSerializer(cart)
+    if not items:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        item_data = CartItemSerializer(items, many=True)
+        prod_ids = {'products': list(items.values_list('product_id', flat=True))}
+        productInfo = requests.post(f"{micro_services['product']}/getproduct", json=prod_ids)
+        if(productInfo.status_code==200):
+            productInfo = productInfo.json()
+            for i in item_data.data:
+                for j in productInfo["result"]:
+                    if(i['product_id'] == j["_id"]):
+                        i["name"] = j['newProduct']["name"]
+                        break
+            return Response({"cart": cart_data.data, "products": item_data.data}, status=status.HTTP_200_OK)
         else:
-            prod_ids = list(items.values_list('product_id', flat=True))
-            prodInfo = test_func(prod_ids)
-            items = Cart_item.objects.filter(user_id=user_id)
-            serializer = CartItemSerializer(items, many=True)
-            for i in serializer.data:
-                i.update(prodInfo['data'][i['product_id']])
-        reqData = {'items': serializer.data, 'cartValue': cart.total_value}
-        return Response(reqData, status=status.HTTP_200_OK)
-    
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
 @csrf_exempt
 @api_view(['DELETE'])
