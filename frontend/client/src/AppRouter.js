@@ -19,13 +19,13 @@ const AppRouter = () => {
         <Route path="/searchproduct" excat element={<SearchProduct />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/" element={<CustomerHome />} />
-        <Route path="/myorders" element={<OrdersTabs />} />
+        {/* <Route path="/myorders" element={<OrdersTabs />} /> */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/payment" element={<Payment />} />
+        {/* <Route path="/payment" element={<Payment />} /> */}
       </Routes>
     </Router>
   );

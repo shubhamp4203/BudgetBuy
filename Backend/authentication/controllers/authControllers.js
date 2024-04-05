@@ -1,6 +1,5 @@
-// const Seller = require("../../Seller_Signup/Models/Seller_Model");
 const User = require("../models/User");
-require("dotenv").config();
+require("dotenv").config({path: '../.env'});
 const tokencookies = require("../Token/CreateToken");
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
@@ -144,8 +143,9 @@ module.exports.login_post = async (req, res) => {
     });
     res.status(200);
     res.json({ message: "Login Successfull" });
-    // console.log(token);
+    // throw new Error("Error in setting cookie");
   } catch (err) {
+    res.clearCookie("jwt");
     res.status(400).json({ message: "Login failed", error: err });
   }
 };
@@ -227,5 +227,28 @@ module.exports.forgotPassword_post = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: "Email not found" });
+  }
+};
+
+module.exports.getCart = async (req,res) => {
+  const user_id = req.authdata.id;
+  try{
+    const response = await axios.get(process.env.ORDER + "/getCart/", {
+      params: {
+        user_id
+      }
+    });
+    console.log(response.data)
+    if(response.status==200) {
+      res.status(200).json({cartItems: response.data});
+    }
+    else if(response.status==204) {
+      res.status(204).json({message: "Cart is empty"});
+    }
+    else {
+      res.status(400).json({message: "Nothing to show here", cartItems: {cart: {}, products: []}})
+    }
+  } catch(err) {
+    res.status(400).json({message: "Something went wrong", cartItems: {cart: {}, products: []}});
   }
 };

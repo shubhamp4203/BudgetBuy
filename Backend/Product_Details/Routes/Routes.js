@@ -7,5 +7,6 @@ const upload = multer({dest: 'uploads/'});
 
 router.post('/insertproduct',upload.single('image'),Controller.insertProduct_post)
 router.post('/getproduct',Controller.getProduct_post)
+router.get('/getAll',Controller.allproducts_get)
 
 module.exports=router;

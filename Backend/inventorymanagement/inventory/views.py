@@ -46,7 +46,6 @@ def getInventory(request):
     productInfo = requests.post(f"{micro_services['productInfo']}/getproduct", json=prod_ids)
     if(productInfo.status_code==200):
         productInfo = productInfo.json()
-        print(productInfo)
         for i in productInfo['result']:
             i['stock'] = inventory.get(product_id=i['_id']).product_stock
             i['sku_id'] = inventory.get(product_id=i['_id']).sku_id

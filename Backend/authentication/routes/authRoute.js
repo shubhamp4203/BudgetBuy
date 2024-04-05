@@ -10,5 +10,6 @@ router.put("/update", auth, authController.updateUser_put);
 router.post("/logout", authController.logout_post);
 router.get("/auth/google/callback", authController.callback);
 router.post("/forgotPassword", authController.forgotPassword_post);
+router.get("/getCart", auth, authController.getCart);
 
 module.exports = router;

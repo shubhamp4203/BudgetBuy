@@ -3,9 +3,9 @@ const dataConnect = require("../Connection/Connection");
 const {ObjectId}=require("mongodb")
 const axios = require("axios");
 const multer = require('multer');
-const { collection } = require("../../Seller_Signup/Models/Seller_Model");
+// const { collection } = require("../../Seller_Signup/Models/Seller_Model");
 const {v2: cloudinary} = require('cloudinary');
-require('dotenv').config();
+require("dotenv").config({path: '../.env'});
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -29,8 +29,6 @@ module.exports.insertProduct_post = async (req, res) => {
     if (!exist) {
       const result = await collection.insertOne({
         newProduct: newProduct,
-        seller_id,
-        skuid,
       });
       const image = await cloudinary.uploader.upload(req.file.path, {
         public_id: `product_images/${result.insertedId}`,
@@ -41,7 +39,7 @@ module.exports.insertProduct_post = async (req, res) => {
         products: [{ seller_id, skuid, stock, product_id: result.insertedId }],
       };
       const resp = await axios.post(
-        process.env.INVENTORY + "addStock/",
+        process.env.INVENTORY + "/addStock/",
         invreq
       );
       if (resp.status == 201) {
@@ -65,12 +63,29 @@ module.exports.getProduct_post=async (req,res)=>{
   const product_id=req.body.products;
   const collection = await dataConnect();
   try {
-    // console.log(product_id);
     const objectIds = product_id.map(id => new ObjectId(id.toString()));
-    // console.log(objectIds);
     const query = { _id: { $in: objectIds } };
     const result = await collection.find(query).toArray();
-    // console.log(result)
     res.status(200).json({message: "Products fetched successfully", result});
+  } catch(err) {
+    res.status(400).json({error: "Failed to fetch products"});
+  } 
+}
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+module.exports.allproducts_get = async (req,res) => {
+  const collection = await dataConnect();
+  try {
+    const result = await collection.find().toArray();
+    shuffleArray(result);
+    console.log(result);
+    res.status(200).json({message: "All products fetched successfully", result});
+  } catch(err) {
+    res.status(500).json({error: "Failed to fetch products"});
   }
 }

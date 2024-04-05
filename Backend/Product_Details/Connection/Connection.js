@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-require("dotenv").config();
+require("dotenv").config({path: '../.env'});
 const multer = require('multer');
 
 const client = new MongoClient(process.env.PRODUCT_CLUSTER_URL);

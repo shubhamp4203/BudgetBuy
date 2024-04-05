@@ -25,11 +25,21 @@ label {
   color: #ff2600;
 }
 
-input[type="text"],
+/* input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="tel"],
 Select {
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 5px;
+  border: 1px solid #ff2600;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+} */
+
+.userprofileinput {
   width: 100%;
   padding: 12px 20px;
   margin-top: 5px;
@@ -52,7 +62,7 @@ Select {
 }
 
 input[type="submit"]:hover {
-  background-color: #45a049;
+  background-color: #000000;
 }
 
 .social-sign-up {

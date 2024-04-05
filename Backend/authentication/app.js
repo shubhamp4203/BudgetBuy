@@ -3,7 +3,7 @@ const authRoutes = require("./routes/authRoute");
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
-require("dotenv").config();
+require("dotenv").config({path: '../.env'});
 const cors = require("cors");
 
 console.log("Server is running");
@@ -56,5 +56,5 @@ const connection = mongoose.connect(process.env.USER_DB_URL);
 
 app.use(authRoutes);
 app.use("/auth", authRoutes);
-app.listen(process.env.PORT);
+app.listen(8003);
 // app.listen(8003,"10.20.30.89")

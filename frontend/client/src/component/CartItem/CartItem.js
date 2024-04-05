@@ -6,7 +6,7 @@ const CartItem = ({ product }) => {
   return (
     <div className={styles.cartItem}>
       <img
-        src={product.imageUrl}
+        src={"https://res.cloudinary.com/dt0mkdvqx/image/upload/f_auto,q_auto/v1/product_images/" + product.product_id}
         alt={product.name}
         className={styles.productImage}
       />

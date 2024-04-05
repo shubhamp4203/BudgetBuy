@@ -13,8 +13,10 @@ function App() {
   // const navigate = useNavigate();
   return (
     <div className={styles.app}>
+      {/* <Router> */}
       <AppRouter />
-      {/* <Navbar /> */}
+      <Navbar />
+      {/* </Router> */}
     </div>
   );
 }

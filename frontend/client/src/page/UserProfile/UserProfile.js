@@ -3,7 +3,6 @@ import styles from "./UserProfile.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 
 const options = [
   { value: "tag1", label: "Tag 1" },
@@ -81,6 +80,7 @@ export default function UserProfile() {
       <div className={styles.form}>
         <label htmlFor="name">Name</label>
         <input
+          className= {styles.userprofileinput}
           type="text"
           id="name"
           value={name}
@@ -89,6 +89,7 @@ export default function UserProfile() {
 
         <label htmlFor="email">Email</label>
         <input
+          className= {styles.userprofileinput}  
           type="email"
           id="email"
           value={email}
@@ -99,6 +100,7 @@ export default function UserProfile() {
         {/* <br /> */}
         <label htmlFor="address">Address</label>
         <input
+          className= {styles.userprofileinput}
           type="text"
           id="address"
           value={address}
@@ -106,6 +108,7 @@ export default function UserProfile() {
         />
         <label htmlFor="pincode">Pincode</label>
         <input
+          className= {styles.userprofileinput}
           type="tel"
           id="pincode"
           value={pincode}
@@ -117,10 +120,11 @@ export default function UserProfile() {
           options={options}
           value={selectedTags}
           onChange={handleTagChange}
-          styles={customStyles}
+          className= {styles.userprofileinput}
         />
         <label htmlFor="pincode">Contact</label>
         <input
+          className= {styles.userprofileinput}
           type="tel"
           id="contact"
           value={contact}
