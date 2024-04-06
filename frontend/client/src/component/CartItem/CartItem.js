@@ -12,9 +12,8 @@ const CartItem = ({ product }) => {
       />
       <div className={styles.productDetails}>
         <h3 className={styles.productName}>{product.name}</h3>
-        <p>Color: {product.color}</p>
-        <p>Size: {product.size}</p>
-        <p>Price: ${product.price}</p>
+        <p>Amount: {product.amount} </p>
+        <p>Price: ₹{product.product_price}</p>
       </div>
       <div className={styles.quantity}>
         <button>-</button>

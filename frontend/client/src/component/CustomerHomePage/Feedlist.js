@@ -9,12 +9,7 @@ const Feedlist = ({ products }) => {
     <div className={styles.container}>
       <div className={styles.productList}>
         {products.map((product) => (
-          <Link to={{
-            pathname: `/product/${product._id}`,
-            state: { product: product },
-          }} key={product._id}>
-            <FeedCard product={product} />
-          </Link>
+          <FeedCard product={product} />
         ))}
       </div>
     </div>

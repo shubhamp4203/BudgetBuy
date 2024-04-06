@@ -2,7 +2,7 @@
   /* display: flex; */
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 5.5rem;
 }
 
 .product-list {
@@ -14,37 +14,7 @@
   height: 100%;
 }
 
-.product-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgb(211, 81, 81);
-  border-radius: 4px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.product-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-
-.product-card h3 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.product-card p {
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
-}
-
-.product-card .price {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-top: 0;
+.productLink {
+  text-decoration: none;
+  color: black;
 }

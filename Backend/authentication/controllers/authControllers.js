@@ -59,7 +59,6 @@ module.exports.signup_post = async (req, res) => {
       pincode,
       tags,
     });
-    console.log("error");
     const user_id = user._id;
     const useremail = user.email;
     const resp = await axios.post(process.env.ORDER + "/createCart/", {
@@ -74,8 +73,7 @@ module.exports.signup_post = async (req, res) => {
     }
   } catch (err) {
     const errors = errorHandle(err);
-    console.log(err);
-    res.status(400).json({ errors });
+    res.status(401).json({ errors });
   }
 };
 
@@ -201,8 +199,8 @@ module.exports.logout_post = async (req, res) => {
       .clearCookie("jwt", {
         httpOnly: true,
         maxAge: 0,
-        sameSite: "None",
-        secure: true,
+        // sameSite: "None",
+        // secure: true,
       })
       .status(200)
       .json({ message: "Logged out successfully" });
@@ -238,7 +236,6 @@ module.exports.getCart = async (req,res) => {
         user_id
       }
     });
-    console.log(response.data)
     if(response.status==200) {
       res.status(200).json({cartItems: response.data});
     }
@@ -246,9 +243,26 @@ module.exports.getCart = async (req,res) => {
       res.status(204).json({message: "Cart is empty"});
     }
     else {
-      res.status(400).json({message: "Nothing to show here", cartItems: {cart: {}, products: []}})
+      res.status(400).json({message: "Nothing to show here"})
     }
   } catch(err) {
-    res.status(400).json({message: "Something went wrong", cartItems: {cart: {}, products: []}});
+    res.status(400).json({message: "Something went wrong"});
   }
 };
+
+module.exports.addcart = async (req,res) => {
+  const data = req.body;
+  const uid = req.authdata.id;
+  data.user_id = uid
+  try {
+    const response = await axios.post(process.env.ORDER + "/addCart/", data);
+    if(response.status==201) {
+      res.status(201).json({message: "Product added to cart"});
+    }
+    else {
+      res.status(400).json({message: "Something went wrong"});
+    }
+  } catch(err) {
+    res.status(400).json({message: "Something went wrong"});
+  }
+}

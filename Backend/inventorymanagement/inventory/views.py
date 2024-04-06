@@ -5,7 +5,10 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 import requests
-from inventorymanagement.settings import micro_services
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def test_func(arg):
     resDict = {'products':[]}
@@ -43,7 +46,7 @@ def getInventory(request):
     seller_id = request.query_params.get('seller_id')
     inventory = Inventory.objects.filter(seller_id=seller_id)
     prod_ids = {'products': list(inventory.values_list('product_id', flat=True))}
-    productInfo = requests.post(f"{micro_services['productInfo']}/getproduct", json=prod_ids)
+    productInfo = requests.post(f"{os.getenv('PRODUCT')}/getproduct", json=prod_ids)
     if(productInfo.status_code==200):
         productInfo = productInfo.json()
         for i in productInfo['result']:

@@ -3,7 +3,7 @@ const dataConnect = require("../Connection/Connection");
 const {ObjectId}=require("mongodb")
 const axios = require("axios");
 const multer = require('multer');
-// const { collection } = require("../../Seller_Signup/Models/Seller_Model");
+
 const {v2: cloudinary} = require('cloudinary');
 require("dotenv").config({path: '../.env'});
 
