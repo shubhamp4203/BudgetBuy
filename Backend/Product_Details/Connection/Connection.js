@@ -7,7 +7,7 @@ let collection;
 async function dataConnect() {
     try {
       if(!client) {
-        client = new MongoClient("mongodb+srv://rohanadatia11:T66T3lArmdijdmTM@budgetbuy.gcvjmm9.mongodb.net/");
+        client = new MongoClient(process.env.PRODUCT_CLUSTER_URL);
         await client.connect();
         collection = client.db(process.env.PRODUCT_DB).collection(process.env.PRODUCT_COLLECTION);
       }
