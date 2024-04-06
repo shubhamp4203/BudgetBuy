@@ -6,13 +6,12 @@ import {
   faShoppingBag,
   faHeart,
   faUser,
+  faBottleDroplet,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavBar.module.css";
-import { Link } from "react-router-dom";
-
 
 const Navbar = () => {
-  return (
+  return (  
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
         <a href="/">
@@ -33,7 +32,7 @@ const Navbar = () => {
           <FontAwesomeIcon icon={faHeart} />
         </li>
         <a href="/userprofile">
-        <li className={styles.navbarItem}>
+        <li className={styles.navbarItem} >
           <FontAwesomeIcon icon={faUser} />
         </li>
         </a>
@@ -42,4 +41,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar

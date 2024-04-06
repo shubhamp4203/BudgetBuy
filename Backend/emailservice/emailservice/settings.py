@@ -34,8 +34,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv("EMAIL")
 EMAIL_HOST_PASSWORD = os.getenv("PASSWORD")
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
+PORT=8002
 micro_services = {
     'inventory': 'http://localhost:8001',
     'order': 'http://localhost:8000',

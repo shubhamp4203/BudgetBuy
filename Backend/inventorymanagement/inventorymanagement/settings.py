@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,11 +29,11 @@ SECRET_KEY = 'django-insecure-#&aoa*1a3^ol875qcrj=+o=p_-wwrw@9qgbjr!h3fs!642(=7e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [os.getenv("INVENTORY").split("http://")[1].split(":")[0]]
+PORT = 8001
 micro_services = {
-    'order': 'http://localhost:8000',
-    'productInfo': 'https://3814-202-129-240-131.ngrok-free.app/'
+    'order': os.getenv("ORDER"),
+    'productInfo': os.getenv("PRODUCT"),
 }
 
 # Application definition

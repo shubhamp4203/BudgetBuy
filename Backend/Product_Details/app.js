@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 dataConnect().catch(error => {
   console.error("Error connecting to the database:", error);
   process.exit(1); // Exit the process if unable to connect to the database
-});
+}); 
 
 app.use(Routes);
-app.listen(8004);
+app.listen(8004, process.env.PRODUCT.split("http://")[1].split(":")[0]);

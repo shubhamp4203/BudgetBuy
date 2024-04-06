@@ -16,10 +16,10 @@ const SearchBar = ({ onSearch }) => {
       <input 
         className={styles.search}
         type="text"
-        placeholder="Search..."
+        placeholder="  Search..."
         onChange={handleChange}
       />
-      <FontAwesomeIcon icon={faMagnifyingGlass} />
+      <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchico}/>
     </div>
   );
 };

@@ -11,7 +11,7 @@ const ProductDetail = () => {
   const [item, setproduct] = useState({});
   useEffect(() => {
     const getproduct = async () => {
-      const resp = await fetch("http://localhost:8004" + "/getproduct/", {
+      const resp = await fetch(process.env.REACT_APP_URL_PRODUCT + "/getproduct/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -11,5 +11,6 @@ router.post("/logout", authController.logout_post);
 router.get("/auth/google/callback", authController.callback);
 router.post("/forgotPassword", authController.forgotPassword_post);
 router.get("/getCart", auth, authController.getCart);
+router.post("/addCart", auth, authController.addcart);
 
 module.exports = router;
