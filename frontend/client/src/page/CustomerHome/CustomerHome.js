@@ -19,12 +19,12 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 
 function CustomerHome() {
   const [value, setValue] = React.useState(0);
   const [products, setData] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -133,13 +133,13 @@ function CustomerHome() {
         </Link>
 
         <ListItem key="Log Out" disablePadding>
-            <ListItemButton onClick={handlelogout}>
-              <ListItemIcon>
-                <LogoutIcon sx={{ color: "black" }} />
-              </ListItemIcon>
-              <ListItemText primary="Log Out" />
-            </ListItemButton>
-          </ListItem>
+          <ListItemButton onClick={handlelogout}>
+            <ListItemIcon>
+              <LogoutIcon sx={{ color: "black" }} />
+            </ListItemIcon>
+            <ListItemText primary="Log Out" />
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider sx={{ color: "black" }} />
     </Box>

@@ -1,41 +1,42 @@
 .homenav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    border-bottom: 1px solid #ccc;
-    background-color: #221f1f;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  border-bottom: 1px solid #ccc;
+  background-color: #221f1f;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .parentdiv {
-    overflow: visible;
-    height: auto;
+  overflow: visible;
+  height: auto;
 }
 
 .navto {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .profbut {
-    margin-right: 1rem;
-    color: white;
+  margin-right: 1rem;
+  color: white;
 }
 
 .profimg {
-    height: 15%;
+  height: 15%;
 }
 
 .proflist {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem;
-    font-family: 'Sans-serrif';
-    font-weight: 1000;
-    font-size: x-large;
-    /* text-decoration: none; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  font-family: "Sans-serrif";
+  font-weight: 1000;
+  font-size: x-large;
+  color: white;
+  /* text-decoration: none; */
 }
