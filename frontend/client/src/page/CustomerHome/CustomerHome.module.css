@@ -12,22 +12,22 @@
 }
 
 .parentdiv {
-    overflow: visible;
-    height: auto;
+  overflow: visible;
+  height: auto;
 }
 
 .navto {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .profbut {
-    margin-right: 1rem;
-    color: white;
+  margin-right: 1rem;
+  color: white;
 }
 
 .profimg {
-    height: 15%;
+  height: 15%;
 }
 
 .proflist {
