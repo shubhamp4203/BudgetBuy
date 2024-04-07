@@ -1,4 +1,4 @@
-.homenav {
+/* .homenav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,6 +8,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .parentdiv {
@@ -38,4 +39,4 @@
     font-weight: 1000;
     font-size: x-large;
     /* text-decoration: none; */
-}
+

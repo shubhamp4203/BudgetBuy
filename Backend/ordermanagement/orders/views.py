@@ -96,49 +96,48 @@ def getCart(request):
 @csrf_exempt
 @api_view(['DELETE'])
 def delCart(request):
-    if request.method == 'DELETE':
-        data = JSONParser().parse(request)
-        reqType = data['type']
-        user_id = data['user_id']
-        prod_id = data['product_id']
-        if reqType == 'subItem':
-            cart = get_object_or_404(Cart, user_id=user_id)
-            item = get_object_or_404(Cart_item, product_id=prod_id, user_id=user_id)
-            item.amount -= 1
-            stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': prod_id, 'amount': item.amount})
-            stock_check = stock_check.json()
-            if not stock_check['status']:
-                item.status = "available"
-                cart.out_of_stock -= 1
-                if cart.out_of_stock == 0:
-                    cart.status = "available"
-            cart.total_value -= item.product_price
-            retData = {'updatedAmount': item.amount}
-            item.save()
-            cart.save()
-            return Response(retData, status=status.HTTP_200_OK)
-        elif reqType == "remItem":
-            cart = get_object_or_404(Cart, user_id=user_id)
-            items = Cart_item.objects.filter(user_id=user_id, product_id=prod_id)
-            item = items.first()
-            cart.total_value -= item.amount * item.product_price
-            if item.status == "stock_unavailable":
-                cart.out_of_stock -= 1
+    data = JSONParser().parse(request)
+    reqType = data['type']
+    user_id = data['user_id']
+    prod_id = data['product_id']
+    if reqType == 'subItem':
+        cart = get_object_or_404(Cart, user_id=user_id)
+        item = get_object_or_404(Cart_item, product_id=prod_id, user_id=user_id)
+        item.amount -= 1
+        stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': prod_id, 'amount': item.amount})
+        stock_check = stock_check.json()
+        if not stock_check['status']:
+            item.status = "available"
+            cart.out_of_stock -= 1
             if cart.out_of_stock == 0:
                 cart.status = "available"
-            items.delete()
-            cart.save()
-            retItems = Cart_item.objects.filter(user_id=user_id)  
-            serializer = CartItemSerializer(retItems, many=True)
-            if not serializer.data:
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            else:
-                prod_ids = [item.product_id for item in retItems]
-                prodInfo = test_func(prod_ids)
-                for i in serializer.data:
-                    i.update(prodInfo['data'][i['product_id']])
-            reqData = {'items': serializer.data, 'cartValue': cart.total_value}
-            return Response(reqData, status=status.HTTP_200_OK)
+        cart.total_value -= item.product_price
+        retData = {'updatedAmount': item.amount}
+        item.save()
+        cart.save()
+        return Response(retData, status=status.HTTP_200_OK)
+    elif reqType == "remItem":
+        cart = get_object_or_404(Cart, user_id=user_id)
+        items = Cart_item.objects.filter(user_id=user_id, product_id=prod_id)
+        item = items.first()
+        cart.total_value -= item.amount * item.product_price
+        if item.status == "stock_unavailable":
+            cart.out_of_stock -= 1
+        if cart.out_of_stock == 0:
+            cart.status = "available"
+        items.delete()
+        cart.save()
+        retItems = Cart_item.objects.filter(user_id=user_id)  
+        serializer = CartItemSerializer(retItems, many=True)
+        if not serializer.data:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            prod_ids = [item.product_id for item in retItems]
+            prodInfo = test_func(prod_ids)
+            for i in serializer.data:
+                i.update(prodInfo['data'][i['product_id']])
+        reqData = {'items': serializer.data, 'cartValue': cart.total_value}
+        return Response(reqData, status=status.HTTP_200_OK)
    
 @csrf_exempt
 @api_view(['POST'])

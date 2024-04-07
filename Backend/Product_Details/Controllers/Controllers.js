@@ -89,3 +89,14 @@ module.exports.allproducts_get = async (req,res) => {
     res.status(500).json({error: "Failed to fetch products"});
   }
 }
+
+// module.exports.getlike = async (req,res) => {
+//   const collection = await dataConnect();
+//   const product_id = req.query.product_id;
+//   try {
+//     const result = await collection.findOne({ _id: ObjectId(product_id) });
+//     res.status(200).json({message: "Product fetched successfully", result: result.newProduct.likes});
+//   } catch(err) {
+//     res.status(400).json({error: "Failed to fetch product"}); 
+//   }
+// }

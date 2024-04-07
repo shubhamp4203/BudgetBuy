@@ -1,3 +1,4 @@
 *.env
 *.yml
 start_servers.bat
+.cache_ggshield
