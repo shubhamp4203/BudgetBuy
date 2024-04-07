@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./signup.module.css";
+import styles from "./SignUp.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";

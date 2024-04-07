@@ -1,36 +1,49 @@
 .homenav {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-    padding-bottom: 5px;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-inline: 1rem;
+  gap: 1rem;
 }
 
 .navto {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .profbut {
-    margin: 0;
-    width: 4rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    margin-right: 3px;
+  margin: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  /* margin-right: 5px; */
+  background-color: #ff2600;
 }
 
 .profimg {
-    height: 25%;
+  padding-block: 2rem;
+  padding-inline: 0.3rem;
+  height: 25%;
+}
+.profileicon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 0.3rem;
+  height: 70%;
 }
 
 .proflist {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem;
-    font-family: 'Sans-serrif';
-    font-weight: 1000;
-    font-size: x-large;
-    /* text-decoration: none; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  font-family: "Sans-serrif";
+  font-weight: 1000;
+  font-size: x-large;
+  color: white;
+  /* text-decoration: none; */
 }

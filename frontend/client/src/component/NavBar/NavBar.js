@@ -6,36 +6,35 @@ import {
   faShoppingBag,
   faHeart,
   faUser,
+  faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavBar.module.css";
 import { Link } from "react-router-dom";
-
 
 const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
         <a href="/">
-        <li className={styles.navbarItem}>
-          <FontAwesomeIcon icon={faHome} />
-        </li>
+          <li className={styles.navbarItem}>
+            <FontAwesomeIcon icon={faHome} size="lg" />
+          </li>
         </a>
         <a href="/cart">
-        <li className={styles.navbarItem}>
-          <FontAwesomeIcon icon={faShoppingBag} />
-        </li>
+          <li className={styles.navbarItem}>
+            <FontAwesomeIcon icon={faShoppingBag} size="lg" />
+          </li>
         </a>
         <li className={styles.navbarItem}>
-          {/* Replace this with your custom logo component */}
-          Logo
+          <FontAwesomeIcon icon={faCommentDots} size="lg" />
         </li>
         <li className={styles.navbarItem}>
-          <FontAwesomeIcon icon={faHeart} />
+          <FontAwesomeIcon icon={faHeart} size="lg" />
         </li>
         <a href="/userprofile">
-        <li className={styles.navbarItem}>
-          <FontAwesomeIcon icon={faUser} />
-        </li>
+          <li className={styles.navbarItem}>
+            <FontAwesomeIcon icon={faUser} size="lg" />
+          </li>
         </a>
       </ul>
     </nav>

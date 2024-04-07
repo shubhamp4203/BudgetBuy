@@ -7,12 +7,14 @@ import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import style from "./CustomerHome.module.css";
 import { Link } from "react-router-dom";
-import { ReactComponent as Profilesvg } from '../../user-solid.svg';
+import { ReactComponent as Profilesvg } from "../../user-solid.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function CustomerHome() {
   // const [searchTerm, setSearchTerm] = useState("");
   const [products, setData] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -70,20 +72,28 @@ function CustomerHome() {
     }
   }
   const DrawerList = (
-    <Box sx={{ width: 200, height: "100%"}} role="presentation" onClick={toggleDrawer(false)}>
+    <Box
+      bgcolor="rgb(35, 45, 63)"
+      sx={{ width: 200, height: "100%" }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+    >
       <div className={style.profimg}>
         <Profilesvg />
       </div>
+
+      <Link
+        className={style.navto}
+        to={{
+          pathname: "/userprofile",
+        }}
+      >
+        <div className={style.proflist}>Profile</div>
+      </Link>
+
       <div onClick={handlelogout} className={style.proflist}>
         Logout
       </div>
-      <Link className={style.navto}to={{
-        pathname: '/userprofile',
-      }} >
-      <div className={style.proflist}>
-        Profile
-      </div>
-      </Link>
     </Box>
   );
   return (
@@ -94,7 +104,9 @@ function CustomerHome() {
         </SignedIn> */}
         <div className={style.homenav}>
           <SearchBar />
-          <button onClick={toggleDrawer(true)} className={style.profbut}>Profile</button>
+          <button onClick={toggleDrawer(true)} className={style.profbut}>
+            <FontAwesomeIcon icon={faUser} className={style.profileicon} />
+          </button>
           <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
             {DrawerList}
           </Drawer>
