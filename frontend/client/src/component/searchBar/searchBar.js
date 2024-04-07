@@ -14,10 +14,10 @@ const SearchBar = ({ onSearch }) => {
       <input
         className={styles.search}
         type="text"
-        placeholder="Search BudgetBuy.in"
+        placeholder="  Search..."
         onChange={handleChange}
       />
-      <FontAwesomeIcon icon={faMagnifyingGlass} />
+      <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchico} />
     </div>
   );
 };

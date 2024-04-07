@@ -6,10 +6,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #ff2600;
+  background-color: #221f1f;
   /* padding-inline: 2rem; */
-  padding-block: 1rem;
-  padding-bottom: 2rem;
+  /* padding-block: 1rem; */
+  padding-top: 0.5rem;
+  padding-bottom: 2.5rem;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
   width: 100%;
 }

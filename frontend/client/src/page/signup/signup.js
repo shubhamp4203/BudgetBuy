@@ -47,27 +47,27 @@ export default function Signup() {
       tags: selectedTags,
       contact,
     };
-    console.log(data);
-
-    // Send a POST request to your server
-    await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/signup", {
-      // Replace '/api/signup' with your actual API endpoint
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-        navigate("/signin");
+    try {
+      const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/signup", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    // alert(`You submitted `);
+      if(resp.status === 201){
+        navigate("/signin");
+      }
+      else if(resp.status === 400){
+        alert("Something went wrong");
+      }
+      else {
+        alert("Email or Phone number already exists")
+      }
+    } catch (error) {
+      alert("Something went wrong");
+      console.log(error);
+    }
   };
 
   return (

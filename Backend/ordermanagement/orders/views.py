@@ -5,9 +5,8 @@ from orders.serializers import OrderItemSerializer, OrderSerializer, CartSeriali
 from rest_framework.decorators import  api_view
 from rest_framework import status
 from rest_framework.response import Response
-import json
+from pathlib import Path
 import requests
-import responses
 from django.shortcuts import get_object_or_404
 from ordermanagement.settings import micro_services
 
@@ -38,38 +37,37 @@ def createCart(request):
 @csrf_exempt
 @api_view(['POST'])
 def addCart(request):
-    if request.method == 'POST':
-        data = JSONParser().parse(request)
-        user_id = data['user_id']
-        product_id = data['product_id']
-        seller_id = data['seller_id']
-        cart = Cart.objects.filter(user_id=user_id).first()
-        if not cart:
-            cart = Cart.objects.create(user_id=user_id)
-        item = Cart_item.objects.filter(user_id=user_id, product_id=product_id).first()
-        cart.total_value += data['amount'] * data['product_price']
-        if item:
-            data['amount'] += item.amount
-            stock_check = requests.post(f"{micro_services['inventory']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
-            stock_check = stock_check.json()
-            if(stock_check['status']):
-                cart.status = "stock_unavailable"
-                cart.out_of_stock += 1
-                data['status'] = "stock_unavailable"
-            serializer = CartItemSerializer(item, data=data)
-        else:
-            stock_check = requests.post(f"{micro_services['inventory']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
-            stock_check = stock_check.json()
-            if(stock_check['status']):
-                cart.status = "stock_unavailable"
-                cart.out_of_stock += 1
-                data['status'] = "stock_unavailable"
-            serializer = CartItemSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            cart.save()
-            return Response({'prod': serializer.data, 'cartValue': cart.total_value}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    data = JSONParser().parse(request)
+    user_id = data['user_id']
+    product_id = data['product_id']
+    seller_id = data['seller_id']
+    data['product_price'] = int(data['product_price'])
+    cart = Cart.objects.filter(user_id=user_id).first()
+    if not cart:
+        cart = Cart.objects.create(user_id=user_id)
+    item = Cart_item.objects.filter(user_id=user_id, product_id=product_id).first()
+    cart.total_value += data['amount'] * data['product_price']
+    if item:
+        data['amount'] += item.amount
+        stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
+        stock_check = stock_check.json()
+        if(stock_check['status']):
+            cart.status = "stock_unavailable"
+            cart.out_of_stock += 1
+            data['status'] = "stock_unavailable"
+        serializer = CartItemSerializer(item, data=data)
+    else:
+        stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
+        stock_check = stock_check.json()
+        if(stock_check['status']):
+            cart.status = "stock_unavailable"
+            cart.out_of_stock += 1
+            data['status'] = "stock_unavailable"
+        serializer = CartItemSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        cart.save()
+        return Response({'prod': serializer.data, 'cartValue': cart.total_value}, status=status.HTTP_201_CREATED)
     
 @csrf_exempt
 @api_view(['GET'])
@@ -83,7 +81,7 @@ def getCart(request):
     else:
         item_data = CartItemSerializer(items, many=True)
         prod_ids = {'products': list(items.values_list('product_id', flat=True))}
-        productInfo = requests.post(f"{micro_services['product']}/getproduct", json=prod_ids)
+        productInfo = requests.post(f"{micro_services['PRODUCT']}/getproduct", json=prod_ids)
         if(productInfo.status_code==200):
             productInfo = productInfo.json()
             for i in item_data.data:
@@ -107,7 +105,7 @@ def delCart(request):
             cart = get_object_or_404(Cart, user_id=user_id)
             item = get_object_or_404(Cart_item, product_id=prod_id, user_id=user_id)
             item.amount -= 1
-            stock_check = requests.post(f"{micro_services['inventory']}/checkStock/", json={'product_id': prod_id, 'amount': item.amount})
+            stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': prod_id, 'amount': item.amount})
             stock_check = stock_check.json()
             if not stock_check['status']:
                 item.status = "available"
@@ -183,7 +181,7 @@ def addOrder(request):
     update_data = {'products': []}  
     for item in items:
         update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})
-    stock_update = requests.post(f"{micro_services['inventory']}/updateStock/", json=update_data)
+    stock_update = requests.post(f"{micro_services['INVENTORY']}/updateStock/", json=update_data)
     items.delete()
     cart.total_value = 0
     cart.status = "available"

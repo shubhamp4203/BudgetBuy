@@ -28,11 +28,11 @@ SECRET_KEY = 'django-insecure-))$417d-v==*sv3k_*wa^w##b*!2t)otxxcgr+vgy3i!4cccc^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [os.getenv("ORDER").split("http://")[1].split(":")[0]]
+PORT = 8000 
 micro_services = {
-    'inventory': os.getenv("INVENTORY"),
-    'product': os.getenv("PRODUCT"),
+    'INVENTORY': os.getenv("INVENTORY"),
+    'PRODUCT': os.getenv("PRODUCT"),
 }
 
 # Application definition
