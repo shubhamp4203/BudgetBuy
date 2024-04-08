@@ -6,7 +6,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #221f1f;
+  background-color: white;
   /* padding-inline: 2rem; */
   /* padding-block: 1rem; */
   padding-top: 0.5rem;
@@ -14,12 +14,12 @@
   box-shadow: 0 -10px 15px rgba(0, 0, 0, 0.2);
   width: 100%;
 }
-
 .navbarList {
   list-style-type: none;
   width: 100%;
   display: flex;
-  padding-inline: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   margin: 0;
   justify-content: center;
 }

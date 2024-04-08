@@ -9,6 +9,11 @@ import {
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavBar.module.css";
+import HomeIcon from '@mui/icons-material/Home';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ChatIcon from '@mui/icons-material/Chat';
 
 const Navbar = () => {
   return (
@@ -16,23 +21,23 @@ const Navbar = () => {
       <ul className={styles.navbarList}>
         <a href="/">
           <li className={styles.navbarItem}>
-            <FontAwesomeIcon icon={faHome} size="lg" />
+            <HomeIcon sx={{ color: "black" }} />
           </li>
         </a>
         <a href="/cart">
           <li className={styles.navbarItem}>
-            <FontAwesomeIcon icon={faShoppingBag} size="lg" />
+            <ShoppingCartIcon sx={{ color: "black" }} />
           </li>
         </a>
         <li className={styles.navbarItem}>
-          <FontAwesomeIcon icon={faCommentDots} size="lg" />
+          <ChatIcon sx={{color: "black"}}/>
         </li>
         <li className={styles.navbarItem}>
-          <FontAwesomeIcon icon={faHeart} size="lg" />
+          <FavoriteIcon sx={{color: "black"}}/>
         </li>
         <a href="/userprofile">
           <li className={styles.navbarItem}>
-            <FontAwesomeIcon icon={faUser} size="lg" />
+            <AccountCircleIcon sx={{ color: "black" }} />
           </li>
         </a>
       </ul>

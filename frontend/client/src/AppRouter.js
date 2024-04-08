@@ -24,7 +24,7 @@ const AppRouter = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
         <Route path="/payment" element={<Payment />} />
       </Routes>
     </Router>
