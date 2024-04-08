@@ -1,52 +1,44 @@
 import React from "react";
 import styles from "./resetpassword.module.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import Button from "@mui/joy/Button";
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
   const navigate = useNavigate();
-  const [email, setuserEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const {uid, token} = useParams();
+  // const [isLoading, setIsLoading] = useState(false);
 
-  const handleforgotpassword = async (e) => {
+  const handlechangepassword = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const newpassword = document.getElementById("password1").value;
+    const confirmpassword = document.getElementById("password2").value;
+    if(newpassword !== confirmpassword){
+      alert("Password does not match");
+      return;
+    }
     const data = {
-      email,
-    };
-    console.log(data);
-    if (!email) {
-      alert("Please enter a registered email");
-      return;
+      newpassword,
+      token
     }
-    if (!emailRegex.test(email)) {
-      alert("Please enter a valid email");
-      return;
+    const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/resetpassword", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    if(resp.status === 200) {
+      alert("Password changed Successfully");
+      navigate("/signin");
     }
-    try {
-      const response = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/forgotpassword",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      setIsLoading(false);
-      if (response.status === 200) {
-        alert("Reset link sent to your email");
-        navigate("/signin");
-      } else if (response.status === 400) {
-        alert("Please enter a registered email");
-      } else {
-        alert("Something went wrong");
-      }
-    } catch (err) {
-      console.error("Error:", err);
+    else if(resp.status === 400) {
+      alert("The reset link is invalid or expired. Please try again");
+      navigate("/signin");
+    }
+    else {
+      alert("Something went wrong");
     }
   };
   return (
@@ -55,19 +47,15 @@ export default function ForgotPassword() {
         <h1 className={styles.title}>Forgot Password</h1>
         <form>
           <div className={styles.inputContainer}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setuserEmail(e.target.value)}
-            />
+            <label htmlFor="password">New Password</label>
+            <input type="password" id="password1" name="password1" />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="confirm password">Confirm Password</label>
+            <input type="password" id="password2" name="password2" />
           </div>
           <div className={styles.buttonContainer}>
-            {isLoading ? <Button sx={{marginTop: "20px"}} loading variant="plain">
-              Plain
-            </Button> : <button onClick={handleforgotpassword}>Send Reset Link</button>
-}
+          <button onClick={handlechangepassword}>Reset Password</button>
           </div>
         </form>
         <div className={styles.linkContainer}>

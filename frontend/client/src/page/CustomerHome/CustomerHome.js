@@ -16,9 +16,9 @@ function CustomerHome() {
   }, []);
   return (
     <>
-        <SearchBar />
+      <SearchBar />
       <Feedlist products={products} />
-      <Navbar />  
+      <Navbar />
     </>
   );
 }
