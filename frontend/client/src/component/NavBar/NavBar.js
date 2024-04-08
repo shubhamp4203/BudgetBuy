@@ -6,12 +6,12 @@ import {
   faShoppingBag,
   faHeart,
   faUser,
-  faBottleDroplet,
+  faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavBar.module.css";
 
 const Navbar = () => {
-  return (  
+  return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
         <a href="/">
@@ -31,13 +31,13 @@ const Navbar = () => {
           <FontAwesomeIcon icon={faHeart} size="lg" />
         </li>
         <a href="/userprofile">
-        <li className={styles.navbarItem} >
-          <FontAwesomeIcon icon={faUser} />
-        </li>
+          <li className={styles.navbarItem}>
+            <FontAwesomeIcon icon={faUser} />
+          </li>
         </a>
       </ul>
     </nav>
   );
 };
 
-export default Navbar
+export default Navbar;

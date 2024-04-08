@@ -2,8 +2,7 @@ import React from "react";
 import styles from "./FeedCard.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
-import Alert from '@mui/joy/Alert';
-
+import Alert from "@mui/material/Alert";
 const FeedCard = ({ product }) => {
   const handleaddcart = async (e) => {
     e.preventDefault();
@@ -12,27 +11,29 @@ const FeedCard = ({ product }) => {
       seller_id: product.newProduct.seller_id,
       amount: 1,
       product_price: product.newProduct.price,
-    }
+    };
     try {
-      const resp = await fetch (process.env.REACT_APP_URL_AUTHENTICATION + "/addCart", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      })
-      if(resp.status == 201) {
+      const resp = await fetch(
+        process.env.REACT_APP_URL_AUTHENTICATION + "/addCart",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      if (resp.status == 201) {
         alert("Product added to cart");
-      }
-      else {
+      } else {
         alert("Something went wrong");
       }
     } catch (error) {
       alert("Something went wrong");
       console.log(error);
     }
-  }
+  };
   return (
     <div className={styles.productCard}>
       <Link
@@ -66,7 +67,9 @@ const FeedCard = ({ product }) => {
         </div>
       </div>
       <div className={styles.infodiv}>
-        <button onClick={handleaddcart} className={styles.buybut}>ADD TO CART</button>
+        <button onClick={handleaddcart} className={styles.buybut}>
+          ADD TO CART
+        </button>
       </div>
     </div>
   );

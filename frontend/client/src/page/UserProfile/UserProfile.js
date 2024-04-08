@@ -25,8 +25,8 @@ export default function UserProfile() {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      borderColor: "#ff2600",
-      borderWidth: "1px",
+      borderColor: "##221f1f",
+      borderWidth: "2px",
       boxShadow: "none",
     }),
   };
@@ -64,11 +64,10 @@ export default function UserProfile() {
         body: JSON.stringify(data),
       }
     );
-    if(res.ok) {
+    if (res.ok) {
       console.log("Success");
       alert("Profile updated successfully");
-    }
-    else {
+    } else {
       console.log("Error");
       navigate("/signin");
     }
@@ -80,7 +79,7 @@ export default function UserProfile() {
       <div className={styles.form}>
         <label htmlFor="name">Name</label>
         <input
-          className= {styles.userprofileinput}
+          className={styles.userprofileinput}
           type="text"
           id="name"
           value={name}
@@ -89,7 +88,7 @@ export default function UserProfile() {
 
         <label htmlFor="email">Email</label>
         <input
-          className= {styles.userprofileinput}  
+          className={styles.userprofileinput}
           type="email"
           id="email"
           value={email}
@@ -100,7 +99,7 @@ export default function UserProfile() {
         {/* <br /> */}
         <label htmlFor="address">Address</label>
         <input
-          className= {styles.userprofileinput}
+          className={styles.userprofileinput}
           type="text"
           id="address"
           value={address}
@@ -108,7 +107,7 @@ export default function UserProfile() {
         />
         <label htmlFor="pincode">Pincode</label>
         <input
-          className= {styles.userprofileinput}
+          className={styles.userprofileinput}
           type="tel"
           id="pincode"
           value={pincode}
@@ -120,11 +119,12 @@ export default function UserProfile() {
           options={options}
           value={selectedTags}
           onChange={handleTagChange}
-          className= {styles.userprofileinput}
+          styles={customStyles}
+          // className= {styles.userprofileinput}
         />
         <label htmlFor="pincode">Contact</label>
         <input
-          className= {styles.userprofileinput}
+          className={styles.userprofileinput}
           type="tel"
           id="contact"
           value={contact}

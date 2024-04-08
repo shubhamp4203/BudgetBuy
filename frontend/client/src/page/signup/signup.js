@@ -14,8 +14,8 @@ const options = [
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    borderColor: "#ff2600",
-    borderWidth: "1px",
+    borderColor: "#221f1f",
+    borderWidth: "2px",
     boxShadow: "none",
   }),
 };
@@ -48,21 +48,22 @@ export default function Signup() {
       contact,
     };
     try {
-      const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/signup", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      if(resp.status === 201){
+      const resp = await fetch(
+        process.env.REACT_APP_URL_AUTHENTICATION + "/signup",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (resp.status === 201) {
         navigate("/signin");
-      }
-      else if(resp.status === 400){
+      } else if (resp.status === 400) {
         alert("Something went wrong");
-      }
-      else {
-        alert("Email or Phone number already exists")
+      } else {
+        alert("Email or Phone number already exists");
       }
     } catch (error) {
       alert("Something went wrong");

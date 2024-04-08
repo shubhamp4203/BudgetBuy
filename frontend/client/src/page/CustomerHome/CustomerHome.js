@@ -5,7 +5,7 @@ import Feedlist from "../../component/CustomerHomePage/Feedlist";
 import { useNavigate } from "react-router-dom";
 import style from "./CustomerHome.module.css";
 import { Link } from "react-router-dom";
-import { ReactComponent as Profilesvg } from "../../user-solid.svg";
+
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -22,7 +22,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 function CustomerHome() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [products, setData] = useState([]);
   const [open, setOpen] = useState(false);
 
