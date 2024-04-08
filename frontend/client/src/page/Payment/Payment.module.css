@@ -84,12 +84,16 @@
 
 .placeorder {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
   padding: 0.5rem;
   width: 100%;
 }
 .placeorder button {
   padding: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem; 
   border: none;
   border-radius: 17px;
   background-color: black;

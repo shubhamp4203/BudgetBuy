@@ -71,6 +71,44 @@ function Payment() {
   return (
     <>
       <div className={styles.paymentcontainer}>
+        <h1> Payment Preference </h1>
+        <div className={styles.cart}>
+          <div className={styles.heading}> Order Summary </div>
+          {cartitems.map((item) => (
+            <div className={styles.cartitems}>
+              <img
+                src={
+                  "https://res.cloudinary.com/dt0mkdvqx/image/upload/c_scale,w_90,h_87,q_auto,f_auto/v1/product_images/" +
+                  item.product_id
+                }
+                alt={item.name}
+                // className={styles.productImage}
+              />
+              <div className={styles.iteminfo}>
+                <div className={styles.itemname}>
+                  {item.name} x {item.amount}
+                </div>
+                <div className={styles.itemprice}>
+                  ₹{" "}
+                  {new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    minimumFractionDigits: 2,
+                  }).format(item.product_price)}{" "}
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className={styles.total}>
+            <div className={styles.totaltext}>Total</div>
+            <div className={styles.itemprice}>
+              ₹{" "}
+              {new Intl.NumberFormat("en-US", {
+                style: "decimal",
+                minimumFractionDigits: 2,
+              }).format(cartdata.total_value)}{" "}
+            </div>
+          </div>
+        </div>
         <div className={styles.verifyaddress}>
           <div className={styles.heading}>Select Address</div>
           {address.map((add) => (
@@ -138,40 +176,13 @@ function Payment() {
             <span>Add New Card</span>
           </div>
         </div>
-        <div className={styles.cart}>
-          <div className={styles.heading}> Order Summary </div>
-          {cartitems.map((item) => (
-            <div className={styles.cartitems}>
-              <img
-                src={
-                  "https://res.cloudinary.com/dt0mkdvqx/image/upload/c_scale,w_90,h_87,q_auto,f_auto/v1/product_images/" +
-                  item.product_id
-                }
-                alt={item.name}
-                // className={styles.productImage}
-              />
-              <div className={styles.iteminfo}>
-                <div className={styles.itemname}>{item.name} x {item.amount}</div>
-                <div className={styles.itemprice}>₹{" "}
-              {new Intl.NumberFormat("en-US", {
-                style: "decimal",
-                minimumFractionDigits: 2,
-              }).format(item.product_price)}{" "}</div>
-              </div>
-            </div>
-          ))}
-          <div className={styles.total}>
-            <div className={styles.totaltext}>Total</div>
-            <div className={styles.itemprice}>₹{" "}
-              {new Intl.NumberFormat("en-US", {
-                style: "decimal",
-                minimumFractionDigits: 2,
-              }).format(cartdata.total_value)}{" "}
-            </div>
-          </div>
-        </div>
         <div className={styles.placeorder}>
-          <button onClick={handleSubmit}>Place Order</button>
+          <div>
+            <button onClick={handleSubmit}>Place Order</button>
+          </div>
+          <div>
+            <button onClick={handleSubmit}>Cancel Order</button>
+          </div>
         </div>
       </div>
     </>
