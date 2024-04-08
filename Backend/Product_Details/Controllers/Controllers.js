@@ -83,7 +83,6 @@ module.exports.allproducts_get = async (req,res) => {
   try {
     const result = await collection.find().toArray();
     shuffleArray(result);
-    console.log(result);
     res.status(200).json({message: "All products fetched successfully", result});
   } catch(err) {
     res.status(500).json({error: "Failed to fetch products"});

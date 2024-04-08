@@ -52,7 +52,6 @@ const errorHandle = (err) => {
 module.exports.signup_post = async (req, res) => {
   const { name, contact, email, password, address, pincode, tags } = req.body;
   try {
-    console.log(email);
     const user = await User.create({
       name,
       contact,
@@ -96,13 +95,10 @@ module.exports.callback = async (req, res) => {
     const response = await axios.post(url, data, { headers: headers });
     const token_info = response.data;
     const id_token = await validateGoogleToken(token_info.id_token);
-    console.log(id_token);
     if (id_token) {
       const user = await User.findOne({ email: id_token.email });
-      console.log(user);
       if (user) {
         const token = tokencookies(user._id, user.email, user.name);
-        console.log(token);
         console.log(req.hostname);
         res
           .cookie("jwt", token, {
@@ -133,7 +129,6 @@ module.exports.login_post = async (req, res) => {
     const user = await User.login(email, password);
     const token = tokencookies(user._id, user.email, user.name);
     console.log("Setting cookie");
-    console.log(req.hostname);
     res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
@@ -258,7 +253,7 @@ module.exports.forgotPassword = async (req, res) => {
       const uid = uuidv4();
       const payload = { userId: user._id };
       const token = jwt.sign(payload, process.env.SECRET_KEY, {
-        expiresIn: "30m",
+        expiresIn: "1h",
       });
       const resetlink =
       process.env.FRONTEND + "/reset-password/" + uid + "/" + token;
@@ -266,7 +261,6 @@ module.exports.forgotPassword = async (req, res) => {
         resetlink,
         email,
       });
-      console.log(req.body.email);
       if (resp.status == 200) {
         res.status(200).json({ message: "Reset link sent to your email" });
       } else {
@@ -277,3 +271,20 @@ module.exports.forgotPassword = async (req, res) => {
     res.status(402).json({ message: "Something went wrong" });
   }
 };
+
+module.exports.resetPassword = async (req,res) => {
+  const newpass = req.body.newpassword;
+  const token = req.body.token;
+  try {
+    const payload = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await User.findOne({ _id: payload.userId });
+    if(!user) {
+      res.status(400).json({message: "Invalid token"});
+    }
+    user.password = newpass;
+    await user.save();
+    res.status(200).json({message: "Password changed successfully"});
+  } catch(err) {
+    res.status(401).json({message: "Invalid token"});
+  }
+}

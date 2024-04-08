@@ -144,8 +144,8 @@ export default function SignIn() {
       <div className={styles.socialSignUp}>
         <div className={styles.orText}>OR</div>
         <div className={styles.socialIcons}>
-          <a href={authUrl}>
-            <i className="fab fa-google"></i>
+          <a href={authUrl} style={{color: "black", textDecoration: "none", border: "1px solid black", borderRadius: "1rem", padding: "0.5rem"}}>
+            <i className="fab fa-google" > </i> SignIn with Google
           </a>
           {/* <a href="http://surl.li/rqecf">
             <i className="fab fa-facebook-f"></i>

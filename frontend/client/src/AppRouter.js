@@ -6,7 +6,7 @@ import ProductDetail from "./component/productDetail/productDetail";
 import CustomerHome from "./page/CustomerHome/CustomerHome";
 import OrdersTabs from "./page/MyOrders/OrdersTabs";
 import SignIn from "./page/signin/signin";
-import Signup from "./page/SignUp/signup";
+import Signup from "./page/signup/signup";
 import Cart from "./page/cart/Cart";
 import UserProfile from "./page/UserProfile/UserProfile";
 import ResetPassword from "./page/Reset Password/resetpassword";
@@ -24,7 +24,7 @@ const AppRouter = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
         <Route path="/payment" element={<Payment />} />
       </Routes>
     </Router>
