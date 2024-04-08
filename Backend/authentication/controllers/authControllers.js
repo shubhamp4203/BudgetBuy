@@ -6,6 +6,7 @@ const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
+const CryptoJS = require("crypto-js");
 
 async function validateGoogleToken(access_token) {
   try {
@@ -50,17 +51,16 @@ const errorHandle = (err) => {
 
 //api for registering a new custommer
 module.exports.signup_post = async (req, res) => {
-  const { name, contact, email, password, address, pincode, tags } = req.body;
+  const { name, contact, email, password, tags } = req.body;
   try {
     const user = await User.create({
       name,
       contact,
       email,
       password,
-      address,
-      pincode,
       tags,
     });
+    console.log("called")
     const user_id = user._id;
     const useremail = user.email;
     const resp = await axios.post(process.env.ORDER + "/createCart/", {
@@ -173,9 +173,6 @@ module.exports.updateUser_put = async (req, res) => {
           $set: {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
-            address: req.body.address,
-            pincode: req.body.pincode,
             contact: req.body.contact,
           },
         }
@@ -286,5 +283,90 @@ module.exports.resetPassword = async (req,res) => {
     res.status(200).json({message: "Password changed successfully"});
   } catch(err) {
     res.status(401).json({message: "Invalid token"});
+  }
+}
+
+module.exports.insertAddress = async (req, res) => {
+  const user_id = req.authdata.id;
+  const {pincode, city, state, building_name, street, landmark} = req.body;
+  console.log(user_id, pincode, city, state, building_name, street, landmark)
+  try {
+    const user = await User.findOne({_id: user_id});
+    if(!user) {
+      res.status(400).json({message: "User not found"});
+    } else {
+      user.address.push({
+        pincode,
+        city,
+        state,
+        building_name,
+        street,
+        landmark
+      });
+      await user.save();
+      console.log("Hello")
+      res.status(201).json({message: "Address added successfully"});
+    }
+  } catch(err) {
+    res.status(400).json({message: err.message});
+  }
+}
+
+module.exports.insertCard = async (req,res) => {
+  // Encrypt
+// const ciphertext = CryptoJS.AES.encrypt('MM/YY', 'secret key 123').toString();
+
+// Decrypt
+// const bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
+// const originalText = bytes.toString(CryptoJS.enc.Utf8);
+  const user_id = req.authdata.id;
+  const {card_number, expiry_date, cardcvv} = req.body;
+  const card_no = CryptoJS.AES.encrypt(card_number, process.env.SECRET_KEY).toString();
+  const cardExpiryDate = CryptoJS.AES.encrypt(expiry_date, process.env.SECRET_KEY).toString();
+  const cvv = CryptoJS.AES.encrypt(cardcvv, process.env.SECRET_KEY).toString();
+  try {
+    const user = await User.findOne({_id: user_id});
+    if(!user) {
+      res.status(400).json({message: "User not found"});
+    }
+    else {
+      if (user.card_details.some(detail => detail.card_no === card_no)) {
+        res.status(401).json({message: "Card already exists"});
+      } else {
+        user.card_details.push({
+          card_no,
+          cardExpiryDate,
+          cvv
+        })
+        console.log(user)
+        await user.save();
+        res.status(201).json({message: "Card added successfully"});
+      }
+    }
+  } catch(err) {
+    console.log(err.message)
+    res.status(400).json({message: err.message});
+  }
+}
+
+module.exports.getUser = async (req, res) => {
+  const user_id = req.authdata.id;
+  try {
+    const user = await User.findOne({_id: user_id});
+    if(!user) {
+      res.status(400).json({message: "User not found"});
+    }
+    else {
+      const cards = user.card_details;
+      cards.forEach(card => {
+        console.log(card.card_no)
+        card.card_no = CryptoJS.AES.decrypt(card.card_no, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
+        card.cardExpiryDate = CryptoJS.AES.decrypt(card.cardExpiryDate, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
+        card.cvv = CryptoJS.AES.decrypt(card.cvv, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
+      });
+      res.status(200).json({user});
+    }
+  } catch(err) {
+    res.status(400).json({message: err.message});
   }
 }

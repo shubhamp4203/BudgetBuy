@@ -3,6 +3,7 @@ import styles from "./UserProfile.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../component/NavBar/NavBar";
 
 const options = [
   { value: "tag1", label: "Tag 1" },
@@ -14,9 +15,6 @@ const options = [
 export default function UserProfile() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [pincode, setPincode] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
   const [contact, setContact] = useState("");
 
@@ -43,13 +41,9 @@ export default function UserProfile() {
     const data = {
       name,
       email,
-      // password,
-      address,
-      pincode,
       tags: selectedTags,
       contact,
     };
-    console.log(data);
     // console.log("jwt:", jwtToken);
 
     // Send a POST request to your server
@@ -67,6 +61,7 @@ export default function UserProfile() {
     if (res.ok) {
       console.log("Success");
       alert("Profile updated successfully");
+      navigate("/")
     } else {
       console.log("Error");
       navigate("/signin");
@@ -97,22 +92,6 @@ export default function UserProfile() {
         {/* <br /> */}
 
         {/* <br /> */}
-        <label htmlFor="address">Address</label>
-        <input
-          className={styles.userprofileinput}
-          type="text"
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <label htmlFor="pincode">Pincode</label>
-        <input
-          className={styles.userprofileinput}
-          type="tel"
-          id="pincode"
-          value={pincode}
-          onChange={(e) => setPincode(e.target.value)}
-        />
         <label htmlFor="Select Tags">Select Tags</label>
         <Select
           isMulti
@@ -122,7 +101,7 @@ export default function UserProfile() {
           styles={customStyles}
           // className= {styles.userprofileinput}
         />
-        <label htmlFor="pincode">Contact</label>
+        <label htmlFor="contact">Contact</label>
         <input
           className={styles.userprofileinput}
           type="tel"
@@ -130,17 +109,11 @@ export default function UserProfile() {
           value={contact}
           onChange={(e) => setContact(e.target.value)}
         />
-        {/* <div>
-          Selected Tags:
-          {selectedTags.map((tag) => (
-            <span key={tag.value}>{tag.label}, </span>
-          ))}
-        </div> */}
-
         <button className={styles.userprofilebutton} onClick={handleSubmit}>
           update
         </button>
       </div>
+      <Navbar />
 
       {/* <div className={styles.privacyPolicy}>
         By signing up, you agree to our <a href="#">Privacy Policy</a> and{" "}

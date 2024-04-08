@@ -2,7 +2,68 @@ const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 
-//Schema that is used to register or login a new customer
+function validateExpiry(value) {
+  if (!/^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(value) && !/^(0[1-9]|1[0-2])\/([0-9]{4})$/.test(value)) {
+    return false;
+  }
+
+  const [month, year] = value.split('/');
+
+  const expiryDate = new Date(parseInt(year.length === 2 ? '20' + year : year), month, 0);
+
+  if (expiryDate < new Date()) {
+    return false;
+  }
+
+  return true;
+}
+
+const addressSchema = new mongoose.Schema({
+  pincode: {
+    type: Number,
+    required: [true, "Enter a pincode"],
+    validate:[validator= function (v) {
+      return /^[1-9]{1}[0-9]{2}[0-9]{3}$/.test(v.toString()); // Change "IN" to your country code if necessary
+    },
+    message= (props) => `${props.value} is not a valid pin code!`,
+    ]
+  },
+  city: {
+    type: String,
+    required: [true, "Enter a city"],
+  },
+  state: {
+    type: String,
+    required: [true, "Enter a state"],
+  },
+  building_name: {
+    type: String,
+    required: [true, "Enter a building name"],
+  },
+  street: {
+    type: String,
+    required: [true, "Enter a street"],
+  },
+  landmark: {
+    type: String,
+  }
+})
+
+const carddetails = new mongoose.Schema({
+  card_no: {
+    type: String,
+    required: [true, "Enter your Card Number"],
+  },
+  cardExpiryDate: {
+    type: String,
+    required: [true, "Enter a IFSC code"],
+  },
+  cvv : {
+    type: String,
+    required: [true, "Enter a CVV"],
+  },
+})
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -31,24 +92,13 @@ const userSchema = new mongoose.Schema({
     required: [true, "please enter password"],
     minlength: [6, "minimum length is 6"],
   },
-  address: {
-    type: String,
-    required: [true, "please enter an address"],
-  },
-  pincode: {
-    type: Number,
-    required: [true, "Enter a pincode"],
-    validate:[validator= function (v) {
-      return /^[1-9]{1}[0-9]{2}[0-9]{3}$/.test(v.toString()); // Change "IN" to your country code if necessary
-    },
-    message= (props) => `${props.value} is not a valid pin code!`,
-    ]
-},
   tags: {
     type:Array,
     // required:[true,"please select atleast one tag of interest"],
     minlength: 1
   },
+  address: [addressSchema],
+  card_details: [carddetails]
 });
 
 //fire a function to hash the password before being saved
