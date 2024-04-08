@@ -8,7 +8,7 @@
 }
 
 .container h1 {
-  color: #ff2600;
+  color: #221f1f;
 }
 
 .form {
@@ -22,7 +22,7 @@ label {
   margin-top: 20px;
   text-align: left;
   font-size: 14px;
-  color: #ff2600;
+  color: #221f1f;
 }
 
 /* input[type="text"],
@@ -33,7 +33,7 @@ Select {
   width: 100%;
   padding: 12px 20px;
   margin-top: 5px;
-  border: 1px solid #ff2600;
+  border: 1px solid #221f1f;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
@@ -43,7 +43,7 @@ Select {
   width: 100%;
   padding: 12px 20px;
   margin-top: 5px;
-  border: 1px solid #ff2600;
+  border: 2px solid #221f1f;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
@@ -159,5 +159,5 @@ input[type="password"]:focus,
 input[type="tel"]:focus,
 Select:focus {
   outline: none;
-  border: 1px solid #ff2600;
+  border: 1px solid #221f1f;
 } */

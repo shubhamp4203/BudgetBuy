@@ -1,7 +1,7 @@
 import styles from "./FeedCard.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
-import React, { useEffect, useState,} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const FeedCard = ({ product }) => {
@@ -28,8 +28,8 @@ const FeedCard = ({ product }) => {
       );
       if (resp.status == 201) {
         alert("Product added to cart");
-      } else if(resp.status==401){
-        navigate('/signin')
+      } else if (resp.status == 401) {
+        navigate("/signin");
       }
     } catch (error) {
       alert("Something went wrong");
@@ -64,7 +64,7 @@ const FeedCard = ({ product }) => {
             marginRight: "0.5rem",
           }}
         >
-          <FavoriteIcon   sx={{ fontSize: 30, color: 'black' }} />
+          <FavoriteIcon sx={{ fontSize: 30, color: "black" }} />
           {product.newProduct.likes}
         </div>
       </div>

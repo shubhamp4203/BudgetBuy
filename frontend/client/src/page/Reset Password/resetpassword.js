@@ -55,19 +55,21 @@ export default function ForgotPassword() {
         <h1 className={styles.title}>Forgot Password</h1>
         <form>
           <div className={styles.inputContainer}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setuserEmail(e.target.value)}
-            />
+            <label htmlFor="password">New Password</label>
+            <input type="password" id="passowrd" name="password" />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="confirm password">Confirm Password</label>
+            <input type="password" id="password" name="password" />
           </div>
           <div className={styles.buttonContainer}>
-            {isLoading ? <Button sx={{marginTop: "20px"}} loading variant="plain">
-              Plain
-            </Button> : <button onClick={handleforgotpassword}>Send Reset Link</button>
-}
+            {isLoading ? (
+              <Button sx={{ marginTop: "20px" }} loading variant="plain">
+                Plain
+              </Button>
+            ) : (
+              <button onClick={handleforgotpassword}>Reset Password</button>
+            )}
           </div>
         </form>
         <div className={styles.linkContainer}>
