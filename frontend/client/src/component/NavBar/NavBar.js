@@ -35,7 +35,7 @@ const Navbar = () => {
         <li className={styles.navbarItem}>
           <FavoriteIcon sx={{color: "black"}}/>
         </li>
-        <a href="/userprofile">
+        <a href="/myaccount">
           <li className={styles.navbarItem}>
             <AccountCircleIcon sx={{ color: "black" }} />
           </li>

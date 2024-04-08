@@ -11,6 +11,9 @@ import Cart from "./page/cart/Cart";
 import UserProfile from "./page/UserProfile/UserProfile";
 import ResetPassword from "./page/Reset Password/resetpassword";
 import Payment from "./page/Payment/Payment";
+import Address from "./page/Address/address";
+import UserAccount from "./page/useraccount/useraccount";
+import Card from "./page/Card/card";
 
 const AppRouter = () => {
   return (
@@ -26,6 +29,9 @@ const AppRouter = () => {
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/addaddress" element={<Address />} />
+        <Route path="/myaccount" element={<UserAccount />} />
+        <Route path="/addcard" element={<Card />} />
       </Routes>
     </Router>
   );

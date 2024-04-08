@@ -13,5 +13,8 @@ router.post("/forgotpassword", authController.forgotPassword);
 router.post("/resetpassword", authController.resetPassword);
 router.get("/getCart", auth, authController.getCart);
 router.post("/addCart", auth, authController.addcart);
+router.post("/addaddress", auth, authController.insertAddress);
+router.post("/addcard", auth, authController.insertCard);
+router.get("/getuser", auth, authController.getUser);
 
 module.exports = router;

@@ -25,7 +25,8 @@ const CartItem = ({ product }) => {
             fontSize: "0.75rem",
             color: "green",
             margin: "0rem",
-            fontWeight: "bold",
+            paddingTop: '0.25rem',
+            paddingBottom: '0.25rem',
           }}
         >
           {" "}
