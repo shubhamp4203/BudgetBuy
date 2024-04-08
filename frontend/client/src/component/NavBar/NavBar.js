@@ -5,6 +5,7 @@ import {
   faHome,
   faShoppingBag,
   faHeart,
+  faCommentDots,
   faUser,
   faBottleDroplet,
 } from "@fortawesome/free-solid-svg-icons";

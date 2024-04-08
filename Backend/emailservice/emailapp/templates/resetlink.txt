@@ -1,0 +1,6 @@
+{%autoescape off %}
+
+The link to reset your password is: {{resetlink}}.
+Valid only for 30 minutes.
+
+{% endautoescape %}

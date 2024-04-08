@@ -1,9 +1,12 @@
 const User = require("../models/User");
-require("dotenv").config({path: '../.env'});
+require("dotenv").config({ path: "../.env" });
 const tokencookies = require("../Token/CreateToken");
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const { v4: uuidv4 } = require("uuid");
+const jwt = require("jsonwebtoken");
+
 async function validateGoogleToken(access_token) {
   try {
     const ticket = await client.verifyIdToken({
@@ -209,60 +212,68 @@ module.exports.logout_post = async (req, res) => {
   }
 };
 
-module.exports.forget_password = (req, res) => {
-  console.log();
-};
-
-module.exports.forgotPassword_post = async (req, res) => {
-  const email = req.body.email;
-  try {
-    const user = await User.findOne({ email: email });
-    if (user) {
-      res.status(200).json({ message: "Email found" });
-    } else {
-      res.status(400).json({ message: "Email not found" });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({ message: "Email not found" });
-  }
-};
-
-module.exports.getCart = async (req,res) => {
+module.exports.getCart = async (req, res) => {
   const user_id = req.authdata.id;
-  try{
+  try {
     const response = await axios.get(process.env.ORDER + "/getCart/", {
       params: {
-        user_id
-      }
+        user_id,
+      },
     });
-    if(response.status==200) {
-      res.status(200).json({cartItems: response.data});
+    if (response.status == 200) {
+      res.status(200).json({ cartItems: response.data });
+    } else if (response.status == 204) {
+      res.status(204).json({ message: "Cart is empty" });
+    } else {
+      res.status(400).json({ message: "Nothing to show here" });
     }
-    else if(response.status==204) {
-      res.status(204).json({message: "Cart is empty"});
-    }
-    else {
-      res.status(400).json({message: "Nothing to show here"})
-    }
-  } catch(err) {
-    res.status(400).json({message: "Something went wrong"});
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
   }
 };
 
-module.exports.addcart = async (req,res) => {
+module.exports.addcart = async (req, res) => {
   const data = req.body;
   const uid = req.authdata.id;
-  data.user_id = uid
+  data.user_id = uid;
   try {
     const response = await axios.post(process.env.ORDER + "/addCart/", data);
-    if(response.status==201) {
-      res.status(201).json({message: "Product added to cart"});
+    if (response.status == 201) {
+      res.status(201).json({ message: "Product added to cart" });
+    } else {
+      res.status(400).json({ message: "Something went wrong" });
     }
-    else {
-      res.status(400).json({message: "Something went wrong"});
-    }
-  } catch(err) {
-    res.status(400).json({message: "Something went wrong"});
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
   }
-}
+};
+
+module.exports.forgotPassword = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+    } else {
+      const uid = uuidv4();
+      const payload = { userId: user._id };
+      const token = jwt.sign(payload, process.env.SECRET_KEY, {
+        expiresIn: "30m",
+      });
+      const resetlink =
+      process.env.FRONTEND + "/reset-password/" + uid + "/" + token;
+      const resp = await axios.post(process.env.EMAIL + "/resetlink/", {
+        resetlink,
+        email,
+      });
+      console.log(req.body.email);
+      if (resp.status == 200) {
+        res.status(200).json({ message: "Reset link sent to your email" });
+      } else {
+        res.status(401).json({ message: "Something went wrong" });
+      }
+    }
+  } catch (err) {
+    res.status(402).json({ message: "Something went wrong" });
+  }
+};

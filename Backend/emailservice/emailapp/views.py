@@ -13,6 +13,8 @@ from emailapp.models import UserOtp
 from emailservice.settings import micro_services
 
 
+
+
 @csrf_exempt
 @api_view(['POST'])
 def send_otp(request):
@@ -25,7 +27,7 @@ def send_otp(request):
         user = UserOtp.objects.get_or_create(email=user_email)[0]
         user.otp = otp
         admin_email = EMAIL_HOST_USER
-        subject = "Test Email"
+        subject = "Confirm Delivery OTP"
         c = {
             'user_otp': otp,
         }
@@ -63,5 +65,26 @@ def verify_otp(request):
                 return Response({'error': 'Something Went Wrong'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'error': 'Invalid OTP'}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@csrf_exempt
+@api_view(['POST'])
+def reset_link(request):
+    try:
+        data = JSONParser().parse(request)
+        resetlink = data['resetlink']
+        email = data['email']
+        admin_email = EMAIL_HOST_USER
+        subject = "Reset Password Link"
+        c = {
+            "resetlink": resetlink,
+        }
+        emailrender = render_to_string('resetlink.txt', c)
+        try:
+            send_mail(subject, emailrender, admin_email, [email], fail_silently=False)
+            return Response({'message': 'Reset Link sent successfully'}, status=status.HTTP_200_OK)
+        except BadHeaderError:
+            return Response({'error': 'Invalid header found.'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

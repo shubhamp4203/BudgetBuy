@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from pickle import APPEND
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -31,14 +32,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv("EMAIL")
+EMAIL_HOST_USER = os.getenv("ADMINEMAIL")
 EMAIL_HOST_PASSWORD = os.getenv("PASSWORD")
+APPEND_SLASH = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.getenv("EMAIL").split("http://")[1].split(":")[0]]
 PORT=8002
 micro_services = {
-    'inventory': 'http://localhost:8001',
-    'order': 'http://localhost:8000',
+    'inventory': os.getenv("INVENTORY"),
+    'order': os.getenv("ORDER"),
 }
 # Application definition
 
