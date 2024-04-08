@@ -4,7 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-  // const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -86,6 +86,7 @@ export default function SignIn() {
 
   const handleforgotpassword = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const data = {
         email,
@@ -101,8 +102,9 @@ export default function SignIn() {
         }
       );
       const responseData = await response.json();
-      console.log("Success:", responseData);
+      setIsLoading(false);
       if (response.ok) {
+        alert("Reset link sent to your email");
         navigate("/signin");
       } else {
         alert("Email not found");
@@ -158,9 +160,9 @@ export default function SignIn() {
 
       <div className={styles.privacyPolicy}>
         Don't remember your password?{" "}
-        <a href="#" onClick={handleforgotpassword}>
+        {isLoading ? <span style={{color: "blue"}}>Loading</span> : <a href="#" onClick={handleforgotpassword}>
           forgot password
-        </a>
+        </a>}
       </div>
     </div>
   );

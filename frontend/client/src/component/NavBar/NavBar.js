@@ -32,7 +32,7 @@ const Navbar = () => {
         </li>
         <a href="/userprofile">
           <li className={styles.navbarItem}>
-            <FontAwesomeIcon icon={faUser} />
+            <FontAwesomeIcon icon={faUser} size="lg" />
           </li>
         </a>
       </ul>

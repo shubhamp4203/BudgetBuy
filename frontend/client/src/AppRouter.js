@@ -9,7 +9,7 @@ import SignIn from "./page/signin/signin";
 import Signup from "./page/SignUp/signup";
 import Cart from "./page/cart/Cart";
 import UserProfile from "./page/UserProfile/UserProfile";
-import ForgotPassword from "./page/forget Password/forgetpassword";
+import ResetPassword from "./page/Reset Password/resetpassword";
 import Payment from "./page/Payment/Payment";
 
 const AppRouter = () => {
@@ -24,7 +24,7 @@ const AppRouter = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/payment" element={<Payment />} />
       </Routes>
     </Router>
