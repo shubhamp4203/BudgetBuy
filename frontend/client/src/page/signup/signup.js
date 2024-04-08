@@ -14,7 +14,7 @@ const options = [
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    borderColor: "#ff2600",
+    borderColor: "black",
     borderWidth: "1px",
     boxShadow: "none",
   }),

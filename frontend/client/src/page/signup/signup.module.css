@@ -8,7 +8,7 @@
 }
 
 .signupcontainer h1 {
-  color: #ff2600;
+  color: black;
 }
 
 .signupform {
@@ -22,14 +22,14 @@
   margin-top: 20px;
   text-align: left;
   font-size: 14px;
-  color: #ff2600;
+  color: black;
 }
 
 .signupform .input {
   width: 100%;
   padding: 12px 20px;
   margin-top: 5px;
-  border: 1px solid #ff2600;
+  border: 1px solid black;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
