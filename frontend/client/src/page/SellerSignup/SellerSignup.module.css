@@ -1,4 +1,4 @@
-.container {
+.signupcontainer {
   width: 300px;
   margin: 0 auto;
   display: flex;
@@ -7,39 +7,25 @@
   margin-block: 25px;
 }
 
-.container h1 {
+.signupcontainer h1 {
   color: #221f1f;
 }
 
-.form {
+.signupform {
   width: 100%;
   display: flex;
   flex-direction: column;
   /* gap: 0.2rem; */
 }
 
-label {
+.signupform label {
   margin-top: 20px;
   text-align: left;
   font-size: 14px;
   color: #221f1f;
 }
 
-/* input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="tel"],
-Select {
-  width: 100%;
-  padding: 12px 20px;
-  margin-top: 5px;
-  border: 1px solid #221f1f;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: 14px;
-} */
-
-.userprofileinput {
+.signupform .input {
   width: 100%;
   padding: 12px 20px;
   margin-top: 5px;
@@ -49,7 +35,7 @@ Select {
   font-size: 14px;
 }
 
-.userprofilebutton {
+.signupbutton {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
@@ -62,7 +48,7 @@ Select {
 }
 
 input[type="submit"]:hover {
-  background-color: #000000;
+  background-color: #45a049;
 }
 
 .social-sign-up {
@@ -152,12 +138,3 @@ input[type="submit"]:hover {
   padding: 10px 0; /* This will give padding at the top and bottom */
   width: 100%; /* This will ensure the logos take up the full width of the container */
 }
-
-/* input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="tel"]:focus,
-Select:focus {
-  outline: none;
-  border: 1px solid #221f1f;
-} */
