@@ -5,6 +5,7 @@ import Feedlist from "../../component/CustomerHomePage/Feedlist";
 
 function CustomerHome() {
   const [products, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     const fetchdata = async () => {
       const resp = await fetch(process.env.REACT_APP_URL_PRODUCT + "/getAll");
@@ -14,10 +15,11 @@ function CustomerHome() {
     };
     fetchdata();
   }, []);
+
   return (
     <>
-      <SearchBar />
-      <Feedlist products={products} />
+      <SearchBar onSearch={setSearchTerm} />
+      <Feedlist products={products} searchTerm={searchTerm} />
       <Navbar />
     </>
   );
