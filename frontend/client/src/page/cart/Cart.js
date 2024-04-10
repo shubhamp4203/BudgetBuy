@@ -25,6 +25,7 @@ const Cart = () => {
         const resdata = await data.json();
         const fcart = resdata.cartItems.cart;
         const cartitems = resdata.cartItems.products;
+        console.log(fcart);
         setcartItem(cartitems);
         setfrontcart(fcart);
         setIsLoading(false);
@@ -55,6 +56,10 @@ const Cart = () => {
   //     console.log(error);
   //   }
   // };
+
+  const handleCheckout = async () => {
+    navigate("/payment", {state: { frontcart, cartItem}})
+  }
 
   if (isLoading) {
     return "Loading...";
@@ -88,7 +93,7 @@ const Cart = () => {
               }).format(frontcart.total_value)}{" "}
             </h3>
           </div>
-          <button className={styles.cartbutton}>Checkout</button>
+          <button className={styles.cartbutton} onClick={handleCheckout}>Procced to Payment</button>
         </div>
         <Navbar />
       </div>

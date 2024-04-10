@@ -72,7 +72,7 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
       onClick={toggleDrawer(false)}
     >
       <List>
-        <Link to="/userprofile" className={styles.navto}>
+        <Link to="/myaccount" className={styles.navto}>
           <ListItem key="My Account" disablePadding>
             <ListItemButton>
               <ListItemIcon>

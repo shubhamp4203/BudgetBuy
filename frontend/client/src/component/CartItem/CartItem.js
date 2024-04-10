@@ -12,7 +12,7 @@ const CartItem = ({ product }) => {
     <div className={styles.cartItem}>
       <img
         src={
-          "https://res.cloudinary.com/dt0mkdvqx/image/upload/f_auto,q_auto/v1/product_images/" +
+          "https://res.cloudinary.com/dt0mkdvqx/image/upload/c_scale,w_90,h_87,q_auto,f_auto/v1/product_images/" +
           product.product_id
         }
         alt={product.name}
@@ -25,7 +25,8 @@ const CartItem = ({ product }) => {
             fontSize: "0.75rem",
             color: "green",
             margin: "0rem",
-            fontWeight: "bold",
+            paddingTop: '0.25rem',
+            paddingBottom: '0.25rem',
           }}
         >
           {" "}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./SignUp.module.css";
+import styles from "./signup.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -24,8 +24,6 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setuserEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [pincode, setPincode] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
   const [contact, setContact] = useState("");
 
@@ -42,8 +40,6 @@ export default function Signup() {
       name,
       email,
       password,
-      address,
-      pincode,
       tags: selectedTags,
       contact,
     };
@@ -103,22 +99,6 @@ export default function Signup() {
           onChange={(e) => setPassword(e.target.value)}
         />
         {/* <br /> */}
-        <label htmlFor="address">Address</label>
-        <input
-          className={styles.input}
-          type="text"
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <label htmlFor="pincode">Pincode</label>
-        <input
-          className={styles.input}
-          type="tel"
-          id="pincode"
-          value={pincode}
-          onChange={(e) => setPincode(e.target.value)}
-        />
         <label htmlFor="Select Tags">Select Tags</label>
         <Select
           isMulti
@@ -135,32 +115,10 @@ export default function Signup() {
           value={contact}
           onChange={(e) => setContact(e.target.value)}
         />
-        {/* <div>
-          Selected Tags:
-          {selectedTags.map((tag) => (
-            <span key={tag.value}>{tag.label}, </span>
-          ))}
-        </div> */}
-
         <button className={styles.signupbutton} onClick={handleSubmit}>
           Sign Up
         </button>
       </div>
-
-      {/* <div className={styles.socialSignUp}>
-        <div className={styles.orText}>OR</div>
-        <div className={styles.socialIcons}>
-          <a href="http://surl.li/rqecf">
-            <i className="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://myaccount.google.com/?utm_source=sign_in_no_continue&pli=1">
-            <i className="fab fa-google"></i>
-          </a>
-          <a href="https://github.com/topics/login">
-            <i className="fab fa-github"></i>
-          </a>
-        </div>
-      </div> */}
 
       <div className={styles.privacyPolicy}>
         By signing up, you agree to our <a href="#">Privacy Policy</a> and{" "}
