@@ -5,7 +5,7 @@ urlpatterns = [
     path('addCart/', views.addCart),
     path('delCart/', views.delCart),
     path('getCart/', views.getCart),
-    path('addOrder/', views.addOrder),
+    path('placeOrder/', views.addOrder),
     path('getUserOrder/', views.getUserOrder),
     path('getUserOrderItem/', views.getUserOrderItems),
     path('getSellerOrder/', views.getSellerOrder),

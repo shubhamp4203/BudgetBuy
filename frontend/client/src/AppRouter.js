@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SearchProduct from "./page/searchProduct/searchProduct";
 import ProductDetail from "./component/productDetail/productDetail";
 import CustomerHome from "./page/CustomerHome/CustomerHome";
-import OrdersTabs from "./page/MyOrders/OrdersTabs";
+import Orders from "./page/MyOrders/OrdersTabs";
 import SignIn from "./page/signin/signin";
 import Signup from "./page/signup/signup";
 import Cart from "./page/cart/Cart";
@@ -25,7 +25,7 @@ const AppRouter = () => {
         <Route path="/searchproduct" excat element={<SearchProduct />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/" element={<CustomerHome />} />
-        <Route path="/myorders" element={<OrdersTabs />} />
+        <Route path="/myorders" element={<Orders />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />

@@ -1,17 +1,55 @@
-.tabs {
+.tabContainer {
   display: flex;
   justify-content: space-evenly;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.tabs button {
-  background-color: orange;
-  border: none;
+.tabContainer h3 {
+  margin: 0rem;
+  padding: 2.2rem;  
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: fit-content;
+}
+
+.selected {
+  background-color: black;
   color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  padding: 0rem;
+}
+
+.orderitem {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.inditem {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.inditem h4 {
+  margin:0rem;
+  padding-top:0.5rem;
+  width: fit-content
+}
+.inditem div {
+  margin:0rem;
+  padding-top:0.5rem;
+  padding-left:0.5rem;
+  width:fit-content
+}
+.parcontainer {
+  /* display: flex; */
+  flex-direction: column;
+  margin-bottom: 6.5rem;
 }

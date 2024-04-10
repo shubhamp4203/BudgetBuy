@@ -370,3 +370,25 @@ module.exports.getUser = async (req, res) => {
     res.status(400).json({message: err.message});
   }
 }
+
+module.exports.getUserOrder = async (req,res) => {
+  const user_id = req.authdata.id;
+  console.log(req.body)
+  const status = req.body.type;
+  console.log(user_id, status)
+  try {
+    const resp = await axios.get(process.env.ORDER + "/getUserOrder/", {
+      params: {
+        user_id, 
+        status
+      }
+    });
+    if(resp.status == 200) {
+      res.status(200).json({result: resp.data});
+    } else {
+      res.status(400).json({message: "Something went wrong"});
+    }
+  } catch(err) {
+    res.status(400).json({message: err.message});
+  }
+}
