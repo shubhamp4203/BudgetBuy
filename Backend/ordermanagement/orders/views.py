@@ -153,7 +153,7 @@ def addOrder(request):
 
         #user order saving
         user_order = User_Order.objects.create(user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, total_value=cart.total_value)
-        user_order.order_status = "order_placed"
+        user_order.order_status = "Order Placed"
         user_order.item_count = items.count()
         user_order.save()
         for item in items:
@@ -171,21 +171,41 @@ def addOrder(request):
                 seller_value += item.amount * item.product_price
                 seller_order_item.save()
             seller_order.total_value = seller_value
-            seller_order.order_status = "pending"
+            seller_order.order_status = "Pending"
             seller_order.save()
+        
+        resp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email})
+        if resp.status_code == 200:
+            update_data = {'products': []}  
+            for item in items:
+                update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})
+            stock_update = requests.post(f"{micro_services['INVENTORY']}/updateStock/", json=update_data)
+            items.delete()
+            cart.total_value = 0
+            cart.status = "available"
+            cart.out_of_stock = 0
+            cart.save()
+            return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
+        else:
+            seller_orders = Seller_Order.objects.filter(user_order_id=user_order.user_order_id)
+            seller_items = Seller_Order_item.objects.filter(seller_order_id_id__in=seller_orders)
+            print(seller_order, seller_items)
+            seller_items.delete()
+            seller_orders.delete()
+            user_items = User_Order_item.objects.filter(user_order_id=user_order)
+            user_items.delete() 
+            user_order.delete()
+            return Response({'error': 'Something Went Wrong'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
+        seller_orders = Seller_Order.objects.filter(user_order_id=user_order.user_order_id)
+        seller_items = Seller_Order_item.objects.filter(seller_order_id__in=seller_orders)
+        print(seller_order, seller_items)
+        seller_items.delete()
+        seller_orders.delete()
+        user_items = User_Order_item.objects.filter(user_order_id=user_order)
+        user_items.delete()
+        user_order.delete()
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-    
-    update_data = {'products': []}  
-    for item in items:
-        update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})
-    stock_update = requests.post(f"{micro_services['INVENTORY']}/updateStock/", json=update_data)
-    items.delete()
-    cart.total_value = 0
-    cart.status = "available"
-    cart.save()
-    return Response(status=status.HTTP_201_CREATED)
 
 @csrf_exempt
 @api_view(['POST'])
@@ -214,9 +234,11 @@ def orderDelivered(request):
 
 @csrf_exempt
 @api_view(['GET'])
+# getUserOrder/
 def getUserOrder(request):
     user_id = request.GET.get('user_id')
     order_status = request.GET.get('status')
+    print(order_status, user_id)
     if(order_status=="ALL"):
         orders = User_Order.objects.filter(user_id=user_id)
     else:

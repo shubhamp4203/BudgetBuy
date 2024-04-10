@@ -9,7 +9,7 @@ const Feedlist = ({ products }) => {
     <div className={styles.container}>
       <div className={styles.productList}>
         {products.map((product) => (
-          <FeedCard product={product} />
+          <FeedCard product={product} key={product._id}/>
         ))}
       </div>
     </div>

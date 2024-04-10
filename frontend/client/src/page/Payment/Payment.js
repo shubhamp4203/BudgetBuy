@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import Button from '@mui/joy/Button';
+import { ReactComponent as Visa } from "../../visacard.svg";
 
 function Payment() {
   const [address, setAddress] = useState([]);
@@ -19,9 +21,9 @@ function Payment() {
   const cartitems = location.state.cartItem;
   const [codselected, setCodselected] = useState(false);
   const navigate = useNavigate();
+  const [sendingmail, setSendingmail] = useState(false);
 
   const fetchinfo = async () => {
-    console.log(cartdata, cartitems);
     try {
       const resp = await fetch(
         process.env.REACT_APP_URL_AUTHENTICATION + "/getuser",
@@ -57,8 +59,40 @@ function Payment() {
     setCodselected(true);
     setCardId("");
   };
-  function handleSubmit(e) {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    setSendingmail(true);
+    if (addressId === "") {
+      alert("Select an address");
+      return;
+    }
+    if (cardId === "" && !codselected) {
+      alert("Select a payment method");
+      return;
+    }
+    const addressobj = address.find((add) => add._id === addressId);
+    const addressString = "Address: " + addressobj.building_name + ", " + addressobj.street + ", " + addressobj.landmark + ", " + addressobj.city + ", " + addressobj.state + ", " + addressobj.pincode + "\n";
+    const payment = "Cash On Delivery";
+    const data = {
+      user_id: cartdata.user_id,
+      address: addressString,
+      payment_method: payment,
+    }
+    const resp = await fetch(process.env.REACT_APP_URL_ORDER + "/placeOrder/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    setSendingmail(false);
+    if(resp.status == 201) {
+      alert("Order Placed Successfully");
+      navigate("/myorders");
+    }
+    else {
+      alert("Order Failed");
+    }
   }
 
   const handleaddaddress = () => {
@@ -67,6 +101,10 @@ function Payment() {
   const handleaddcard = () => {
     navigate("/addcard");
   };
+  const handleCancelOrder = () => {
+    navigate("/cart");
+  };
+
 
   return (
     <>
@@ -75,7 +113,7 @@ function Payment() {
         <div className={styles.cart}>
           <div className={styles.heading}> Order Summary </div>
           {cartitems.map((item) => (
-            <div className={styles.cartitems}>
+            <div className={styles.cartitems} key={item.product_id}>
               <img
                 src={
                   "https://res.cloudinary.com/dt0mkdvqx/image/upload/c_scale,w_90,h_87,q_auto,f_auto/v1/product_images/" +
@@ -112,7 +150,7 @@ function Payment() {
         <div className={styles.verifyaddress}>
           <div className={styles.heading}>Select Address</div>
           {address.map((add) => (
-            <>
+            <React.Fragment key={add._id}>
               <div
                 className={`${styles.address} ${
                   addressId === add._id ? styles.selected : ""
@@ -132,7 +170,7 @@ function Payment() {
                 </div>
               </div>
               <Divider />
-            </>
+            </React.Fragment>
           ))}
           <div className={styles.addAddress} onClick={handleaddaddress}>
             <AddIcon sx={{ color: "white" }} />
@@ -142,7 +180,7 @@ function Payment() {
         <div className={styles.payment}>
           <div className={styles.heading}> Select Payment Method </div>
           {cards.map((card) => (
-            <>
+            <React.Fragment key={card._id}>
               <div
                 className={`${styles.card} ${
                   cardId === card._id ? styles.selected : ""
@@ -153,12 +191,12 @@ function Payment() {
                   sx={{ color: cardId === card._id ? "white" : "black" }}
                 />
                 <div className={styles.cardinfo}>
-                  <div className={styles.card1}>{card.card_no}</div>
-                  <div className={styles.card2}>{card.cardExpiryDate}</div>
+                  <div className={styles.namecontainer}><Visa className={styles.visalogo} fill={cardId == card._id ? "white" : "black"}/><div className={styles.card1}>. . . . . . {card.card_no.slice(-4)}</div></div>
+                  <div className={styles.card2}>Expiry Date: {card.cardExpiryDate}</div>
                 </div>
               </div>
               <Divider />
-            </>
+            </React.Fragment>
           ))}
           <div
             className={`${styles.card} ${codselected ? styles.selected : ""}`}
@@ -178,10 +216,12 @@ function Payment() {
         </div>
         <div className={styles.placeorder}>
           <div>
-            <button onClick={handleSubmit}>Place Order</button>
+            {sendingmail ? <Button loading variant="plain">
+        Plain
+      </Button> : <button onClick={handlePlaceOrder}>Place Order</button>}
           </div>
           <div>
-            <button onClick={handleSubmit}>Cancel Order</button>
+            <button onClick={handleCancelOrder}>Cancel Order</button>
           </div>
         </div>
       </div>
