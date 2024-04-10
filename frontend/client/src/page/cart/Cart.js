@@ -72,7 +72,7 @@ const Cart = () => {
         {cartItem ? (
           <div>
             {cartItem.map((product) => (
-              <CartItem key={product.id} product={product}/>
+              <CartItem key={product.id} product={product} />
             ))}
           </div>
         ) : (

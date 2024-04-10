@@ -19,16 +19,26 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
   const [open, setOpen] = React.useState(false);
+  const [filteropen, setfilterOpen] = React.useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-  const handleChange = (e) => {
-    onSearch(e.target.value);
+  const filtertoggleDrawer = (newfilterOpen) => () => {
+    setfilterOpen(newfilterOpen);
   };
+
+  const handleSearch = (event) => {
+    setSearchInput(event.target.value);
+    onSearch(event.target.value);
+  };
+
   async function handlelogout() {
     console.log("thai che");
     try {
@@ -54,6 +64,7 @@ const SearchBar = ({ onSearch }) => {
       console.error("Error:", error);
     }
   }
+
   const DrawerList = (
     <Box
       sx={{ width: 200, height: "100%", backgroundColor: "white" }}
@@ -117,14 +128,85 @@ const SearchBar = ({ onSearch }) => {
       <Divider sx={{ color: "black" }} />
     </Box>
   );
+  const filterDrawerList = (
+    <Box
+      sx={{ width: 200, height: "100%", backgroundColor: "white" }}
+      role="presentation"
+      onClick={filtertoggleDrawer(false)}
+    >
+      <div className={styles.filterDrawerList}>
+        <List>
+          <ListItem
+            key="Price"
+            disablePadding
+            className={styles.ListItemheading}
+          >
+            Price:
+          </ListItem>
+          <ListItem key="Price" disablePadding className={styles.ListItemInput}>
+            <label htmlFor="min">min:</label>
+            <input
+              type="tel"
+              id="min"
+              className={styles.smallInput}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <label htmlFor="max">max:</label>
+            <input
+              type="tel"
+              id="max"
+              className={styles.smallInput}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </ListItem>
+
+          <ListItem
+            key="Price"
+            disablePadding
+            className={styles.ListItemheading}
+          >
+            Likes:
+          </ListItem>
+          <ListItem key="Likes" disablePadding className={styles.ListItemInput}>
+            <label htmlFor="min">min:</label>
+            <input
+              type="tel"
+              id="min"
+              className={styles.smallInput}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <label htmlFor="max">max:</label>
+            <input
+              type="tel"
+              id="max"
+              className={styles.smallInput}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </ListItem>
+        </List>
+      </div>
+    </Box>
+  );
   return (
     <div className={styles.homenav}>
+      <FilterListIcon
+        onClick={filtertoggleDrawer(true)}
+        className={styles.profbut}
+      />
+      <Drawer
+        anchor="right"
+        open={filteropen}
+        onClose={filtertoggleDrawer(false)}
+      >
+        {filterDrawerList}
+      </Drawer>
       <div className={styles.searchBar}>
         <input
+          value={searchInput}
           className={styles.search}
           type="text"
           placeholder="  Search..."
-          onChange={handleChange}
+          onChange={handleSearch}
         />
         <FontAwesomeIcon
           icon={faMagnifyingGlass}

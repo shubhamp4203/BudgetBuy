@@ -1,45 +1,15 @@
 import { useState } from "react";
-import styles from "./signin.module.css";
+import styles from "./SellerSignin.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useNavigate } from "react-router-dom";
 
-export default function SignIn() {
+export default function SellerSignin() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  const clientId = process.env.REACT_APP_CLIENT_ID;
-  const scope = "email profile openid";
-  const redirectUrl =
-    process.env.REACT_APP_URL_AUTHENTICATION + "/auth/google/callback";
 
-  function generateAuthUrl(clientId, redirectUri, scope) {
-    let authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-    authUrl += "?client_id=" + encodeURIComponent(clientId);
-    authUrl += "&redirect_uri=" + encodeURIComponent(redirectUri);
-    authUrl += "&response_type=code";
-    authUrl += "&scope=" + encodeURIComponent(scope);
-    authUrl += "&access_type=offline";
-    return authUrl;
-  }
-
-  const authUrl = generateAuthUrl(clientId, redirectUrl, scope);
-  // const handleSignIn = () => {
-  //   // Redirect to the "/" route after successful sign-in
-  //   // navigate("/");
-  //   window.location.href = "/";
-  //   console.log("Sign in successful");
-  // };
-  // const handleOauth = async (e) => {
-  //   const resp = await fetch(authUrl);
-  //   if(resp.status == 200) {
-  //     navigate("/");
-  //   }
-  //   else {
-  //     navigate("/signin");
-  //   }
-  // }
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,7 +22,7 @@ export default function SignIn() {
 
     try {
       const response = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/login",
+        process.env.REACT_APP_URL_AUTHENTICATION + "/sellerlogin",
         {
           method: "POST",
           credentials: "include", // "same-origin", "include", "omit"
@@ -74,7 +44,7 @@ export default function SignIn() {
         //   secure: true,
         // });
         // console.log("jwt:", resjwtcookie);
-        navigate("/cart");
+        navigate("/");
       } else {
         alert("Invalid email or password");
       }
@@ -138,23 +108,6 @@ export default function SignIn() {
         {/* <br /> */}
 
         <button onClick={handleSubmit}>Sign In</button>
-      </div>
-
-      <div className={styles.socialSignUp}>
-        <div className={styles.orText}>OR</div>
-        <div className={styles.socialIcons}>
-          <a href={authUrl}>
-            <i className="fab fa-google"></i>
-          </a>
-          {/* <a href="http://surl.li/rqecf">
-            <i className="fab fa-facebook-f"></i>
-  </a>*/}
-
-          {/* <SignInButton provider="google" afterSignin={handleSignIn} /> */}
-          {/* <a href="https://github.com/topics/login">
-            <i className="fab fa-github"></i>
-          </a> */}
-        </div>
       </div>
 
       <div className={styles.privacyPolicy}>
