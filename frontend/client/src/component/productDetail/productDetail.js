@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "./productDetail.module.css";
+import FeedCard from "../CustomerHomePage/FeedCard";
 // import products from "../../data/products";
 
 const ProductDetail = () => {
@@ -11,20 +12,23 @@ const ProductDetail = () => {
   const [item, setproduct] = useState({});
   useEffect(() => {
     const getproduct = async () => {
-      const resp = await fetch(process.env.REACT_APP_URL_PRODUCT + "/getproduct/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body : JSON.stringify({products: product_list}),
-      });
+      const resp = await fetch(
+        process.env.REACT_APP_URL_PRODUCT + "/getproduct/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ products: product_list }),
+        }
+      );
       const data = await resp.json();
-      const product = data.result['0'];
+      const product = data.result["0"];
       console.log(product.newProduct);
-      setproduct(product);  
-    }
+      setproduct(product);
+    };
     getproduct();
-  }, [])
+  }, []);
   // const product = products.find((p) => p.id === parseInt(productId));
 
   // if (!product) {
@@ -32,14 +36,80 @@ const ProductDetail = () => {
   // }
 
   return (
-    <div className={style.productDetails}>
-      {item.newProduct ? <div>
-        <img src={"https://res.cloudinary.com/dt0mkdvqx/image/upload/f_auto,q_auto/v1/product_images/" + item._id} alt={item.newProduct.name} />
-        <p>Name: {item.newProduct.name}</p>
-        <p>Price: {item.newProduct.price}</p>
-        <p>Stock: {item.newProduct.stock}</p>
-      </div> : "Loading..."}
-    </div>
+    <>
+      {item.newProduct ? (
+        <div>
+          <div className={style.header}>
+            <h1>{item.newProduct.name}</h1>
+          </div>
+
+          <div className={style.productDetails}>
+            <div className={style.imginfo}>
+              <img
+                src={
+                  "https://res.cloudinary.com/dt0mkdvqx/image/upload/f_auto,q_auto/v1/product_images/" +
+                  item._id
+                }
+                alt={item.newProduct.name}
+              />
+            </div>
+            <div className={style.proinfo}>
+              <div className={style.protag}>Name:</div>
+              <div className={style.provalue}>{item.newProduct.name}</div>
+              <div className={style.protag}>Price: </div>
+              <div className={style.provalue}>{item.newProduct.price}</div>
+              <div className={style.protag}>Stock:</div>
+              <div className={style.provalue}> {item.newProduct.stock}</div>
+            </div>
+            <div className={style.description}>
+              <div className={style.protag}>Product Categories</div>
+              <div className={style.desvalue}>
+                {item.newProduct.tags.map((tag, index) => (
+                  <div key={index} className={style.tagbox}>
+                    {tag.value}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={style.description}>
+              <div className={style.protag}>Description:</div>
+              <div className={style.desvalue}>
+                {item.newProduct.description}
+              </div>
+            </div>
+            <div className={style.description}>
+              <div className={style.protag}>specification:</div>
+              <div className={style.desvalue}>
+                {item.newProduct.specification}
+              </div>
+            </div>
+            <div className={style.proinfo}>
+              <div className={style.protag}>Name:</div>
+              <div className={style.provalue}>{item.newProduct.name}</div>
+              <div className={style.protag}>Price: </div>
+              <div className={style.provalue}>{item.newProduct.price}</div>
+              <div className={style.protag}>Stock:</div>
+              <div className={style.provalue}> {item.newProduct.stock}</div>
+              <button>Chat with Seller</button>
+            </div>
+            <div className={style.description}>
+              <div className={style.protag}>Similar Product</div>
+              <div className={style.desvalue}>
+                {/* {products.map((product) => (
+                  <FeedCard product={product} />
+                ))} */}
+              </div>
+            </div>
+            <div className={style.privacyPolicy}>
+              By signing up, you agree to our <a href="#">Privacy Policy</a> and{" "}
+              <a href="#">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      ) : (
+        "Loading..."
+      )}
+    </>
   );
 };
 

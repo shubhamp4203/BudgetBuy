@@ -82,7 +82,6 @@
 
 .infodiv {
   display: flex;
-  justify-content: flex-start;
   width: 100%;
   align-items: center;
   gap: 1rem;

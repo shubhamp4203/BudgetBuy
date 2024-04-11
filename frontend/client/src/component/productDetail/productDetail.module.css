@@ -1,12 +1,107 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .productDetails {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: white;
   border-radius: 4px;
-  padding: 2rem;
+  padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
+  height: 100%;
+  margin-top: 5rem;
+}
+
+.imginfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 4px;
+  padding-inline: 1rem;
+  width: 100%;
+}
+
+.proinfo {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: 100%;
+  padding: 0.5rem;
+  border-bottom: 1px solid #221f1f;
+  gap: 1.5rem;
+  justify-content: start;
+  align-items: flex-start;
+}
+.protag {
+  font-size: 1.3rem;
+  font-weight: bolder;
+  color: #221f1f;
+  text-align: start;
+  padding-inline: 1rem;
+}
+.proinfo .provalue {
+  font-size: 1.2rem;
+  color: #221f1f;
+  font-weight: 600;
+  text-align: end;
+  padding-inline: 1rem;
+}
+.proinfo button {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: 10px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.5rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-bottom: 1px solid #221f1f;
+  gap: 1.5rem;
+}
+.desvalue {
+  font-size: 1.2rem;
+  color: #221f1f;
+  font-weight: 600;
+  padding-inline: 1rem;
+  text-align: start;
+}
+
+.tagbox {
+  background-color: #ccc;
+  color: #221f1f;
+  padding: 0.5rem;
+  border-radius: 5px;
+  display: inline-block;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: center;
+  border-bottom: 1px solid #ccc;
+  background-color: #221f1f;
+  color: white;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  padding-inline: 1rem;
+  width: 100%;
+}
+
+.privacy-policy a {
+  color: #4caf50;
+  text-decoration: none;
 }
 
 .productDetails img {
