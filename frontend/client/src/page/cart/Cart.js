@@ -5,6 +5,7 @@ import styles from "./Cart.module.css";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../component/NavBar/NavBar";
 import SearchBar from "../../component/searchBar/searchBar";
+import { ReactComponent as EmptyCart } from "C:/Users/shubh/Desktop/BudgetBuy/frontend/client/src/emptycart.svg";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -25,7 +26,6 @@ const Cart = () => {
         const resdata = await data.json();
         const fcart = resdata.cartItems.cart;
         const cartitems = resdata.cartItems.products;
-        console.log(fcart);
         setcartItem(cartitems);
         setfrontcart(fcart);
         setIsLoading(false);
@@ -58,43 +58,52 @@ const Cart = () => {
   // };
 
   const handleCheckout = async () => {
-    navigate("/payment", {state: { frontcart, cartItem}})
-  }
+    navigate("/payment", { state: { frontcart, cartItem } });
+  };
 
   if (isLoading) {
     return "Loading...";
-  }
-
-  if (isEmpty) {
-    return <div>Nothing to show here!!</div>;
   }
 
   return (
     <>
       <SearchBar />
       <div className={styles.container}>
-        <h1>Cart Items</h1>
-        {cartItem ? (
-          <div>
-            {cartItem.map((product) => (
-              <CartItem key={product.id} product={product} />
-            ))}
-          </div>
+        {isEmpty ? (
+          <>
+            <div className={styles.logo}>
+              <EmptyCart className={styles.cartsvg}/>{" "}
+              <h1> Nothing to show here!!</h1>
+            </div>{" "}
+          </>
         ) : (
-          "Loading..."
+          <>
+            <h1>Cart Items</h1>
+            {cartItem ? (
+              <div>
+                {cartItem.map((product) => (
+                  <CartItem key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              "Loading..."
+            )}
+            <div className={styles.cartSummary}>
+              <div>
+                <h3>
+                  Total: ₹{" "}
+                  {new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    minimumFractionDigits: 2,
+                  }).format(frontcart.total_value)}{" "}
+                </h3>
+              </div>
+              <button className={styles.cartbutton} onClick={handleCheckout}>
+                Procced to Payment
+              </button>
+            </div>
+          </>
         )}
-        <div className={styles.cartSummary}>
-          <div>
-            <h3>
-              Total: ₹{" "}
-              {new Intl.NumberFormat("en-US", {
-                style: "decimal",
-                minimumFractionDigits: 2,
-              }).format(frontcart.total_value)}{" "}
-            </h3>
-          </div>
-          <button className={styles.cartbutton} onClick={handleCheckout}>Procced to Payment</button>
-        </div>
         <Navbar />
       </div>
     </>

@@ -16,8 +16,10 @@ const Feedlist = ({ products, searchTerm }) => {
   return (
     <div className={styles.container}>
       <div className={styles.productList}>
-        {filteredProducts.map((product) => (
-          <FeedCard product={product} />
+        {products.map((product) => (
+          <FeedCard product={product} key={product._id}/>
+        // {filteredProducts.map((product) => (
+        //   <FeedCard product={product} />
         ))}
       </div>
     </div>
