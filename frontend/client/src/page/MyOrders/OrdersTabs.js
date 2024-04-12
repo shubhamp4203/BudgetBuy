@@ -28,7 +28,11 @@ const Orders = () => {
       );
       if (resp.status === 200) {
         const res = await resp.json();
-        setOrders(res.result.orders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date)));
+        setOrders(
+          res.result.orders.sort(
+            (a, b) => new Date(b.order_date) - new Date(a.order_date)
+          )
+        );
         setIsLoading(false);
       } else {
         console.log("Error");
@@ -55,7 +59,11 @@ const Orders = () => {
     );
     if (resp.status === 200) {
       const res = await resp.json();
-      setOrders(res.result.orders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date)));
+      setOrders(
+        res.result.orders.sort(
+          (a, b) => new Date(b.order_date) - new Date(a.order_date)
+        )
+      );
       setIsLoading(false);
     } else {
       console.log("Error");

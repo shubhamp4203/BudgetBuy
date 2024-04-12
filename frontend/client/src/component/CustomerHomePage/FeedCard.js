@@ -1,13 +1,23 @@
 import styles from "./FeedCard.module.css";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// toast.configure();
+
 const FeedCard = ({ product }) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
   const navigate = useNavigate();
+
   const handleaddcart = async (e) => {
     e.preventDefault();
     const data = {
@@ -29,7 +39,15 @@ const FeedCard = ({ product }) => {
         }
       );
       if (resp.status == 201) {
-        alert("Product added to cart");
+        toast("Product added to cart", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else if (resp.status == 401) {
         navigate("/signin");
       }
@@ -48,10 +66,74 @@ const FeedCard = ({ product }) => {
       product_price: product.newProduct.price,
     };
     try {
+      let resp;
+      if (isWishlisted) {
+        resp = await fetch(
+          `${process.env.REACT_APP_URL_AUTHENTICATION}/wishlist/${product._id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+      } else {
+        resp = await fetch(
+          process.env.REACT_APP_URL_AUTHENTICATION + "/wishlist",
+          {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+      }
+      if (resp.status == 201 || resp.status == 200) {
+        setIsWishlisted(!isWishlisted);
+        if (isWishlisted == false) {
+          toast("Product removed from wishlist", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          toast("Product added to wishlist", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      } else if (resp.status == 401) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      alert("Something went wrong");
+      console.log(error);
+    }
+  };
+
+  const handleLikes = async (e) => {
+    e.preventDefault();
+    const data = {
+      product_id: product._id,
+      like: isLiked ? -1 : 1,
+    };
+    try {
       const resp = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/wishlist",
+        process.env.REACT_APP_URL_AUTHENTICATION + "/like",
         {
-          method: "POST",
+          method: "PUT",
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
@@ -59,10 +141,8 @@ const FeedCard = ({ product }) => {
           credentials: "include",
         }
       );
-      if (resp.status == 201) {
-        alert("Product added to wishlist");
-      } else if (resp.status == 401) {
-        navigate("/signin");
+      if (resp.status == 200) {
+        setIsLiked(!isLiked);
       }
     } catch (error) {
       alert("Something went wrong");
@@ -99,7 +179,17 @@ const FeedCard = ({ product }) => {
             gap: "0.2rem",
           }}
         >
-          <ThumbUpOutlinedIcon sx={{ fontSize: 25, color: "#221f1f" }} />
+          {isLiked ? (
+            <ThumbUpIcon
+              sx={{ fontSize: 25, color: "#221f1f" }}
+              onClick={handleLikes}
+            />
+          ) : (
+            <ThumbUpOutlinedIcon
+              sx={{ fontSize: 25, color: "#221f1f" }}
+              onClick={handleLikes}
+            />
+          )}
           {product.newProduct.likes}
         </div>
       </div>
@@ -117,7 +207,11 @@ const FeedCard = ({ product }) => {
           className={`${styles.buybut} ${styles.but2}`}
           onClick={handleWishlist}
         >
-          <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
+          {isWishlisted ? (
+            <FavoriteIcon sx={{ fontSize: 25, color: "#221f1f" }} />
+          ) : (
+            <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
+          )}
         </button>
         <Link
           to={{

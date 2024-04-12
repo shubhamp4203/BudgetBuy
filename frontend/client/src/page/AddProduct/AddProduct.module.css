@@ -1,0 +1,66 @@
+.signupcontainer {
+  width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px;
+  margin-bottom: 5rem;
+  height: 100%;
+}
+
+.signupcontainer h1 {
+  color: #221f1f;
+}
+
+.signupform {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.signupform label {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+  color: #221f1f;
+}
+
+.signupform .input {
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 5px;
+  border: 2px solid #221f1f;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #221f1f;
+  color: white;
+  border: none;
+  border-radius: 17px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.inputFileHidden {
+  display: none;
+}
+
+.customFileUpload {
+  display: inline-block;
+  padding: 10px;
+  background-color: white;
+  color: white;
+  cursor: pointer;
+}
