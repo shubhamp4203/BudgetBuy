@@ -60,7 +60,6 @@ module.exports.signup_post = async (req, res) => {
       password,
       tags,
     });
-    console.log("called")
     const user_id = user._id;
     const useremail = user.email;
     const resp = await axios.post(process.env.ORDER + "/createCart/", {
@@ -99,7 +98,6 @@ module.exports.callback = async (req, res) => {
       const user = await User.findOne({ email: id_token.email });
       if (user) {
         const token = tokencookies(user._id, user.email, user.name);
-        console.log(req.hostname);
         res
           .cookie("jwt", token, {
             httpOnly: true,
@@ -128,7 +126,6 @@ module.exports.login_post = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = tokencookies(user._id, user.email, user.name);
-    console.log("Setting cookie");
     res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
@@ -289,7 +286,6 @@ module.exports.resetPassword = async (req,res) => {
 module.exports.insertAddress = async (req, res) => {
   const user_id = req.authdata.id;
   const {pincode, city, state, building_name, street, landmark} = req.body;
-  console.log(user_id, pincode, city, state, building_name, street, landmark)
   try {
     const user = await User.findOne({_id: user_id});
     if(!user) {
@@ -304,7 +300,6 @@ module.exports.insertAddress = async (req, res) => {
         landmark
       });
       await user.save();
-      console.log("Hello")
       res.status(201).json({message: "Address added successfully"});
     }
   } catch(err) {
@@ -338,7 +333,6 @@ module.exports.insertCard = async (req,res) => {
           cardExpiryDate,
           cvv
         })
-        console.log(user)
         await user.save();
         res.status(201).json({message: "Card added successfully"});
       }
@@ -359,7 +353,6 @@ module.exports.getUser = async (req, res) => {
     else {
       const cards = user.card_details;
       cards.forEach(card => {
-        console.log(card.card_no)
         card.card_no = CryptoJS.AES.decrypt(card.card_no, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
         card.cardExpiryDate = CryptoJS.AES.decrypt(card.cardExpiryDate, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
         card.cvv = CryptoJS.AES.decrypt(card.cvv, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
@@ -373,9 +366,7 @@ module.exports.getUser = async (req, res) => {
 
 module.exports.getUserOrder = async (req,res) => {
   const user_id = req.authdata.id;
-  console.log(req.body)
   const status = req.body.type;
-  console.log(user_id, status)
   try {
     const resp = await axios.get(process.env.ORDER + "/getUserOrder/", {
       params: {
@@ -385,6 +376,8 @@ module.exports.getUserOrder = async (req,res) => {
     });
     if(resp.status == 200) {
       res.status(200).json({result: resp.data});
+    } else if (resp.status==204) {
+      res.status(204).json({message: "No orders found"});
     } else {
       res.status(400).json({message: "Something went wrong"});
     }

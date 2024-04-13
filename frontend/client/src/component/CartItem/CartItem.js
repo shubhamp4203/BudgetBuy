@@ -41,14 +41,14 @@ const CartItem = ({ product }) => {
             margin: "0rem",
             width: "fit-content",
             fontSize: "0.5rem",
-            backgroundColor: product.status != "available" ? "red" : "green",
+            backgroundColor: product.status  ? "green" : "red",
             borderRadius: "5px",
             padding: "0.25rem",
             color: "white",
             
           }}
         >
-          {product.status == "available" ? "🟢 Available" : "🔴 Unavailable"}
+          {product.status ? "🟢 Available" : "🔴 Unavailable"}
         </p>
         <div style={{
           display: "flex",

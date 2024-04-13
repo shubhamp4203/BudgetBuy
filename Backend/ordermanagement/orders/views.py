@@ -29,7 +29,6 @@ def createCart(request):
         email = data['useremail']
         cart = Cart.objects.create(user_id=user_id, user_email=email)
         cart.save()
-        print("print sucecss")
         return Response({'message': 'Cart created successfully'}, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -52,17 +51,17 @@ def addCart(request):
         stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
         stock_check = stock_check.json()
         if(stock_check['status']):
-            cart.status = "stock_unavailable"
+            cart.status = False
             cart.out_of_stock += 1
-            data['status'] = "stock_unavailable"
+            data['status'] = False
         serializer = CartItemSerializer(item, data=data)
     else:
         stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': product_id, 'amount': data['amount']})
         stock_check = stock_check.json()
         if(stock_check['status']):
-            cart.status = "stock_unavailable"
+            cart.status = False
             cart.out_of_stock += 1
-            data['status'] = "stock_unavailable"
+            data['status'] = False
         serializer = CartItemSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
@@ -107,10 +106,10 @@ def delCart(request):
         stock_check = requests.post(f"{micro_services['INVENTORY']}/checkStock/", json={'product_id': prod_id, 'amount': item.amount})
         stock_check = stock_check.json()
         if not stock_check['status']:
-            item.status = "available"
+            item.status = True
             cart.out_of_stock -= 1
             if cart.out_of_stock == 0:
-                cart.status = "available"
+                cart.status = True
         cart.total_value -= item.product_price
         retData = {'updatedAmount': item.amount}
         item.save()
@@ -121,10 +120,10 @@ def delCart(request):
         items = Cart_item.objects.filter(user_id=user_id, product_id=prod_id)
         item = items.first()
         cart.total_value -= item.amount * item.product_price
-        if item.status == "stock_unavailable":
+        if item.status == False:
             cart.out_of_stock -= 1
         if cart.out_of_stock == 0:
-            cart.status = "available"
+            cart.status = True
         items.delete()
         cart.save()
         retItems = Cart_item.objects.filter(user_id=user_id)  
@@ -153,7 +152,7 @@ def addOrder(request):
 
         #user order saving
         user_order = User_Order.objects.create(user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, total_value=cart.total_value)
-        user_order.order_status = "Order Placed"
+        user_order.order_status = "Pending"
         user_order.item_count = items.count()
         user_order.save()
         for item in items:
@@ -182,14 +181,13 @@ def addOrder(request):
             stock_update = requests.post(f"{micro_services['INVENTORY']}/updateStock/", json=update_data)
             items.delete()
             cart.total_value = 0
-            cart.status = "available"
+            cart.status = True
             cart.out_of_stock = 0
             cart.save()
             return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
         else:
             seller_orders = Seller_Order.objects.filter(user_order_id=user_order.user_order_id)
             seller_items = Seller_Order_item.objects.filter(seller_order_id_id__in=seller_orders)
-            print(seller_order, seller_items)
             seller_items.delete()
             seller_orders.delete()
             user_items = User_Order_item.objects.filter(user_order_id=user_order)
@@ -199,7 +197,6 @@ def addOrder(request):
     except Exception as e:
         seller_orders = Seller_Order.objects.filter(user_order_id=user_order.user_order_id)
         seller_items = Seller_Order_item.objects.filter(seller_order_id__in=seller_orders)
-        print(seller_order, seller_items)
         seller_items.delete()
         seller_orders.delete()
         user_items = User_Order_item.objects.filter(user_order_id=user_order)
@@ -238,7 +235,6 @@ def orderDelivered(request):
 def getUserOrder(request):
     user_id = request.GET.get('user_id')
     order_status = request.GET.get('status')
-    print(order_status, user_id)
     if(order_status=="ALL"):
         orders = User_Order.objects.filter(user_id=user_id)
     else:

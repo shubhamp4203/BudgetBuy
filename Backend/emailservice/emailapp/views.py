@@ -109,8 +109,12 @@ def user_order_mail(request):
         try:
             print("HEY")
             send_mail(subject, body, admin_email, [user_email], fail_silently=False)
+            print("Sent")
             return Response({'message': 'Order Placed Successfully'}, status=status.HTTP_200_OK)
         except BadHeaderError:
             return Response({'error': 'Invalid header found.'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(str(e))
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

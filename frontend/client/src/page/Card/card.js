@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./card.module.css";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../component/NavBar/NavBar";
 
 export default function Card() {
     const [cardnumber, setCardnumber] = useState("");
@@ -87,6 +88,7 @@ export default function Card() {
             Add Card
           </button>
         </div>
+        <Navbar/>
       </div>
     )
 }

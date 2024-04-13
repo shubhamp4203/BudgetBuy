@@ -20,11 +20,37 @@ import EditIcon from '@mui/icons-material/Edit';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useNavigate } from "react-router-dom";
 
 export default function UserAccount() {
+  const navigate = useNavigate();
+
+  async function handlelogout() {
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_URL_AUTHENTICATION + "/logout",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const responseData = await response.json();
+      if (response.ok) {
+        console.log("logged out");
+        navigate("/signin");
+      } else {
+        console.log("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
   return (
     <div>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <div className={styles.container}>
         <div className={styles.dashboard}>
           <div className={styles.dash1}>
@@ -75,6 +101,17 @@ export default function UserAccount() {
               </ListItem>
             </Link>
             <Divider/>
+            <Link to="/myorders" className={styles.navto}>
+            <ListItem key="My Orders" disablePadding>
+              <ListItemButton sx={{paddingTop: '1rem', paddingBottom: '1rem'}}>
+                <ListItemIcon>
+                <LocalShippingIcon sx={{ color: "black" }} />
+                </ListItemIcon>
+                <ListItemText primary="My Orders" />
+              </ListItemButton>
+            </ListItem>
+            </Link>
+            <Divider/>
             <Link to="/mysetting" className={styles.navto}>
               <ListItem key="Setting" disablePadding>
                 <ListItemButton sx={{paddingTop: '1rem', paddingBottom: '1rem'}}>
@@ -87,7 +124,7 @@ export default function UserAccount() {
             </Link>
             <Divider/>
             <ListItem key="Log Out" disablePadding>
-              <ListItemButton sx={{paddingTop: '1rem', paddingBottom: '1rem'}}>
+              <ListItemButton sx={{paddingTop: '1rem', paddingBottom: '1rem'}} onClick={handlelogout}>
                 <ListItemIcon>
                   <LogoutIcon sx={{ color: "black" }} />
                 </ListItemIcon>
