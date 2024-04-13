@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./address.module.css";
 import { useNavigate} from "react-router-dom";
+import Navbar from "../../component/NavBar/NavBar";
 
 export default function Address() {
     const [city, setCity] = useState("");
@@ -106,6 +107,7 @@ export default function Address() {
           Add Address
         </button>
       </div>
+      <Navbar/>
     </div>
     );
 }

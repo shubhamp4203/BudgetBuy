@@ -67,7 +67,7 @@ const Cart = () => {
 
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <div className={styles.container}>
         {isEmpty ? (
           <>
@@ -98,7 +98,7 @@ const Cart = () => {
                   }).format(frontcart.total_value)}{" "}
                 </h3>
               </div>
-              <button className={styles.cartbutton} onClick={handleCheckout}>
+              <button disabled={!frontcart.status} className={frontcart.status ? styles.cartbutton : styles.disabledbut} onClick={handleCheckout}>
                 Procced to Payment
               </button>
             </div>

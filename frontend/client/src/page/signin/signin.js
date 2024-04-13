@@ -74,7 +74,7 @@ export default function SignIn() {
         //   secure: true,
         // });
         // console.log("jwt:", resjwtcookie);
-        navigate("/cart");
+        navigate("/");
       } else {
         alert("Invalid email or password");
       }

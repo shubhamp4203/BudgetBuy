@@ -49,7 +49,7 @@ class User_Order_item(models.Model):
 class Cart(models.Model):
     user_id = models.CharField(max_length=100, unique=True,primary_key=True)    
     total_value = models.IntegerField(null=True, default=0)
-    status = models.CharField(max_length=50, null=True, default="available")
+    status = models.BooleanField(default=True)
     out_of_stock = models.IntegerField(null=True, default=0)
     user_email = models.EmailField(max_length=255, null=True, unique = True)
 
@@ -62,7 +62,7 @@ class Cart_item(models.Model):
     user_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
     amount = models.IntegerField(null=True)
     product_price = models.IntegerField(null=True)
-    status = models.CharField(max_length=50, null=True, default="available")
+    status = models.BooleanField(default=True)
     seller_id = models.CharField(max_length=100, null=True)
 
     class Meta:
