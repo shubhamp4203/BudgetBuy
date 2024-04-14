@@ -99,3 +99,50 @@ module.exports.allproducts_get = async (req,res) => {
 //     res.status(400).json({error: "Failed to fetch product"}); 
 //   }
 // }
+
+module.exports.wishlist_post = async (req,res) => {
+  const collection = await dataConnect();
+  const {user_id,product_id} = req.body;
+  try {
+    const result = await collection.findOne({ _id: ObjectId(product_id) });
+    if(result){
+      const updateResult = await collection.updateOne(
+        { _id: ObjectId(product_id) },
+        { $push: { wishlist: ObjectId(user_id) } }
+      );
+      if(updateResult.modifiedCount > 0){
+        res.status(200).json({ message: "User added to product's wishlist" });
+      } else {
+        res.status(500).json({ message: "Failed to add user to product's wishlist" });
+      }
+    } else {
+      res.status(404).json({ message: "Product not found" });
+    }
+  } catch(err){
+    console.log(err);
+    res.status(500).json({ message: "An error occurred" });
+  }}
+
+  module.exports.removeWishlist_post = async (req, res) => {
+    const collection = await dataConnect();
+    const { user_id, product_id } = req.body;
+    try {
+      const result = await collection.findOne({ _id: ObjectId(product_id) });
+      if (result) {
+        const updateResult = await collection.updateOne(
+          { _id: ObjectId(product_id) },
+          { $pull: { wishlist: ObjectId(user_id) } }
+        );
+        if (updateResult.modifiedCount > 0) {
+          res.status(200).json({ message: "User removed from product's wishlist" });
+        } else {
+          res.status(500).json({ message: "Failed to remove user from product's wishlist" });
+        }
+      } else {
+        res.status(404).json({ message: "Product not found" });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "An error occurred" });
+    }
+  };
