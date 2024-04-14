@@ -31,7 +31,7 @@
   border-bottom: 1px solid black;
 }
 
-.address, .card, .cartitems  {
+.address, .card {
   padding: 0.5rem;
   display: flex;
   flex-direction: row;

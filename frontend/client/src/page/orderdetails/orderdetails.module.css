@@ -1,0 +1,92 @@
+.ordercontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 2rem;
+  margin-bottom: 7rem;
+}
+
+.order,
+.orderSummary {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-bottom: 0px;
+  width: 100%;
+  margin: 1rem;
+  box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  padding: 0.5rem;
+  border-bottom: 1px solid black;
+}
+
+.orderitems {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.iteminfo {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  padding-top: 0rem;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.itemprice {
+  color: green;
+}
+
+.orderdet {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.orderdet div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ordersummaryitems {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-bottom: 1px solid black;
+  }
+
+.inditem {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.inditem h4 {
+  margin: 0rem;
+  width: fit-content;
+}
+.inditem div {
+  margin: 0rem;
+  padding-left: 0.5rem;
+  width: fit-content;
+}
+
+.cancelbut button {
+    border-radius: 4px;
+}

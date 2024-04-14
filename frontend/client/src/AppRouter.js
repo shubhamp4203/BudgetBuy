@@ -20,6 +20,7 @@ import Card from "./page/Card/card";
 import SellerAccount from "./page/SellerAccount/SellerAccount";
 import AddProduct from "./page/AddProduct/AddProduct";
 import AdvertiseProduct from "./page/AdvertiseProduct/AdvertiseProduct";
+import OrderDetails from "./page/orderdetails/orderdetails";
 
 const AppRouter = () => {
   return (
@@ -44,6 +45,7 @@ const AppRouter = () => {
         <Route path="/addcard" element={<Card />} />
         <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/advertiselist" element={<AdvertiseProduct />} />
+        <Route path="/orderdetails/:orderId" element={<OrderDetails />} />
       </Routes>
     </Router>
   );

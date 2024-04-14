@@ -51,7 +51,11 @@ input[type="submit"]:hover {
   background-color: #45a049;
 }
 
+.privacyPolicy{
+  font-size: 12px;
+  color: #221f1f;
 
+}
 .privacy-policy a {
   color: #4caf50;
   text-decoration: none;
@@ -59,4 +63,11 @@ input[type="submit"]:hover {
 
 .privacy-policy a:hover {
   text-decoration: underline;
+}
+
+.signin {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #221f1f;
+  margin-bottom: 10px;
 }
