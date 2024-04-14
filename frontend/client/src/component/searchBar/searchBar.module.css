@@ -29,6 +29,7 @@
 .search {
   margin: 0;
   padding: 0;
+  padding-left: 0.5rem;
   border: 0;
   width: 90%;
   height: 85%;

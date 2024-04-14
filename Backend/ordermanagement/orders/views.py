@@ -148,6 +148,7 @@ def addOrder(request):
         payment_method = data['payment_method']
         cart = get_object_or_404(Cart, user_id=user_id)
         user_email = cart.user_email
+        print(user_email)
         items = Cart_item.objects.filter(user_id=user_id)
 
         #user order saving
@@ -183,6 +184,7 @@ def addOrder(request):
             cart.total_value = 0
             cart.status = True
             cart.out_of_stock = 0
+            cart.user_email = user_email
             cart.save()
             return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
         else:
@@ -212,17 +214,17 @@ def orderDelivered(request):
         order_id = data['order_id']
         seller_id = data['seller_id']
         order = get_object_or_404(Seller_Order, seller_order_id=order_id, seller_id=seller_id)
-        order.order_status = "DELIVERED"
+        order.order_status = "Delivered"
         order.save()
 
         order_items = Seller_Order_item.objects.filter(seller_order_id=order_id)
         user_order = get_object_or_404(User_Order, user_order_id=order.user_order_id)
         for i in order_items:
             user_item = User_Order_item.objects.get(user_order_id=user_order, product_id=i.product_id)
-            user_item.item_status = "DELIVERED"
+            user_item.item_status = "Delivered"
             user_order.item_count -= 1
             if(user_order.item_count == 0):
-                user_order.order_status = "DELIVERED"
+                user_order.order_status = "Delivered"
             user_item.save()
         user_order.save()
         return Response({'message': 'Order status updated successfully'}, status=status.HTTP_200_OK)
@@ -265,19 +267,31 @@ def getSellerOrder(request):
 @csrf_exempt
 @api_view(['GET'])
 def getUserOrderItems(request):
-    order_id = request.GET.get('order_id')
-    order = get_object_or_404(User_Order, user_order_id=order_id)
-    items = User_Order_item.objects.filter(user_order_id=order_id)
-    if not items:
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    else:
-        item_data = OrderItemSerializer(items, many=True)
-        prod_ids = items.values_list('product_id', flat=True)
-        prodInfo = test_func(prod_ids)
-        for i in item_data.data:
-            i.update(prodInfo['data'][i['product_id']])
-        reqData = {'items': item_data.data, 'total_value': order.total_value}
-        return Response(reqData, status=status.HTTP_200_OK)
+    try:
+        order_id = request.GET.get('order_id')
+        order = get_object_or_404(User_Order, user_order_id=order_id)
+        items = User_Order_item.objects.filter(user_order_id=order_id)
+        if not items:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            item_data = OrderItemSerializer(items, many=True)
+            prod_ids = {'products': list(items.values_list('product_id', flat=True))}
+            prodInfo = requests.post(f"{micro_services['PRODUCT']}/getproduct", json=prod_ids)
+            if(prodInfo.status_code==200):
+                prodInfo = prodInfo.json()
+                for i in item_data.data:
+                    for j in prodInfo["result"]:
+                        if(i['product_id'] == j["_id"]):
+                            i["name"] = j['newProduct']["name"]
+                            i["product_price"] = j["newProduct"]["price"]
+                            break
+                reqData = {'items': item_data.data, 'total_value': order.total_value}
+                return Response(reqData, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        print(str(e))
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 @csrf_exempt
 @api_view(['GET'])
@@ -295,3 +309,21 @@ def getSellerOrderItems(request):
             i.update(prodInfo['data'][i['product_id']])
         reqData = {'items': item_data.data, 'total_value': order.total_value}
         return Response(reqData, status=status.HTTP_200_OK)
+    
+@csrf_exempt
+@api_view(['DELETE'])
+def cancelOrder(request):
+    try:
+        data = JSONParser().parse(request)
+        order_id = data['order_id']
+        user_order_items = User_Order_item.objects.filter(user_order_id=order_id)
+        user_order_items.delete()
+        user_order = get_object_or_404(User_Order, user_order_id=order_id)
+        user_order.delete()
+        seller_orders = Seller_Order.objects.filter(user_order_id=order_id)
+        seller_items = Seller_Order_item.objects.filter(seller_order_id__in=seller_orders)
+        seller_items.delete()
+        seller_orders.delete()
+        return Response({'message': 'Order Cancelled Successfully'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

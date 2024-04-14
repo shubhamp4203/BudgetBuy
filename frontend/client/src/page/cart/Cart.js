@@ -21,7 +21,6 @@ const Cart = () => {
           credentials: "include",
         }
       );
-      console.log(data.status);
       if (data.status === 200) {
         const resdata = await data.json();
         const fcart = resdata.cartItems.cart;

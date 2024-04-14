@@ -163,10 +163,11 @@ export default function SignIn() {
           <span style={{ color: "blue" }}>Loading</span>
         ) : (
           <a href="#" onClick={handleforgotpassword}>
-            forgot password
+            Forgot Password
           </a>
         )}
       </div>
+      <div className={styles.signup}>Create account <a href="/signup">SignUp</a> </div>
     </div>
   );
 }
