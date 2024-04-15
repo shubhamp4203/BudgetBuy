@@ -25,21 +25,7 @@ export default function SignIn() {
   }
 
   const authUrl = generateAuthUrl(clientId, redirectUrl, scope);
-  // const handleSignIn = () => {
-  //   // Redirect to the "/" route after successful sign-in
-  //   // navigate("/");
-  //   window.location.href = "/";
-  //   console.log("Sign in successful");
-  // };
-  // const handleOauth = async (e) => {
-  //   const resp = await fetch(authUrl);
-  //   if(resp.status == 200) {
-  //     navigate("/");
-  //   }
-  //   else {
-  //     navigate("/signin");
-  //   }
-  // }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -66,15 +52,9 @@ export default function SignIn() {
       const responseData = await response.json();
 
       console.log("Success:", responseData);
-      // const resjwtcookie = responseData.token.jwt;
 
       if (response.ok) {
-        // Cookies.set("jwt", resjwtcookie, {
-        //   sameSite: "None",
-        //   secure: true,
-        // });
-        // console.log("jwt:", resjwtcookie);
-        navigate("/");
+        navigate("/home");
       } else {
         alert("Invalid email or password");
       }
@@ -86,6 +66,10 @@ export default function SignIn() {
   const handleforgotpassword = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    if(!email) {
+      alert("Please enter email");
+      return;
+    }
     try {
       const data = {
         email,
@@ -125,7 +109,6 @@ export default function SignIn() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {/* <br /> */}
 
         <label htmlFor="password">Password</label>
         <input
@@ -135,7 +118,6 @@ export default function SignIn() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {/* <br /> */}
 
         <button onClick={handleSubmit}>Sign In</button>
       </div>
@@ -146,14 +128,6 @@ export default function SignIn() {
           <a href={authUrl} style={{color: "black", textDecoration: "none", border: "1px solid black", borderRadius: "1rem", padding: "0.5rem"}}>
             <i className="fab fa-google" > </i> SignIn with Google
           </a>
-          {/* <a href="http://surl.li/rqecf">
-            <i className="fab fa-facebook-f"></i>
-  </a>*/}
-
-          {/* <SignInButton provider="google" afterSignin={handleSignIn} /> */}
-          {/* <a href="https://github.com/topics/login">
-            <i className="fab fa-github"></i>
-          </a> */}
         </div>
       </div>
 
@@ -167,6 +141,7 @@ export default function SignIn() {
           </a>
         )}
       </div>
+      <div className={styles.signup}>Login as a  <a href="/sellersignin">Seller</a> </div>
       <div className={styles.signup}>Create account <a href="/signup">SignUp</a> </div>
     </div>
   );

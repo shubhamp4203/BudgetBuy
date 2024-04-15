@@ -144,4 +144,5 @@ input[type="submit"]:hover {
 .signup {
   font-size: 12px;
   color: #666;  
+  margin:  0.25rem;
 }

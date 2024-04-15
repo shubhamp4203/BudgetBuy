@@ -1,17 +1,9 @@
 // Navbar.js
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHome,
-  faShoppingBag,
-  faHeart,
-  faUser,
-  faCommentDots,
-} from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavBar.module.css";
-import HomeIcon from '@mui/icons-material/Home';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatIcon from '@mui/icons-material/Chat';
 
@@ -19,14 +11,14 @@ const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
-        <a href="/home">
+        <a href="/">
           <li className={styles.navbarItem}>
-            <HomeIcon sx={{ color: "black" }} />
+            <InventoryIcon sx={{ color: "black" }} />
           </li>
         </a>
-        <a href="/cart">
+        <a href="/addproduct">
           <li className={styles.navbarItem}>
-            <ShoppingCartIcon sx={{ color: "black" }} />
+            <AddIcon sx={{ color: "black" }} />
           </li>
         </a>
         <li className={styles.navbarItem}>
@@ -35,7 +27,7 @@ const Navbar = () => {
         <li className={styles.navbarItem}>
           <FavoriteIcon sx={{color: "black"}}/>
         </li>
-        <a href="/myaccount">
+        <a href="/selleraccount">
           <li className={styles.navbarItem}>
             <AccountCircleIcon sx={{ color: "black" }} />
           </li>

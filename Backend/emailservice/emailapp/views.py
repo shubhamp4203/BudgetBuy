@@ -11,8 +11,7 @@ import random
 import requests
 from emailapp.models import UserOtp
 from emailservice.settings import micro_services
-from asgiref.sync import async_to_sync
-import asyncio
+
 
 
 @csrf_exempt
@@ -71,6 +70,7 @@ def verify_otp(request):
 @csrf_exempt
 @api_view(['POST'])
 def reset_link(request):
+    print("called")
     try:
         data = JSONParser().parse(request)
         resetlink = data['resetlink']

@@ -57,4 +57,4 @@ const connection = mongoose.connect(process.env.USER_DB_URL);
 app.use(authRoutes);
 app.use("/auth", authRoutes);
 app.listen(8003, process.env.AUTHENTICATION.split("http://")[1].split(":")[0]);
-// app.listen(8003,"10.20.30.89")
+
