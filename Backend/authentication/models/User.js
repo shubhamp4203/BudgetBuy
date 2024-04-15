@@ -56,7 +56,7 @@ const carddetails = new mongoose.Schema({
   },
   cardExpiryDate: {
     type: String,
-    required: [true, "Enter a IFSC code"],
+    required: [true, "Enter your expiry date"],
   },
   cvv : {
     type: String,

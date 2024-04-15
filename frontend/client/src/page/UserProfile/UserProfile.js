@@ -61,7 +61,7 @@ export default function UserProfile() {
     if (res.ok) {
       console.log("Success");
       alert("Profile updated successfully");
-      navigate("/")
+      navigate("/home")
     } else {
       console.log("Error");
       navigate("/signin");

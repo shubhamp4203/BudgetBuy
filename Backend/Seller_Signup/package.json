@@ -4,11 +4,13 @@
   "description": "this is a selller sign in",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "author": "Rohan",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
@@ -17,6 +19,7 @@
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.3",
     "nodemon": "^3.1.0",
+    "uuid": "^9.0.1",
     "validator": "^13.11.0"
   }
 }

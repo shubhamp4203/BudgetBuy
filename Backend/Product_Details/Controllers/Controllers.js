@@ -17,11 +17,13 @@ module.exports.insertProduct_post = async (req, res) => {
   if(!req.file){
     return res.status(400).json({message: "Image not uploaded"})
   } 
-    console.log(req.file)
     const newProduct = req.body;
     const seller_id = req.body.seller_id;
     const skuid = req.body.skuid;
     const stock = req.body.stock;
+    newProduct.likes = 0;
+    newProduct.likeUsers = [];
+    newProduct.tags = [];
     const collection = await dataConnect();
     try {
     const imageData = fs.readFileSync(req.file.path)
@@ -34,7 +36,6 @@ module.exports.insertProduct_post = async (req, res) => {
         public_id: `product_images/${result.insertedId}`,
       });
       fs.unlinkSync(req.file.path);
-      console.log(result);
       const invreq = {
         products: [{ seller_id, skuid, stock, product_id: result.insertedId }],
       };
@@ -101,14 +102,15 @@ module.exports.allproducts_get = async (req,res) => {
 // }
 
 module.exports.wishlist_post = async (req,res) => {
+  console.log("CAlled");
   const collection = await dataConnect();
   const {user_id,product_id} = req.body;
   try {
-    const result = await collection.findOne({ _id: ObjectId(product_id) });
+    const result = await collection.findOne({ _id: new ObjectId(product_id) });
     if(result){
       const updateResult = await collection.updateOne(
-        { _id: ObjectId(product_id) },
-        { $push: { wishlist: ObjectId(user_id) } }
+        { _id: new ObjectId(product_id) },
+        { $push: { wishlist: new ObjectId(user_id) } }
       );
       if(updateResult.modifiedCount > 0){
         res.status(200).json({ message: "User added to product's wishlist" });

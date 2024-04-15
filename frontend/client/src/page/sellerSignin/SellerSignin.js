@@ -18,11 +18,9 @@ export default function SellerSignin() {
       password,
     };
 
-    console.log(data);
-
     try {
       const response = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/sellerlogin",
+        process.env.REACT_APP_URL_SELLER + "/sellerlogin",
         {
           method: "POST",
           credentials: "include", // "same-origin", "include", "omit"
@@ -44,7 +42,7 @@ export default function SellerSignin() {
         //   secure: true,
         // });
         // console.log("jwt:", resjwtcookie);
-        navigate("/");
+        navigate("/selleraccount");
       } else {
         alert("Invalid email or password");
       }
@@ -56,12 +54,16 @@ export default function SellerSignin() {
   const handleforgotpassword = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    if(!email) {
+      alert("Please enter email");
+      return;
+    }
     try {
       const data = {
         email,
       };
       const response = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/forgotpassword",
+        process.env.REACT_APP_URL_SELLER + "/forgotpassword",
         {
           method: "POST",
           headers: {
@@ -74,7 +76,7 @@ export default function SellerSignin() {
       setIsLoading(false);
       if (response.ok) {
         alert("Reset link sent to your email");
-        navigate("/signin");
+        navigate("/sellersignin");
       } else {
         alert("Email not found");
       }
@@ -85,7 +87,7 @@ export default function SellerSignin() {
 
   return (
     <div className={styles.signincontainer}>
-      <h1>Sign In</h1>
+      <h1>Seller Sign In</h1>
       <div className={styles.signinform}>
         <label htmlFor="email">Email</label>
         <input
@@ -116,10 +118,11 @@ export default function SellerSignin() {
           <span style={{ color: "blue" }}>Loading</span>
         ) : (
           <a href="#" onClick={handleforgotpassword}>
-            forgot password
+            Forgot password
           </a>
         )}
       </div>
+      <div className={styles.signup}>Create Seller account <a href="/sellersignup">SignUp</a> </div>
     </div>
   );
 }

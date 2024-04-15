@@ -99,7 +99,7 @@ module.exports.callback = async (req, res) => {
       if (user) {
         const token = tokencookies(user._id, user.email, user.name);
         res
-          .cookie("jwt", token, {
+          .cookie("userjwt", token, {
             httpOnly: true,
             maxAge: 3 * 24 * 60 * 60 * 1000,
             // sameSite: "None",
@@ -126,7 +126,7 @@ module.exports.login_post = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = tokencookies(user._id, user.email, user.name);
-    res.cookie("jwt", token, {
+    res.cookie("userjwt", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       // sameSite: "None",
@@ -138,22 +138,11 @@ module.exports.login_post = async (req, res) => {
     res.json({ message: "Login Successfull" });
     // throw new Error("Error in setting cookie");
   } catch (err) {
-    res.clearCookie("jwt");
+    console.log(err);
+    res.clearCookie("userjwt");
     res.status(400).json({ message: "Login failed", error: err });
   }
 };
-
-// function generateAuthUrl(clientId, redirectUri, scope) {
-//   let authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-//   authUrl += "?client_id=" + encodeURIComponent(clientId);
-//   authUrl += "&redirect_uri=" + encodeURIComponent(redirectUri);
-//   authUrl += "&response_type=code";
-//   authUrl += "&scope=" + encodeURIComponent(scope);
-//   authUrl += "&access_type=offline";
-//   return authUrl;
-// }
-
-// module.exports.
 
 module.exports.updateUser_put = async (req, res) => {
   const user_id = req.authdata.id;
@@ -188,7 +177,7 @@ module.exports.updateUser_put = async (req, res) => {
 module.exports.logout_post = async (req, res) => {
   try {
     res
-      .clearCookie("jwt", {
+      .clearCookie("userjwt", {
         httpOnly: true,
         maxAge: 0,
         // sameSite: "None",
@@ -250,7 +239,7 @@ module.exports.forgotPassword = async (req, res) => {
         expiresIn: "1h",
       });
       const resetlink =
-        process.env.FRONTEND + "/reset-password/" + uid + "/" + token;
+        process.env.FRONTEND + "/user/reset-password/" + uid + "/" + token;
       const resp = await axios.post(process.env.EMAIL + "/resetlink/", {
         resetlink,
         email,
@@ -411,6 +400,7 @@ module.exports.wishlist_post = async (req, res) => {
       res.status(201).json({ message: "Product added to wishlist" });
     }
   } catch (err) {
+    console.log(err);
     res.status(400).json({ message: "Something went wrong" });
   }
 };

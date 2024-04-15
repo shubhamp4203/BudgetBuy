@@ -24,15 +24,10 @@ export default function SellerSignup() {
   const [name, setName] = useState("");
   const [email, setuserEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [catergories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [phone_number, setPhone_number] = useState("");
   const [aadhar_card, setAadhar_card] = useState("");
   const [GSTnumber, setGSTnumber] = useState("");
-  const [IFSC, setIFSC] = useState("");
-  const [accountNumber, setAcountNumber] = useState("");
-  const [bankName, setBankName] = useState("");
 
   const navigate = useNavigate();
 
@@ -42,50 +37,30 @@ export default function SellerSignup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(!name || !email || !password || !phone_number || !aadhar_card || !categories) {
+      alert("Please fill all the required fields");
+      return;
+    }
+    
     // Prepare the data to be sent
-    const data = {
+    const Seller_data = {
       name,
       email,
       password,
-      address,
-      pincode,
-      catergories: catergories,
+      categories,
       phone_number,
       aadhar_card,
       GSTnumber,
-      IFSC,
-      accountNumber,
-      bankName,
     };
-    try {
-      const resp = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/sellersignup",
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (resp.status === 201) {
-        navigate("/signin");
-      } else if (resp.status === 400) {
-        alert("Something went wrong");
-      } else {
-        alert("Email or Phone number already exists");
-      }
-    } catch (error) {
-      alert("Something went wrong");
-      console.log(error);
-    }
+    
+    navigate("/selleraddress", { state: {sellerdata: Seller_data }});
   };
 
   return (
     <div className={styles.signupcontainer}>
-      <h1>Sign Up</h1>
+      <h1>Seller Details</h1>
       <div className={styles.signupform}>
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">Name*</label>
         <input
           className={styles.input}
           type="text"
@@ -94,7 +69,7 @@ export default function SellerSignup() {
           onChange={(e) => setName(e.target.value)}
         />
 
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Email*</label>
         <input
           className={styles.input}
           type="email"
@@ -104,7 +79,7 @@ export default function SellerSignup() {
         />
         {/* <br /> */}
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">Password*</label>
         <input
           className={styles.input}
           type="password"
@@ -113,31 +88,7 @@ export default function SellerSignup() {
           onChange={(e) => setPassword(e.target.value)}
         />
         {/* <br /> */}
-        <label htmlFor="address">Address</label>
-        <input
-          className={styles.input}
-          type="text"
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <label htmlFor="pincode">Pincode</label>
-        <input
-          className={styles.input}
-          type="tel"
-          id="pincode"
-          value={pincode}
-          onChange={(e) => setPincode(e.target.value)}
-        />
-        <label htmlFor="Select Categories">Select Categories</label>
-        <Select
-          isMulti
-          options={options}
-          value={catergories}
-          styles={customStyles}
-          onChange={handleCategories}
-        />
-        <label htmlFor="phone_number">Phone Number</label>
+        <label htmlFor="phone_number">Phone Number*</label>
         <input
           className={styles.input}
           type="tel"
@@ -145,7 +96,7 @@ export default function SellerSignup() {
           value={phone_number}
           onChange={(e) => setPhone_number(e.target.value)}
         />
-        <label htmlFor="aadhar_card">aadhar Card</label>
+        <label htmlFor="aadhar_card">Aadhar Card*</label>
         <input
           className={styles.input}
           type="tel"
@@ -161,29 +112,13 @@ export default function SellerSignup() {
           value={GSTnumber}
           onChange={(e) => setGSTnumber(e.target.value)}
         />
-        <label htmlFor="IFSC">IFSC</label>
-        <input
-          className={styles.input}
-          type="tel"
-          id="IFSC"
-          value={IFSC}
-          onChange={(e) => setIFSC(e.target.value)}
-        />
-        <label htmlFor="accountNumber">account Number</label>
-        <input
-          className={styles.input}
-          type="tel"
-          id="accountNumber"
-          value={accountNumber}
-          onChange={(e) => setAcountNumber(e.target.value)}
-        />
-        <label htmlFor="bankName">bank Name</label>
-        <input
-          className={styles.input}
-          type="tel"
-          id="bankName"
-          value={bankName}
-          onChange={(e) => setBankName(e.target.value)}
+        <label htmlFor="Select Categories">Select Categories*</label>
+        <Select
+          isMulti
+          options={options}
+          value={categories}
+          styles={customStyles}
+          onChange={handleCategories}
         />
 
         {/* <div>
@@ -194,7 +129,7 @@ export default function SellerSignup() {
         </div> */}
 
         <button className={styles.signupbutton} onClick={handleSubmit}>
-          Sign Up
+          Continue
         </button>
       </div>
 
