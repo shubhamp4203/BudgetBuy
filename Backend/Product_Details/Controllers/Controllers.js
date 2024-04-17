@@ -57,7 +57,10 @@ module.exports.insertProduct_post = async (req, res) => {
       res.status(401).json({ message: "SKU_ID is already in use" });
     }
   } catch (error) {
-    const product = await collection.findOneAndDelete({ seller_id, skuId: skuid });
+    const product = await collection.findOneAndDelete({ 
+      "newProduct.skuId": skuid,
+      "newProduct.seller_id": seller_id
+     });
     if (!res.headersSent) {
       res.status(500).json({ message: "Internal server error" });
     }
