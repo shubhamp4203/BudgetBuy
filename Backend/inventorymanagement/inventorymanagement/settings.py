@@ -91,9 +91,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'inventory_db',
-        'USER': 'root',
-        'PASSWORD': 'Shubham@root11',
-        'HOST': 'localhost',
+        'USER': os.getenv("RDS_USER"),
+        'PASSWORD': os.getenv("RDS_PASSWORD"),
+        'HOST': os.getenv("AMAZON_RDS_ENDPOINT"),
         'PORT': '3306',
     }
 }

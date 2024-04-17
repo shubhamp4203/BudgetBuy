@@ -93,9 +93,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'email_service_db',
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': 'localhost',
+        'USER': os.getenv("RDS_USER"),
+        'PASSWORD': os.getenv("RDS_PASSWORD"),
+        'HOST': os.getenv("AMAZON_RDS_ENDPOINT"),
         'PORT': '3306',
     }
 }

@@ -204,6 +204,7 @@ def addOrder(request):
         user_items = User_Order_item.objects.filter(user_order_id=user_order)
         user_items.delete()
         user_order.delete()
+        print(str(e))
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
