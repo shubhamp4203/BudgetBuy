@@ -5,9 +5,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
 const CartItem = ({ product }) => {
-  // const handleRemove = () => {
-  //   onRemove(product.product_id);
-  // }
   return (
     <div className={styles.cartItem}>
       <img
@@ -41,14 +38,14 @@ const CartItem = ({ product }) => {
             margin: "0rem",
             width: "fit-content",
             fontSize: "0.5rem",
-            backgroundColor: product.status != "available" ? "red" : "green",
+            backgroundColor: product.status  ? "" : "red",
             borderRadius: "5px",
             padding: "0.25rem",
             color: "white",
             
           }}
         >
-          {product.status == "available" ? "🟢 Available" : "🔴 Unavailable"}
+          {product.status ? "" : "🔴 Out of Stock"}
         </p>
         <div style={{
           display: "flex",
@@ -79,11 +76,6 @@ const CartItem = ({ product }) => {
           <button className={styles.removeButton} >Remove</button>
         </div>
       </div>
-      {/* <div className={styles.quantity}>
-        <button>-</button>
-        <span>{product.quantity}</span>
-        <button>+</button>
-      </div> */}
     </div>
   );
 };

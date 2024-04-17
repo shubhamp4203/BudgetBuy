@@ -5,10 +5,10 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 // toast.configure();
 
@@ -39,7 +39,7 @@ const FeedCard = ({ product }) => {
         }
       );
       if (resp.status == 201) {
-        toast("Product added to cart", {
+        toast.success("Product added to cart", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -150,8 +150,48 @@ const FeedCard = ({ product }) => {
     }
   };
 
+  const handlebuynow = async (e) => {
+    e.preventDefault();
+    const data = {
+      product_id: product._id,
+      seller_id: product.newProduct.seller_id,
+      amount: 1,
+      product_price: product.newProduct.price,
+    };
+    try {
+      const resp = await fetch(
+        process.env.REACT_APP_URL_AUTHENTICATION + "/addCart",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      if (resp.status == 201) {
+        toast("Product added to cart", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+        });
+        navigate("/cart");
+      } else if (resp.status == 401) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      alert("Something went wrong");
+      console.log(error);
+    }
+  };
+
   return (
     <div className={styles.productCard}>
+      <ToastContainer />
       <Link
         to={{
           pathname: `/product/${product._id}`,
@@ -213,23 +253,16 @@ const FeedCard = ({ product }) => {
             <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
           )}
         </button>
-        <Link
-          to={{
-            pathname: "/payment",
-            state: { product: product },
+        <button
+          className={`${styles.buybut} ${styles.but3}`}
+          style={{
+            backgroundColor: "#221f1f",
+            color: "white",
           }}
-          style={{ textDecoration: "none", width: "100%" }}
+          onClick={handlebuynow}
         >
-          <button
-            className={`${styles.buybut} ${styles.but3}`}
-            style={{
-              backgroundColor: "#221f1f",
-              color: "white",
-            }}
-          >
-            Buy Now
-          </button>
-        </Link>
+          Buy Now
+        </button>
       </div>
     </div>
   );

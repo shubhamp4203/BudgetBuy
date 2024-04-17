@@ -53,3 +53,12 @@
   flex-direction: column;
   margin-bottom: 6.5rem;
 }
+
+.itemprice {
+  color: green;
+}
+
+.navto {
+  text-decoration: none;
+  color: black;
+}

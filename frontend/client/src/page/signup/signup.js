@@ -119,7 +119,9 @@ export default function Signup() {
           Sign Up
         </button>
       </div>
-
+      <div className={styles.signin}>
+        Already have an account? <a href="/signin">Sign In</a>
+      </div>
       <div className={styles.privacyPolicy}>
         By signing up, you agree to our <a href="#">Privacy Policy</a> and{" "}
         <a href="#">Terms of Service</a>

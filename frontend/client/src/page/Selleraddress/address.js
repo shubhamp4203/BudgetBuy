@@ -1,6 +1,8 @@
 import { useState } from "react";
-import styles from "./SellerAddress.module.css";
+import styles from "./address.module.css";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../component/NavBar/NavBar";
+import { useLocation } from "react-router-dom";
 
 export default function SellerAddress() {
   const [city, setCity] = useState("");
@@ -10,6 +12,8 @@ export default function SellerAddress() {
   const [landmark, setlandmark] = useState("");
   const [pincode, setPincode] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const seller_data = location.state.sellerdata;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +21,7 @@ export default function SellerAddress() {
       alert("Please fill all the required fields");
       return;
     }
-    const data = {
+    const Address_data = {
       city,
       state,
       street,
@@ -25,34 +29,14 @@ export default function SellerAddress() {
       landmark,
       pincode,
     };
-    try {
-      const resp = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/addselleraddress",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-          credentials: "include",
-        }
-      );
-      if (resp.status === 201) {
-        alert("Address added successfully");
-        navigate(-1);
-      } else {
-        alert("Something went wrong");
-      }
-    } catch (err) {
-      alert("Something went wrong");
-    }
-  };
 
+    navigate("/sellerbank", {state: {sellerdata: seller_data, addressdata: Address_data}})
+  };
   return (
     <div className={styles.addresscontainer}>
-      <h1>New Address</h1>
+      <h1>Add Address</h1>
       <div className={styles.addressform}>
-        <label htmlFor="building_name">Flat no / Building Name</label>
+        <label htmlFor="building_name">Flat no / Building Name*</label>
         <input
           className={styles.input}
           type="text"
@@ -61,7 +45,7 @@ export default function SellerAddress() {
           onChange={(e) => setBuild_no(e.target.value)}
         />
 
-        <label htmlFor="street">Locality / Area / Street</label>
+        <label htmlFor="street">Locality / Area / Street*</label>
         <input
           className={styles.input}
           type="text"
@@ -71,7 +55,7 @@ export default function SellerAddress() {
         />
         {/* <br /> */}
 
-        <label htmlFor="city">City</label>
+        <label htmlFor="city">City*</label>
         <input
           className={styles.input}
           type="text"
@@ -80,7 +64,7 @@ export default function SellerAddress() {
           onChange={(e) => setCity(e.target.value)}
         />
         {/* <br /> */}
-        <label htmlFor="pincode">Pincode</label>
+        <label htmlFor="pincode">Pincode*</label>
         <input
           className={styles.input}
           type="text"
@@ -88,7 +72,7 @@ export default function SellerAddress() {
           value={pincode}
           onChange={(e) => setPincode(e.target.value)}
         />
-        <label htmlFor="state">State</label>
+        <label htmlFor="state">State*</label>
         <input
           className={styles.input}
           type="text"
@@ -105,7 +89,7 @@ export default function SellerAddress() {
           onChange={(e) => setlandmark(e.target.value)}
         />
         <button className={styles.addressbutton} onClick={handleSubmit}>
-          Add Address
+          Continue
         </button>
       </div>
     </div>

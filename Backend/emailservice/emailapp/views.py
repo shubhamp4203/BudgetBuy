@@ -11,17 +11,8 @@ import random
 import requests
 from emailapp.models import UserOtp
 from emailservice.settings import micro_services
-from asgiref.sync import async_to_sync
-import asyncio
 
-async def send_email_async(subject, message, from_email, to_email):
-    loop = asyncio.get_event_loop()
-    for _ in range(3):  # Try to send the email 3 times
-        try:
-            await loop.run_in_executor(None, send_mail, subject, message, from_email, [to_email])
-            break
-        except Exception as e:
-            print(f'Failed to send email: {e}')
+
 
 @csrf_exempt
 @api_view(['POST'])
@@ -79,6 +70,7 @@ def verify_otp(request):
 @csrf_exempt
 @api_view(['POST'])
 def reset_link(request):
+    print("called")
     try:
         data = JSONParser().parse(request)
         resetlink = data['resetlink']
@@ -107,10 +99,12 @@ def user_order_mail(request):
         subject = "Order Placed Successfully"
         body = "Your order has been placed successfully. You will receive a confirmation email shortly."
         try:
-            print("HEY")
             send_mail(subject, body, admin_email, [user_email], fail_silently=False)
             return Response({'message': 'Order Placed Successfully'}, status=status.HTTP_200_OK)
         except BadHeaderError:
             return Response({'error': 'Invalid header found.'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(str(e))
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

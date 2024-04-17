@@ -2,6 +2,55 @@ const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 
+const addressSchema = new mongoose.Schema({
+  pincode: {
+    type: Number,
+    required: [true, "Enter a pincode"],
+    validate:[validator= function (v) {
+      return /^[1-9]{1}[0-9]{2}[0-9]{3}$/.test(v.toString()); // Change "IN" to your country code if necessary
+    },
+    message= (props) => `${props.value} is not a valid pin code!`,
+    ]
+  },
+  city: {
+    type: String,
+    required: [true, "Enter a city"],
+  },
+  state: {
+    type: String,
+    required: [true, "Enter a state"],
+  },
+  building_name: {
+    type: String,
+    required: [true, "Enter a building name"],
+  },
+  street: {
+    type: String,
+    required: [true, "Enter a street"],
+  },
+  landmark: {
+    type: String,
+  }
+})
+
+const bankSchema = new mongoose.Schema({
+  bankname: {
+    type: String,
+    required: [true, "Enter a bank name"],
+  },
+  acc_no: {
+    type: String,
+    required: [true, "Enter your account number"],
+  },
+  ifsc_code: {
+    type: String,
+    required: [true, "Enter your IFSC code"],
+  },
+  branch_name: {
+    type: String,
+    required: [true, "Enter your branch name"],
+  }
+})
 const SellerSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -30,20 +79,6 @@ const SellerSchema = new mongoose.Schema({
     required: [true, "please enter password"],
     minlength: [6, "minimum length is 6"]
   },
-  address: {
-    type: String,
-    required: [true, "please enter an address"]
-  },
-  pincode: {
-    type: Number,
-    required: [true, "Enter a pincode"],
-    validate: [
-      (validator = function (v) {
-        return /^[1-9]{1}[0-9]{2}[0-9]{3}$/.test(v.toString());
-      }),
-      (message = (props) => `${props.value} is not a valid pin code!`),
-    ]
-  },
   aadhar_card: {
     type: Number,
     required: [true, "Enter your aadhar card number"],
@@ -56,40 +91,13 @@ const SellerSchema = new mongoose.Schema({
   },
   GSTnumber: {
     type: String,
-    validate: {
-      validator: function (v) {
-        return /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/.test(v);
-      },
-      message: (props) => `${props.value} is not a valid GST number!`,
-    }
   },
-  IFSC: {
-    type: String,
-    required: [true, "enter your IFBC number"],
-    validate: {
-      validator: function (v) {
-        return /^[A-Za-z]{4}\d{7}$/.test(v);
-      },
-      message: (props) => `${props.value} is not a valid IFSC code!`,
-    }
+  Categories: {
+    type: Array,
+    minlength: 1
   },
-  accountNumber: {
-    type: Number,
-    required: [true, "Enter your bank number"],
-    validate: {
-      validator: function (v) {
-        return /^\d{9,18}$/.test(v.toString());
-      },
-      message: (props) => `${props.value} is not a valid bank account number!`,
-    }
-  },
-  bankName: {
-    type: String,
-    required: [true, "Enter your Bank name"],
-  },
-  Catergories: {
-    type: String,
-  }
+  address: addressSchema,
+  bank_details: bankSchema
 });
 
 SellerSchema.pre("save", async function (next) {

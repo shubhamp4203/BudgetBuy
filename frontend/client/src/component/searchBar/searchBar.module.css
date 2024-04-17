@@ -29,6 +29,7 @@
 .search {
   margin: 0;
   padding: 0;
+  padding-left: 0.5rem;
   border: 0;
   width: 90%;
   height: 85%;
@@ -83,4 +84,9 @@ button:hover {
   margin-block: 1px;
   width: 50px;
   height: 20px;
+}
+
+.filbut {
+  margin-left:1rem;
+  color:white;
 }

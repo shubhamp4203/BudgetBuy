@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
-        <a href="/">
+        <a href="/home">
           <li className={styles.navbarItem}>
             <HomeIcon sx={{ color: "black" }} />
           </li>

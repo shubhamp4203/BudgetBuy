@@ -40,7 +40,6 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
   };
 
   async function handlelogout() {
-    console.log("thai che");
     try {
       const response = await fetch(
         process.env.REACT_APP_URL_AUTHENTICATION + "/logout",
@@ -53,7 +52,6 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
         }
       );
       const responseData = await response.json();
-      console.log(responseData.message);
       if (response.ok) {
         console.log("logged out");
         navigate("/signin");
@@ -191,7 +189,7 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
     <div className={styles.homenav}>
       <FilterListIcon
         onClick={filtertoggleDrawer(true)}
-        className={styles.profbut}
+        className={styles.filbut}
       />
       <Drawer
         anchor="right"

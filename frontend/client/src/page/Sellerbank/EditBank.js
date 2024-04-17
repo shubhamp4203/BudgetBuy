@@ -1,8 +1,8 @@
 import { useState } from "react";
-import styles from "./SellerCard.module.css";
+import styles from "./EditBank.module.css";
 import { useNavigate } from "react-router-dom";
 
-export default function Card() {
+export default function EditBank() {
   const [cardnumber, setCardnumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [confirmnum, setConfirm] = useState("");

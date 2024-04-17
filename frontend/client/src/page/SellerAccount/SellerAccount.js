@@ -58,7 +58,7 @@ export default function SellerAccount() {
               </ListItem>
             </Link>
             <Divider />
-            <Link to="/addselleraddress" className={styles.navto}>
+            <Link to="/editselleraddress" className={styles.navto}>
               <ListItem key="Address" disablePadding>
                 <ListItemButton
                   sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -71,7 +71,7 @@ export default function SellerAccount() {
               </ListItem>
             </Link>
             <Divider />
-            <Link to="/addsellercard" className={styles.navto}>
+            <Link to="/editbank" className={styles.navto}>
               <ListItem key="Cards" disablePadding>
                 <ListItemButton
                   sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -80,6 +80,33 @@ export default function SellerAccount() {
                     <AddCardIcon sx={{ color: "black" }} />
                   </ListItemIcon>
                   <ListItemText primary="Edit Cards" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+
+            <Divider />
+            <Link to="/addproduct" className={styles.navto}>
+              <ListItem key="Add New Product" disablePadding>
+                <ListItemButton
+                  sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                >
+                  <ListItemIcon>
+                    <AddCircleIcon sx={{ color: "black" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Add New Product" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Divider />
+            <Link to="/yourproducts" className={styles.navto}>
+              <ListItem key="your products" disablePadding>
+                <ListItemButton
+                  sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                >
+                  <ListItemIcon>
+                    <ViewListIcon sx={{ color: "black" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Your Products" />
                 </ListItemButton>
               </ListItem>
             </Link>
@@ -107,32 +134,6 @@ export default function SellerAccount() {
                 <ListItemText primary="Log Out" />
               </ListItemButton>
             </ListItem>
-            <Divider />
-            <Link to="/addproduct" className={styles.navto}>
-              <ListItem key="Add New Product" disablePadding>
-                <ListItemButton
-                  sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                >
-                  <ListItemIcon>
-                    <AddCircleIcon sx={{ color: "black" }} />
-                  </ListItemIcon>
-                  <ListItemText primary="Add New Product" />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-            <Divider />
-            <Link to="/yourproducts" className={styles.navto}>
-              <ListItem key="your products" disablePadding>
-                <ListItemButton
-                  sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                >
-                  <ListItemIcon>
-                    <ViewListIcon sx={{ color: "black" }} />
-                  </ListItemIcon>
-                  <ListItemText primary="Your Products" />
-                </ListItemButton>
-              </ListItem>
-            </Link>
           </List>
         </Box>
       </div>

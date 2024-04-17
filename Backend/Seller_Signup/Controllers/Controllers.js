@@ -1,7 +1,9 @@
 const Seller = require("../Models/Seller_Model");
-const JWT = require("jsonwebtoken");
-require("dotenv").config();
+const { v4: uuidv4 } = require("uuid");
+const jwt = require("jsonwebtoken");
+require("dotenv").config({ path: "../.env" });
 const tokencookies = require("../Token/CreateToken");
+const axios = require("axios");
 
 //This  function handles all the error that could possibly be there while registering
 const errorHandle = (err) => {
@@ -10,20 +12,11 @@ const errorHandle = (err) => {
     phone_number: "",
     email: "",
     password: "",
-    address: "",
-    pincode: "",
     aadhar_card: "",
     GSTnumber: "",
-    IFSC: "",
-    accountNumber: "",
-    bankName: "",
-    Catergories: "",
   };
-  // console.log(err)
-  //this thing is only for the fields that need unique values
   if (err.code) {
     errors.email = "the phone number or email is already registered";
-    // console.log(err.code);
     return errors;
   }
   if (err.message.includes("Seller validation failed")) {
@@ -34,29 +27,17 @@ const errorHandle = (err) => {
   return errors;
 };
 
-const maxAge = 3 * 60 * 60 * 24;
-
-//creating a JWT token
-// const CreateToken = (id, email,name) => {
-//   return JWT.sign({ id, email, name},process.env.SECRET_KEY ,{
-//     expiresIn: maxAge,
-//   });
-// };
-
 module.exports.seller_signup_post = async (req, res) => {
   const {
     name,
     phone_number,
     email,
     password,
-    address,
-    pincode,
     aadhar_card,
     GSTnumber,
-    IFSC,
-    accountNumber,
-    bankName,
-    Catergories,
+    categories,
+    address,
+    bank_details
   } = req.body;
   try {
     const seller = await Seller.create({
@@ -65,36 +46,37 @@ module.exports.seller_signup_post = async (req, res) => {
       email,
       password,
       address,
-      pincode,
       aadhar_card,
       GSTnumber,
-      IFSC,
-      accountNumber,
-      bankName,
-      Catergories,
+      Categories: categories,
+      bank_details
     });
     res.status(201).json({ seller: seller._id });
-    console.log(seller._id);
-    console.log("seller signup post");
   } catch (err) {
+    console.log(err);
     const errors = errorHandle(err);
     res.status(400).json({ errors });
   }
 };
 
 module.exports.seller_login_post = async (req, res) => {
-  console.log("login post");
   const { email, password } = req.body;
   try {
     const seller = await Seller.login(email, password);
-    // const token=await CreateToken(seller._id,seller.email,seller.password);
-    // res.cookie('jwt_seller',token,{httpOnly:true,maxAge:maxAge*1000})
-    tokencookies(res, seller._id, seller.email, seller.name);
-    res.status(201).json({ seller: seller._id });
-    console.log("login success");
+    const token = tokencookies(seller._id, seller.email, seller.name);
+    res.cookie("sellerjwt", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+      // sameSite: "None",
+      // secure: true,
+      // path: "/",
+      // domain: ".ngrok-free.app",
+    });
+    res.status(201).json({ message: "Seller Logged in successfully" });
   } catch (err) {
     console.log(err);
-    res.status(400).json({});
+    res.clearCookie("userjwt");
+    res.status(400).json({message: "Login failed", error: err});
   }
 };
 
@@ -128,6 +110,54 @@ module.exports.updateSeller_put = async (req, res) => {
 };
 
 module.exports.seller_logout_post = async (req, res) => {
-  res.clearCookie("jwt_seller");
+  res.clearCookie("sellerjwt");
   res.status(200).json({ message: "Seller Logged out successfully" });
+};
+
+module.exports.forgotPassword = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const user = await Seller.findOne({ email });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+    } else {
+      const uid = uuidv4();
+      const payload = { userId: user._id };
+      const token = jwt.sign(payload, process.env.SECRET_KEY, {
+        expiresIn: "1h",
+      });
+      const resetlink =
+        process.env.FRONTEND + "/seller/reset-password/" + uid + "/" + token;
+        const resp = await axios.post(process.env.EMAIL + "/resetlink/", {
+          resetlink,
+          email,
+        });
+      if (resp.status == 200) {
+        console.log("OK")
+        res.status(200).json({ message: "Reset link sent to your email" });
+      } else {
+        res.status(401).json({ message: "Something went wrong" });
+      }
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(402).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports.resetPassword = async (req, res) => {
+  const newpass = req.body.newpassword;
+  const token = req.body.token;
+  try {
+    const payload = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await Seller.findOne({ _id: payload.userId });
+    if (!user) {
+      res.status(400).json({ message: "Invalid token" });
+    }
+    user.password = newpass;
+    await user.save();
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" });
+  }
 };

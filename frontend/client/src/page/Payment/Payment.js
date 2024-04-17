@@ -61,7 +61,6 @@ function Payment() {
   };
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    setSendingmail(true);
     if (addressId === "") {
       alert("Select an address");
       return;
@@ -70,6 +69,7 @@ function Payment() {
       alert("Select a payment method");
       return;
     }
+    setSendingmail(true);
     const addressobj = address.find((add) => add._id === addressId);
     const addressString =
       "Address: " +

@@ -34,4 +34,6 @@
 .removeButton {
   margin:0rem;
   width: 40%;
+  border-radius: 4px;
+  
 }

@@ -60,7 +60,6 @@ module.exports.signup_post = async (req, res) => {
       password,
       tags,
     });
-    console.log("called")
     const user_id = user._id;
     const useremail = user.email;
     const resp = await axios.post(process.env.ORDER + "/createCart/", {
@@ -99,9 +98,8 @@ module.exports.callback = async (req, res) => {
       const user = await User.findOne({ email: id_token.email });
       if (user) {
         const token = tokencookies(user._id, user.email, user.name);
-        console.log(req.hostname);
         res
-          .cookie("jwt", token, {
+          .cookie("userjwt", token, {
             httpOnly: true,
             maxAge: 3 * 24 * 60 * 60 * 1000,
             // sameSite: "None",
@@ -128,8 +126,7 @@ module.exports.login_post = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = tokencookies(user._id, user.email, user.name);
-    console.log("Setting cookie");
-    res.cookie("jwt", token, {
+    res.cookie("userjwt", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       // sameSite: "None",
@@ -141,22 +138,11 @@ module.exports.login_post = async (req, res) => {
     res.json({ message: "Login Successfull" });
     // throw new Error("Error in setting cookie");
   } catch (err) {
-    res.clearCookie("jwt");
+    console.log(err);
+    res.clearCookie("userjwt");
     res.status(400).json({ message: "Login failed", error: err });
   }
 };
-
-// function generateAuthUrl(clientId, redirectUri, scope) {
-//   let authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-//   authUrl += "?client_id=" + encodeURIComponent(clientId);
-//   authUrl += "&redirect_uri=" + encodeURIComponent(redirectUri);
-//   authUrl += "&response_type=code";
-//   authUrl += "&scope=" + encodeURIComponent(scope);
-//   authUrl += "&access_type=offline";
-//   return authUrl;
-// }
-
-// module.exports.
 
 module.exports.updateUser_put = async (req, res) => {
   const user_id = req.authdata.id;
@@ -191,7 +177,7 @@ module.exports.updateUser_put = async (req, res) => {
 module.exports.logout_post = async (req, res) => {
   try {
     res
-      .clearCookie("jwt", {
+      .clearCookie("userjwt", {
         httpOnly: true,
         maxAge: 0,
         // sameSite: "None",
@@ -253,7 +239,7 @@ module.exports.forgotPassword = async (req, res) => {
         expiresIn: "1h",
       });
       const resetlink =
-      process.env.FRONTEND + "/reset-password/" + uid + "/" + token;
+        process.env.FRONTEND + "/user/reset-password/" + uid + "/" + token;
       const resp = await axios.post(process.env.EMAIL + "/resetlink/", {
         resetlink,
         email,
@@ -269,31 +255,30 @@ module.exports.forgotPassword = async (req, res) => {
   }
 };
 
-module.exports.resetPassword = async (req,res) => {
+module.exports.resetPassword = async (req, res) => {
   const newpass = req.body.newpassword;
   const token = req.body.token;
   try {
     const payload = jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findOne({ _id: payload.userId });
-    if(!user) {
-      res.status(400).json({message: "Invalid token"});
+    if (!user) {
+      res.status(400).json({ message: "Invalid token" });
     }
     user.password = newpass;
     await user.save();
-    res.status(200).json({message: "Password changed successfully"});
-  } catch(err) {
-    res.status(401).json({message: "Invalid token"});
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" });
   }
-}
+};
 
 module.exports.insertAddress = async (req, res) => {
   const user_id = req.authdata.id;
-  const {pincode, city, state, building_name, street, landmark} = req.body;
-  console.log(user_id, pincode, city, state, building_name, street, landmark)
+  const { pincode, city, state, building_name, street, landmark } = req.body;
   try {
-    const user = await User.findOne({_id: user_id});
-    if(!user) {
-      res.status(400).json({message: "User not found"});
+    const user = await User.findOne({ _id: user_id });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
     } else {
       user.address.push({
         pincode,
@@ -301,94 +286,137 @@ module.exports.insertAddress = async (req, res) => {
         state,
         building_name,
         street,
-        landmark
+        landmark,
       });
       await user.save();
-      console.log("Hello")
-      res.status(201).json({message: "Address added successfully"});
+      res.status(201).json({ message: "Address added successfully" });
     }
-  } catch(err) {
-    res.status(400).json({message: err.message});
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
-}
+};
 
-module.exports.insertCard = async (req,res) => {
+module.exports.insertCard = async (req, res) => {
   // Encrypt
-// const ciphertext = CryptoJS.AES.encrypt('MM/YY', 'secret key 123').toString();
+  // const ciphertext = CryptoJS.AES.encrypt('MM/YY', 'secret key 123').toString();
 
-// Decrypt
-// const bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
-// const originalText = bytes.toString(CryptoJS.enc.Utf8);
+  // Decrypt
+  // const bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
+  // const originalText = bytes.toString(CryptoJS.enc.Utf8);
   const user_id = req.authdata.id;
-  const {card_number, expiry_date, cardcvv} = req.body;
-  const card_no = CryptoJS.AES.encrypt(card_number, process.env.SECRET_KEY).toString();
-  const cardExpiryDate = CryptoJS.AES.encrypt(expiry_date, process.env.SECRET_KEY).toString();
+  const { card_number, expiry_date, cardcvv } = req.body;
+  const card_no = CryptoJS.AES.encrypt(
+    card_number,
+    process.env.SECRET_KEY
+  ).toString();
+  const cardExpiryDate = CryptoJS.AES.encrypt(
+    expiry_date,
+    process.env.SECRET_KEY
+  ).toString();
   const cvv = CryptoJS.AES.encrypt(cardcvv, process.env.SECRET_KEY).toString();
   try {
-    const user = await User.findOne({_id: user_id});
-    if(!user) {
-      res.status(400).json({message: "User not found"});
-    }
-    else {
-      if (user.card_details.some(detail => detail.card_no === card_no)) {
-        res.status(401).json({message: "Card already exists"});
+    const user = await User.findOne({ _id: user_id });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+    } else {
+      if (user.card_details.some((detail) => detail.card_no === card_no)) {
+        res.status(401).json({ message: "Card already exists" });
       } else {
         user.card_details.push({
           card_no,
           cardExpiryDate,
-          cvv
-        })
-        console.log(user)
+          cvv,
+        });
         await user.save();
-        res.status(201).json({message: "Card added successfully"});
+        res.status(201).json({ message: "Card added successfully" });
       }
     }
-  } catch(err) {
-    console.log(err.message)
-    res.status(400).json({message: err.message});
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({ message: err.message });
   }
-}
+};
 
 module.exports.getUser = async (req, res) => {
   const user_id = req.authdata.id;
   try {
-    const user = await User.findOne({_id: user_id});
-    if(!user) {
-      res.status(400).json({message: "User not found"});
-    }
-    else {
+    const user = await User.findOne({ _id: user_id });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+    } else {
       const cards = user.card_details;
-      cards.forEach(card => {
-        console.log(card.card_no)
-        card.card_no = CryptoJS.AES.decrypt(card.card_no, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
-        card.cardExpiryDate = CryptoJS.AES.decrypt(card.cardExpiryDate, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
-        card.cvv = CryptoJS.AES.decrypt(card.cvv, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
+      cards.forEach((card) => {
+        card.card_no = CryptoJS.AES.decrypt(
+          card.card_no,
+          process.env.SECRET_KEY
+        ).toString(CryptoJS.enc.Utf8);
+        card.cardExpiryDate = CryptoJS.AES.decrypt(
+          card.cardExpiryDate,
+          process.env.SECRET_KEY
+        ).toString(CryptoJS.enc.Utf8);
+        card.cvv = CryptoJS.AES.decrypt(
+          card.cvv,
+          process.env.SECRET_KEY
+        ).toString(CryptoJS.enc.Utf8);
       });
-      res.status(200).json({user});
+      res.status(200).json({ user });
     }
-  } catch(err) {
-    res.status(400).json({message: err.message});
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
-}
+};
 
-module.exports.getUserOrder = async (req,res) => {
+module.exports.getUserOrder = async (req, res) => {
   const user_id = req.authdata.id;
-  console.log(req.body)
   const status = req.body.type;
-  console.log(user_id, status)
   try {
     const resp = await axios.get(process.env.ORDER + "/getUserOrder/", {
       params: {
-        user_id, 
-        status
-      }
+        user_id,
+        status,
+      },
     });
-    if(resp.status == 200) {
-      res.status(200).json({result: resp.data});
+    if (resp.status == 200) {
+      res.status(200).json({ result: resp.data });
+    } else if (resp.status == 204) {
+      res.status(204).json({ message: "No orders found" });
     } else {
-      res.status(400).json({message: "Something went wrong"});
+      res.status(400).json({ message: "Something went wrong" });
     }
-  } catch(err) {
-    res.status(400).json({message: err.message});
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+module.exports.wishlist_post = async (req, res) => {
+  const user_id = req.authdata.id;
+  const product_id = req.body.product_id;
+  try {
+    const resp = await axios.post(process.env.PRODUCT + "/wishlist/", {
+      user_id,
+      product_id,
+    });
+    if (resp.status == 201) {
+      res.status(201).json({ message: "Product added to wishlist" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports.removeWishlist_post = async (req, res) => {
+  const user_id = req.authdata.id;
+  const product_id = req.body.product_id;
+  try {
+    const resp = await axios.post(process.env.PRODUCT + "/removeWishlist/", {
+      user_id,
+      product_id,
+    });
+    if (resp.status == 200) {
+      res.status(200).json({ message: "Product removed from wishlist" });
+    }
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
   }
 }
