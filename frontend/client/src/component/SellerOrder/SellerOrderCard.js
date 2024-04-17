@@ -1,6 +1,7 @@
-import styles from "./FeedCard.module.css";
+import styles from "./SellerOrderCard.module.css";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ChatIcon from "@mui/icons-material/Chat";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -12,11 +13,16 @@ import { useNavigate } from "react-router-dom";
 
 // toast.configure();
 
-const FeedCard = ({ product }) => {
+const SellerOrderCard = ({ product }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+  };
 
   const handleaddcart = async (e) => {
     e.preventDefault();
@@ -193,11 +199,14 @@ const FeedCard = ({ product }) => {
           {product.newProduct.likes}
         </div>
       </div>
-      <div className={styles.prodescription}>
-        <p>{product.newProduct.description}</p>
+      <div className={styles.custdetails}>
+        <div className={styles.custag}>Customer Name</div>
+        <div className={styles.cusvalue}>juju mondoni</div>
+        <div className={styles.custag}>Address</div>
+        <div className={styles.cusvalue}>A-57, Dongari, navi mumbai</div>
       </div>
       <div className={styles.infodiv}>
-        <button
+        {/* <button
           onClick={handleaddcart}
           className={`${styles.buybut} ${styles.but1}`}
         >
@@ -212,27 +221,42 @@ const FeedCard = ({ product }) => {
           ) : (
             <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
           )}
-        </button>
+        </button> */}
         <Link
           to={{
-            pathname: "/payment",
+            pathname: "/editproduct",
             state: { product: product },
           }}
-          style={{ textDecoration: "none", width: "100%" }}
+          style={{ textDecoration: "none", width: "100%", flex: 1 }}
         >
           <button
-            className={`${styles.buybut} ${styles.but3}`}
+            className={styles.buybut}
             style={{
               backgroundColor: "#221f1f",
               color: "white",
             }}
           >
-            Buy Now
+            <ChatIcon sx={{ fontSize: 25, color: "white" }} />
           </button>
         </Link>
+
+        <button
+          onClick={handleClick}
+          className={styles.buybut}
+          style={{
+            textDecoration: "none",
+            width: "100%",
+            flex: 3,
+            padding: "0.6rem",
+            backgroundColor: isClicked ? "white" : "#221f1f",
+            color: isClicked ? "#221f1f" : "white",
+          }}
+        >
+          delivered
+        </button>
       </div>
     </div>
   );
 };
 
-export default FeedCard;
+export default SellerOrderCard;

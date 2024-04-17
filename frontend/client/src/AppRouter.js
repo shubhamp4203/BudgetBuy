@@ -17,9 +17,14 @@ import SellerProfile from "./page/SellerProfile/SellerProfile";
 import Address from "./page/Address/address";
 import UserAccount from "./page/useraccount/useraccount";
 import Card from "./page/Card/card";
+import SellerCard from "./page/SellerCard/SellerCard";
 import SellerAccount from "./page/SellerAccount/SellerAccount";
 import AddProduct from "./page/AddProduct/AddProduct";
 import AdvertiseProduct from "./page/AdvertiseProduct/AdvertiseProduct";
+import SellerAddress from "./page/SellerAddress/SellerAddress";
+import YourProduct from "./page/YourProduct/YourProduct";
+import EditProduct from "./page/EditProduct/EditProduct";
+import SellerOrder from "./page/SellerOrder/SellerOrder";
 
 const AppRouter = () => {
   return (
@@ -40,10 +45,15 @@ const AppRouter = () => {
         <Route path="/sellerprofile" element={<SellerProfile />} />
         <Route path="/selleraccount" element={<SellerAccount />} />
         <Route path="/addaddress" element={<Address />} />
+        <Route path="/addselleraddress" element={<SellerAddress />} />
         <Route path="/myaccount" element={<UserAccount />} />
         <Route path="/addcard" element={<Card />} />
+        <Route path="/addsellercard" element={<SellerCard />} />
         <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/advertiselist" element={<AdvertiseProduct />} />
+        <Route path="/yourproducts" element={<YourProduct />} />
+        <Route path="/editproduct" element={<EditProduct />} />
+        <Route path="/sellerorder" element={<SellerOrder />} />
       </Routes>
     </Router>
   );

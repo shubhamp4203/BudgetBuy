@@ -1,4 +1,4 @@
-import styles from "./FeedCard.module.css";
+import styles from "./YourCard.module.css";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 // toast.configure();
 
-const FeedCard = ({ product }) => {
+const YourCard = ({ product }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -197,7 +197,7 @@ const FeedCard = ({ product }) => {
         <p>{product.newProduct.description}</p>
       </div>
       <div className={styles.infodiv}>
-        <button
+        {/* <button
           onClick={handleaddcart}
           className={`${styles.buybut} ${styles.but1}`}
         >
@@ -212,10 +212,10 @@ const FeedCard = ({ product }) => {
           ) : (
             <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
           )}
-        </button>
+        </button> */}
         <Link
           to={{
-            pathname: "/payment",
+            pathname: "/editproduct",
             state: { product: product },
           }}
           style={{ textDecoration: "none", width: "100%" }}
@@ -227,7 +227,7 @@ const FeedCard = ({ product }) => {
               color: "white",
             }}
           >
-            Buy Now
+            Edit Product
           </button>
         </Link>
       </div>
@@ -235,4 +235,4 @@ const FeedCard = ({ product }) => {
   );
 };
 
-export default FeedCard;
+export default YourCard;
