@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./Feedlist.module.css";
-import FeedCard from "./FeedCard";
-const Feedlist = ({ products, searchTerm }) => {
+import styles from "./YourProductList.module.css";
+import YourCard from "./YourCard";
+const YourProductList = ({ products, searchTerm }) => {
+  console.log(searchTerm);
   const filteredProducts = searchTerm
     ? products.filter((product) =>
         product.newProduct.name
@@ -14,12 +15,14 @@ const Feedlist = ({ products, searchTerm }) => {
   return (
     <div className={styles.container}>
       <div className={styles.productList}>
+        {/* {products.map((product) => (
+          <FeedCard product={product} key={product._id}/> */}
         {filteredProducts.map((product) => (
-          <FeedCard product={product} key={product._id} />
+          <YourCard product={product} />
         ))}
       </div>
     </div>
   );
 };
 
-export default Feedlist;
+export default YourProductList;

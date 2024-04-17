@@ -3,6 +3,11 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 .productDetails {
   display: flex;
@@ -14,7 +19,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   height: 100%;
-  margin-top: 5rem;
+  /* margin-top: 5rem; */
 }
 
 .imginfo {
@@ -29,7 +34,7 @@ body {
 
 .proinfo {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 3fr 3fr;
   width: 100%;
   padding: 0.5rem;
   border-bottom: 1px solid #221f1f;
@@ -53,8 +58,12 @@ body {
 }
 .proinfo button {
   grid-column: 1 / -1;
-  width: 100%;
-  padding: 10px;
+  width: 70%;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  justify-self: center;
 }
 
 .description {
@@ -82,6 +91,34 @@ body {
   border-radius: 5px;
   display: inline-block;
 }
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  /* border-bottom: 1px solid #ccc; */
+  background-color: white;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  padding-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+}
+.footer button {
+  margin-top: 0;
+  width: 70%;
+  background-color: #221f1f;
+  color: white;
+  font-weight: 600;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+}
 .header {
   display: flex;
   flex-direction: column;
@@ -91,12 +128,11 @@ body {
   border-bottom: 1px solid #ccc;
   background-color: #221f1f;
   color: white;
-  position: fixed;
+  position: sticky;
   top: 0;
   z-index: 100;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
   padding-inline: 1rem;
-  width: 100%;
 }
 
 .privacy-policy a {

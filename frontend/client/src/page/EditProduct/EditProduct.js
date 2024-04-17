@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import styles from "./AddProduct.module.css";
+import styles from "./EditProduct.module.css";
 import Select from "react-select";
 
-export default function AddProduct() {
+export default function EditProduct() {
   const [stock, setStock] = useState("");
   const [skuId, setSkuId] = useState("");
   const [name, setName] = useState("");
@@ -91,55 +91,59 @@ export default function AddProduct() {
 
   return (
     <div className={styles.signupcontainer}>
-      <h1>Add Product</h1>
+      <h1>Edit Product</h1>
       <div className={styles.signupform}>
-        <label htmlFor="stock">Stock *</label>
+        <label htmlFor="stock">Stock</label>
         <input
           className={styles.input}
           type="number"
           id="stock"
           value={stock}
           onChange={(e) => setStock(e.target.value)}
-          required
         />
 
-        <label htmlFor="skuId">SKU ID *</label>
+        <label htmlFor="skuId">SKU ID</label>
         <input
           className={styles.input}
           type="text"
           id="skuId"
           value={skuId}
           onChange={(e) => setSkuId(e.target.value)}
-          required
         />
 
-        <label htmlFor="name">Name *</label>
+        <label htmlFor="name">Name</label>
         <input
           className={styles.input}
           type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
         />
 
-        <label htmlFor="price">Price *</label>
+        <label htmlFor="price">Price</label>
         <input
           className={styles.input}
           type="number"
           id="price"
           value={price}
-          required
           onChange={(e) => setPrice(e.target.value)}
         />
 
-        <label htmlFor="description">Description *</label>
+        <label htmlFor="likes">Likes</label>
+        <input
+          className={styles.input}
+          type="number"
+          id="likes"
+          value={likes}
+          onChange={(e) => setLikes(e.target.value)}
+        />
+
+        <label htmlFor="description">Description</label>
         <textarea
           className={styles.input}
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          required
         />
 
         <label htmlFor="color">Color</label>
@@ -159,23 +163,21 @@ export default function AddProduct() {
           value={dimension}
           onChange={(e) => setDimension(e.target.value)}
         />
-        <label htmlFor="Select Tags">Select Tags *</label>
+        <label htmlFor="Select Tags">Select Tags</label>
         <Select
           isMulti
           options={options}
           value={selectedTags}
           styles={customStyles}
           onChange={handleTagChange}
-          required
         />
-        <label htmlFor="image">Image *</label>
+        <label htmlFor="image">Image</label>
         <input
           className={`${styles.input} ${styles.inputFileHidden}  ${styles.customFileUpload}`}
           type="file"
           id="image"
           accept="image/*"
           onChange={handleImageChange}
-          required
         />
 
         <button className={styles.signupbutton} onClick={handleSubmit}>

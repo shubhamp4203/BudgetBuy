@@ -29,6 +29,7 @@ const ProductDetail = () => {
     };
     getproduct();
   }, []);
+
   // const product = products.find((p) => p.id === parseInt(productId));
 
   // if (!product) {
@@ -38,7 +39,7 @@ const ProductDetail = () => {
   return (
     <>
       {item.newProduct ? (
-        <div>
+        <div className={style.container}>
           <div className={style.header}>
             <h1>{item.newProduct.name}</h1>
           </div>
@@ -83,8 +84,9 @@ const ProductDetail = () => {
                 {item.newProduct.specification}
               </div>
             </div>
+
             <div className={style.proinfo}>
-              <div className={style.protag}>Name:</div>
+              <div className={style.protag}>Seller Name:</div>
               <div className={style.provalue}>{item.newProduct.name}</div>
               <div className={style.protag}>Price: </div>
               <div className={style.provalue}>{item.newProduct.price}</div>
@@ -104,6 +106,9 @@ const ProductDetail = () => {
               By signing up, you agree to our <a href="#">Privacy Policy</a> and{" "}
               <a href="#">Terms of Service</a>
             </div>
+          </div>
+          <div className={style.footer}>
+            <button>Buy Now</button>
           </div>
         </div>
       ) : (
