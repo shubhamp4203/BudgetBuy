@@ -11,7 +11,7 @@ const SellerNavbar = () => {
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
-        <a href="/">
+        <a href="/yourproducts">
           <li className={styles.navbarItem}>
             <InventoryIcon sx={{ color: "black" }} />
           </li>

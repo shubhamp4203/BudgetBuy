@@ -42,7 +42,7 @@ export default function SellerSignin() {
         //   secure: true,
         // });
         // console.log("jwt:", resjwtcookie);
-        navigate("/selleraccount");
+        navigate("/yourproducts");
       } else {
         alert("Invalid email or password");
       }

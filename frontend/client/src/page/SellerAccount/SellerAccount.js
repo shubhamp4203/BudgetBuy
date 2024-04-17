@@ -11,6 +11,9 @@ import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ViewListIcon from "@mui/icons-material/ViewList";
+
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -75,7 +78,7 @@ export default function SellerAccount() {
               </ListItem>
             </Link>
             <Divider />
-            <Link to="/addaddress" className={styles.navto}>
+            <Link to="/editselleraddress" className={styles.navto}>
               <ListItem key="Address" disablePadding>
                 <ListItemButton
                   sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -88,7 +91,7 @@ export default function SellerAccount() {
               </ListItem>
             </Link>
             <Divider />
-            <Link to="/addcard" className={styles.navto}>
+            <Link to="/editbank" className={styles.navto}>
               <ListItem key="Cards" disablePadding>
                 <ListItemButton
                   sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -97,6 +100,33 @@ export default function SellerAccount() {
                     <AddCardIcon sx={{ color: "black" }} />
                   </ListItemIcon>
                   <ListItemText primary="Edit Cards" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+
+            <Divider />
+            <Link to="/addproduct" className={styles.navto}>
+              <ListItem key="Add New Product" disablePadding>
+                <ListItemButton
+                  sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                >
+                  <ListItemIcon>
+                    <AddCircleIcon sx={{ color: "black" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Add New Product" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Divider />
+            <Link to="/yourproducts" className={styles.navto}>
+              <ListItem key="your products" disablePadding>
+                <ListItemButton
+                  sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                >
+                  <ListItemIcon>
+                    <ViewListIcon sx={{ color: "black" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Your Products" />
                 </ListItemButton>
               </ListItem>
             </Link>

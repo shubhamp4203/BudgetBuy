@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import Button from '@mui/joy/Button';
-import { ReactComponent as Visa } from "../../visacard.svg";
+import Button from "@mui/joy/Button";
+import { ReactComponent as Visa } from "../../assest/visacard.svg";
 
 function Payment() {
   const [address, setAddress] = useState([]);
@@ -71,13 +71,26 @@ function Payment() {
     }
     setSendingmail(true);
     const addressobj = address.find((add) => add._id === addressId);
-    const addressString = "Address: " + addressobj.building_name + ", " + addressobj.street + ", " + addressobj.landmark + ", " + addressobj.city + ", " + addressobj.state + ", " + addressobj.pincode + "\n";
+    const addressString =
+      "Address: " +
+      addressobj.building_name +
+      ", " +
+      addressobj.street +
+      ", " +
+      addressobj.landmark +
+      ", " +
+      addressobj.city +
+      ", " +
+      addressobj.state +
+      ", " +
+      addressobj.pincode +
+      "\n";
     const payment = "Cash On Delivery";
     const data = {
       user_id: cartdata.user_id,
       address: addressString,
       payment_method: payment,
-    }
+    };
     const resp = await fetch(process.env.REACT_APP_URL_ORDER + "/placeOrder/", {
       method: "POST",
       headers: {
@@ -86,14 +99,13 @@ function Payment() {
       body: JSON.stringify(data),
     });
     setSendingmail(false);
-    if(resp.status == 201) {
+    if (resp.status == 201) {
       alert("Order Placed Successfully");
       navigate("/myorders");
-    }
-    else {
+    } else {
       alert("Order Failed");
     }
-  }
+  };
 
   const handleaddaddress = () => {
     navigate("/addaddress");
@@ -104,7 +116,6 @@ function Payment() {
   const handleCancelOrder = () => {
     navigate("/cart");
   };
-
 
   return (
     <>
@@ -191,8 +202,18 @@ function Payment() {
                   sx={{ color: cardId === card._id ? "white" : "black" }}
                 />
                 <div className={styles.cardinfo}>
-                  <div className={styles.namecontainer}><Visa className={styles.visalogo} fill={cardId == card._id ? "white" : "black"}/><div className={styles.card1}>. . . . . . {card.card_no.slice(-4)}</div></div>
-                  <div className={styles.card2}>Expiry Date: {card.cardExpiryDate}</div>
+                  <div className={styles.namecontainer}>
+                    <Visa
+                      className={styles.visalogo}
+                      fill={cardId == card._id ? "white" : "black"}
+                    />
+                    <div className={styles.card1}>
+                      . . . . . . {card.card_no.slice(-4)}
+                    </div>
+                  </div>
+                  <div className={styles.card2}>
+                    Expiry Date: {card.cardExpiryDate}
+                  </div>
                 </div>
               </div>
               <Divider />
@@ -216,9 +237,13 @@ function Payment() {
         </div>
         <div className={styles.placeorder}>
           <div>
-            {sendingmail ? <Button loading variant="plain">
-        Plain
-      </Button> : <button onClick={handlePlaceOrder}>Place Order</button>}
+            {sendingmail ? (
+              <Button loading variant="plain">
+                Plain
+              </Button>
+            ) : (
+              <button onClick={handlePlaceOrder}>Place Order</button>
+            )}
           </div>
           <div>
             <button onClick={handleCancelOrder}>Cancel Order</button>

@@ -5,7 +5,7 @@ import styles from "./Cart.module.css";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../component/NavBar/NavBar";
 import SearchBar from "../../component/searchBar/searchBar";
-import { ReactComponent as EmptyCart } from "C:/Users/shubh/Desktop/BudgetBuy/frontend/client/src/emptycart.svg";
+import { ReactComponent as EmptyCart } from "../../assest/emptycart.svg";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ const Cart = () => {
         {isEmpty ? (
           <>
             <div className={styles.logo}>
-              <EmptyCart className={styles.cartsvg}/>{" "}
+              <EmptyCart className={styles.cartsvg} />{" "}
               <h1> Nothing to show here!!</h1>
             </div>{" "}
           </>
