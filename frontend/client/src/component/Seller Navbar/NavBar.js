@@ -7,11 +7,11 @@ import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatIcon from '@mui/icons-material/Chat';
 
-const Navbar = () => {
+const SellerNavbar = () => {
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
-        <a href="/">
+        <a href="/yourproducts">
           <li className={styles.navbarItem}>
             <InventoryIcon sx={{ color: "black" }} />
           </li>
@@ -37,4 +37,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SellerNavbar;

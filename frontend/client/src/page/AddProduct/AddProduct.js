@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast, Toaster } from "sonner";
 import styles from "./AddProduct.module.css";
 import Select from "react-select";
+import SellerNavbar from "../../component/Seller Navbar/NavBar";
 
 export default function AddProduct() {
   const [stock, setStock] = useState("");
   const [skuId, setSkuId] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [likes, setLikes] = useState("");
   const [description, setDescription] = useState("");
   const [color, setColor] = useState("");
   const [dimension, setDimension] = useState("");
@@ -17,10 +16,11 @@ export default function AddProduct() {
   const [image, setImage] = useState(null);
 
   const options = [
-    { value: "tag1", label: "Tag 1" },
-    { value: "tag2", label: "Tag 2" },
-    { value: "tag3", label: "Tag 3" },
-    // Add more predefined tags as needed
+    { value: 'Clothes', label: 'Clothes' },
+    { value: 'Eletronics', label: 'Electronics' },
+    { value: 'Home Appliances', label: 'Home Appliances' },
+    { value: 'Gaming Mouse', label: 'Gaming Mouse' },
+    // Add more options as needed
   ];
 
   const customStyles = {
@@ -35,50 +35,37 @@ export default function AddProduct() {
   const handleTagChange = (selectedOptions) => {
     setSelectedTags(selectedOptions);
   };
-
   const handleSubmit = async () => {
+    if(!stock || !skuId || !name || !price || !description || !selectedTags || !image){
+      toast.error("Please fill all the required fields.");
+      return;
+    }
     const formData = new FormData();
     formData.append("stock", stock);
     formData.append("skuId", skuId);
     formData.append("name", name);
     formData.append("price", price);
-    formData.append("likes", likes);
     formData.append("description", description);
     formData.append("color", color);
     formData.append("dimension", dimension);
     formData.append("image", image);
-    selectedTags.forEach((tag) => {
-      formData.append("tags", tag);
-    });
-
-    try {
+    formData.append('tags', selectedTags.value);
+    try { 
       const response = await fetch(
-        process.env.REACT_APP_URL_PRODUCT + "/addproduct",
+        process.env.REACT_APP_URL_SELLER + "/addproduct",
         {
           method: "POST",
+          credentials: "include",
           body: formData,
         }
       );
       if (response.status === 201) {
-        toast("Product is added successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } else {
-        toast("Product is not added  ", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("Product is added successfully");
+      } 
+      else if(response.status === 401) {
+        toast.error("SKU ID is already in use");
+      }else {
+        toast.error("Something went wrong.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -91,29 +78,10 @@ export default function AddProduct() {
 
   return (
     <div className={styles.signupcontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>Add Product</h1>
       <div className={styles.signupform}>
-        <label htmlFor="stock">Stock *</label>
-        <input
-          className={styles.input}
-          type="number"
-          id="stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-          required
-        />
-
-        <label htmlFor="skuId">SKU ID *</label>
-        <input
-          className={styles.input}
-          type="text"
-          id="skuId"
-          value={skuId}
-          onChange={(e) => setSkuId(e.target.value)}
-          required
-        />
-
-        <label htmlFor="name">Name *</label>
+        <label htmlFor="name">Name*</label>
         <input
           className={styles.input}
           type="text"
@@ -123,7 +91,25 @@ export default function AddProduct() {
           required
         />
 
-        <label htmlFor="price">Price *</label>
+        <label htmlFor="skuId">SKU ID*</label>
+        <input
+          className={styles.input}
+          type="text"
+          id="skuId"
+          value={skuId}
+          onChange={(e) => setSkuId(e.target.value)}
+        />
+
+        <label htmlFor="stock">Stock*</label>
+        <input
+          className={styles.input}
+          type="number"
+          id="stock"
+          value={stock}
+          onChange={(e) => setStock(e.target.value)}
+        />
+
+        <label htmlFor="price">Price*</label>
         <input
           className={styles.input}
           type="number"
@@ -133,7 +119,7 @@ export default function AddProduct() {
           onChange={(e) => setPrice(e.target.value)}
         />
 
-        <label htmlFor="description">Description *</label>
+        <label htmlFor="description">Description*</label>
         <textarea
           className={styles.input}
           id="description"
@@ -159,16 +145,17 @@ export default function AddProduct() {
           value={dimension}
           onChange={(e) => setDimension(e.target.value)}
         />
-        <label htmlFor="Select Tags">Select Tags *</label>
+
+        <label htmlFor="Select Tags">Product Category*</label>
         <Select
-          isMulti
           options={options}
           value={selectedTags}
           styles={customStyles}
           onChange={handleTagChange}
           required
         />
-        <label htmlFor="image">Image *</label>
+
+        <label htmlFor="image">Product Image*</label>
         <input
           className={`${styles.input} ${styles.inputFileHidden}  ${styles.customFileUpload}`}
           type="file"
@@ -182,6 +169,7 @@ export default function AddProduct() {
           Submit
         </button>
       </div>
+      <SellerNavbar/>
     </div>
   );
 }

@@ -18,7 +18,7 @@ const YourProductList = ({ products, searchTerm }) => {
         {/* {products.map((product) => (
           <FeedCard product={product} key={product._id}/> */}
         {filteredProducts.map((product) => (
-          <YourCard product={product} />
+          <YourCard product={product} key={product._id}/>
         ))}
       </div>
     </div>

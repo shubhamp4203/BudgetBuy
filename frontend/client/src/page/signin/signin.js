@@ -34,8 +34,6 @@ export default function SignIn() {
       password,
     };
 
-    console.log(data);
-
     try {
       const response = await fetch(
         process.env.REACT_APP_URL_AUTHENTICATION + "/login",
@@ -50,8 +48,6 @@ export default function SignIn() {
       );
 
       const responseData = await response.json();
-
-      console.log("Success:", responseData);
 
       if (response.ok) {
         navigate("/home");

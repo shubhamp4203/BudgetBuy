@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "../../component/searchBar/searchBar";
-import Navbar from "../../component/NavBar/NavBar";
+import SellerNavBar from "../../component/Seller Navbar/NavBar";
 import YourProductList from "../../component/YourProduct/YourProductList";
 
 function YourProduct() {
@@ -20,7 +20,7 @@ function YourProduct() {
     <>
       <SearchBar onSearch={setSearchTerm} />
       <YourProductList products={products} searchTerm={searchTerm} />
-      <Navbar />
+      <SellerNavBar />
     </>
   );
 }

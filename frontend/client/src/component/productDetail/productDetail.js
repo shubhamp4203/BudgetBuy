@@ -2,12 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "./productDetail.module.css";
-import FeedCard from "../CustomerHomePage/FeedCard";
 // import products from "../../data/products";
 
 const ProductDetail = () => {
   const { productId } = useParams();
-  // console.log(productId);
   const product_list = [productId];
   const [item, setproduct] = useState({});
   useEffect(() => {
@@ -29,12 +27,6 @@ const ProductDetail = () => {
     };
     getproduct();
   }, []);
-
-  // const product = products.find((p) => p.id === parseInt(productId));
-
-  // if (!product) {
-  //   return <div>Product not found</div>;
-  // }
 
   return (
     <>
@@ -65,11 +57,7 @@ const ProductDetail = () => {
             <div className={style.description}>
               <div className={style.protag}>Product Categories</div>
               <div className={style.desvalue}>
-                {item.newProduct.tags.map((tag, index) => (
-                  <div key={index} className={style.tagbox}>
-                    {tag.value}
-                  </div>
-                ))}
+                {item.newProduct.tags}
               </div>
             </div>
             <div className={style.description}>
