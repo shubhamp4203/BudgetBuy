@@ -15,46 +15,32 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getcart = async () => {
-      const data = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/getCart",
-        {
-          credentials: "include",
+      try {
+        const data = await fetch(
+          process.env.REACT_APP_URL_AUTHENTICATION + "/getCart",
+          {
+            credentials: "include",
+          }
+        );
+        if (data.status === 200) {
+          const resdata = await data.json();
+          const fcart = resdata.cartItems.cart;
+          const cartitems = resdata.cartItems.products;
+          setcartItem(cartitems);
+          setfrontcart(fcart);
+          setIsLoading(false);
+        } else if (data.status === 204) {
+          setIsEmpty(true);
+          setIsLoading(false);
+        } else {
+          navigate("/signin");
         }
-      );
-      if (data.status === 200) {
-        const resdata = await data.json();
-        const fcart = resdata.cartItems.cart;
-        const cartitems = resdata.cartItems.products;
-        setcartItem(cartitems);
-        setfrontcart(fcart);
-        setIsLoading(false);
-      } else if (data.status === 204) {
-        setIsEmpty(true);
-        setIsLoading(false);
-      } else {
-        navigate("/signin");
+      } catch (error) {
+        console.error("An error occurred while fetching the cart:", error);
       }
     };
     getcart();
   }, []);
-
-  // const handleremove = async (productid) => {
-  //   try {
-  //     const resp = await fetch(process.env.REACT_APP_URL_ORDER + "/delCart/", {
-  //       method: "DELETE",
-  //       body: JSON.stringify({
-  //         product_id: productid,
-  //         user_id: frontcart.user_id,
-  //         type: "remItem",
-  //       }),
-  //     });
-  //     if(resp.status == 200) {
-  //       setcartItem(cartItem.filter((item) => item.id !== productid))
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const handleCheckout = async () => {
     navigate("/payment", { state: { frontcart, cartItem } });

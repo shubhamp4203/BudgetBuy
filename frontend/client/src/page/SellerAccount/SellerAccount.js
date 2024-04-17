@@ -1,4 +1,3 @@
-import Navbar from "../../component/NavBar/NavBar";
 import SearchBar from "../../component/searchBar/searchBar";
 import styles from "./SellerAccount.module.css";
 import Box from "@mui/material/Box";
@@ -9,21 +8,42 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ChatIcon from "@mui/icons-material/Chat";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import SettingsIcon from "@mui/icons-material/Settings";
-
+import SellerNavbar from "../../component/Seller Navbar/NavBar";
+import {useNavigate} from "react-router-dom"
+import {toast, Toaster} from  "sonner";
 export default function SellerAccount() {
+  const navigate = useNavigate();
+  async function handlelogout() {
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_URL_SELLER + "/sellerlogout",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const responseData = await response.json();
+      if (response.ok) {
+        navigate("/sellersignin");
+      } else {
+        toast.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
   return (
     <div>
+      <Toaster richColors position="top-center" />
       <SearchBar />
       <div className={styles.container}>
         <div className={styles.dashboard}>
@@ -96,6 +116,7 @@ export default function SellerAccount() {
             <Divider />
             <ListItem key="Log Out" disablePadding>
               <ListItemButton
+                onClick={handlelogout}
                 sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
               >
                 <ListItemIcon>
@@ -107,7 +128,7 @@ export default function SellerAccount() {
           </List>
         </Box>
       </div>
-      <Navbar />
+      <SellerNavbar/>
     </div>
   );
 }

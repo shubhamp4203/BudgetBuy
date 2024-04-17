@@ -64,11 +64,7 @@ const ProductDetail = () => {
             <div className={style.description}>
               <div className={style.protag}>Product Categories</div>
               <div className={style.desvalue}>
-                {item.newProduct.tags.map((tag, index) => (
-                  <div key={index} className={style.tagbox}>
-                    {tag.value}
-                  </div>
-                ))}
+                {item.newProduct.tags}
               </div>
             </div>
             <div className={style.description}>

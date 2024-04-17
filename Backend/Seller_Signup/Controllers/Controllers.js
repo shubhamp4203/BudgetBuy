@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "../.env" });
 const tokencookies = require("../Token/CreateToken");
 const axios = require("axios");
+const FormData = require('form-data');
 
 //This  function handles all the error that could possibly be there while registering
 const errorHandle = (err) => {
@@ -110,8 +111,19 @@ module.exports.updateSeller_put = async (req, res) => {
 };
 
 module.exports.seller_logout_post = async (req, res) => {
-  res.clearCookie("sellerjwt");
-  res.status(200).json({ message: "Seller Logged out successfully" });
+  try {
+    res
+      .clearCookie("sellerjwt", {
+        httpOnly: true,
+        maxAge: 0,
+        // sameSite: "None",
+        // secure: true,
+      })
+      .status(200)
+      .json({ message: "Logged out successfully" });
+  } catch {
+    res.status(400).json({ message: "Error in logging out" });
+  }
 };
 
 module.exports.forgotPassword = async (req, res) => {
@@ -159,5 +171,33 @@ module.exports.resetPassword = async (req, res) => {
     res.status(200).json({ message: "Password changed successfully" });
   } catch (err) {
     res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+module.exports.addProduct = async (req, res) => {
+  const seller_id = req.authdata.id;
+  const formData = new FormData();
+  formData.append('image', req.file.buffer, req.file.originalname);
+  for (let key in req.body) {
+    formData.append(key, req.body[key]);
+  }
+  formData.append('seller_id', seller_id);
+
+  try {
+    const resp = await axios.post(process.env.PRODUCT + "/insertProduct", formData, {
+      headers: formData.getHeaders(),
+      validateStatus: function (status) {
+        return status >= 200 && status < 500; 
+      }
+    });
+
+    if(resp.status == 201) {
+      res.status(201).json({ message: "Product inserted" });
+    }
+    else if(resp.status == 401) {
+      res.status(401).json({ message: "SKU ID is already in use" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Product not inserted" });
   }
 };

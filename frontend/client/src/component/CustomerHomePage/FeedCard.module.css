@@ -85,7 +85,10 @@
   align-items: center;
   gap: 1rem;
 }
-
+.prodescription {
+  align-items: left;
+  width: 100%;
+}
 .prodescription p {
   display: -webkit-box;
   -webkit-line-clamp: 2;

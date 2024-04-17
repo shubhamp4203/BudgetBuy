@@ -4,11 +4,12 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {ToastContainer} from 'react-toastify';
+// import {ToastContainer} from 'react-toastify';
+import { Toaster, toast } from 'sonner'
 
 
 // toast.configure();
@@ -40,15 +41,7 @@ const FeedCard = ({ product }) => {
         }
       );
       if (resp.status == 201) {
-        toast.success("Product added to cart", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("Product added to cart");
       } else if (resp.status == 401) {
         navigate("/signin");
       }
@@ -192,7 +185,7 @@ const FeedCard = ({ product }) => {
 
   return (
     <div className={styles.productCard}>
-      <ToastContainer/>
+      <Toaster richColors position="top-center"/>
       <Link
         to={{
           pathname: `/product/${product._id}`,
