@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./bank.module.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 export default function SellerBank() {
     const [bankname, setBankname] = useState("");
@@ -16,11 +17,11 @@ export default function SellerBank() {
     const handlesubmit = async (e) => {
         e.preventDefault();
         if(!bankname || !acc_no || !ifsc_code || !confirmnumber || !branch_name) {
-            alert("Please fill all the required fields");
+            toast.error("Please fill all the required fields.");
             return;
         }
         if(acc_no !== confirmnumber) {
-            alert("Card number and confirm card number do not match");
+            toast.error("Card number and confirm card number do not match.");
             return;
         }
         const bank_details = {
@@ -43,15 +44,16 @@ export default function SellerBank() {
             body: JSON.stringify(data),
         });
         if(resp.status === 201) {
-            alert("Seller Sign Up successfully");
+            toast.success("Seller Sign Up successfully.");
             navigate("/sellersignin");
         }
         else {
-            alert("Something went wrong");
+            toast.error("Something went wrong.");
         }
     }
     return (
         <div className={styles.cardcontainer}>
+        <Toaster richColors position="top-center"/>
         <h1>Add Bank</h1>
         <div className={styles.cardform}>
           <label htmlFor="Card Number">Bank Name*</label>

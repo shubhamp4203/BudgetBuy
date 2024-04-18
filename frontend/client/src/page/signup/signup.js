@@ -3,6 +3,7 @@ import styles from "./signup.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 const options = [
   { value: "tag1", label: "Tag 1" },
@@ -57,18 +58,19 @@ export default function Signup() {
       if (resp.status === 201) {
         navigate("/signin");
       } else if (resp.status === 400) {
-        alert("Something went wrong");
+        toast.error("Something went wrong.");
       } else {
-        alert("Email or Phone number already exists");
+        toast.error("Email or Phone number already exists.");
       }
     } catch (error) {
-      alert("Something went wrong");
+      toast.error("Something went wrong.");
       console.log(error);
     }
   };
 
   return (
     <div className={styles.signupcontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>Sign Up</h1>
       <div className={styles.signupform}>
         <label htmlFor="name">Name</label>

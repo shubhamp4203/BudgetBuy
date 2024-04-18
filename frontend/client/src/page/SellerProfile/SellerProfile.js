@@ -3,6 +3,7 @@ import styles from "./SellerProfile.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 const options = [
   { value: "tag1", label: "Tag 1" },
@@ -72,7 +73,7 @@ export default function SellerProfile() {
     );
     if (res.ok) {
       console.log("Success");
-      alert("Profile updated successfully");
+      toast.success("Profile updated successfully.");
     } else {
       console.log("Error");
       navigate("/signin");
@@ -81,6 +82,7 @@ export default function SellerProfile() {
 
   return (
     <div className={styles.container}>
+      <Toaster richColors position="top-center"/>
       <h1>My Profile</h1>
       <div className={styles.form}>
         <label htmlFor="name">Name</label>

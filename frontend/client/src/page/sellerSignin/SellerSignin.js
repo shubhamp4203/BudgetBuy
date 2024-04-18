@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./SellerSignin.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useNavigate } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 export default function SellerSignin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +45,7 @@ export default function SellerSignin() {
         // console.log("jwt:", resjwtcookie);
         navigate("/yourproducts");
       } else {
-        alert("Invalid email or password");
+        toast.error("Invalid email or password.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -55,7 +56,7 @@ export default function SellerSignin() {
     e.preventDefault();
     setIsLoading(true);
     if(!email) {
-      alert("Please enter email");
+      toast.error("Please enter email.");
       return;
     }
     try {
@@ -75,10 +76,10 @@ export default function SellerSignin() {
       const responseData = await response.json();
       setIsLoading(false);
       if (response.ok) {
-        alert("Reset link sent to your email");
+        toast.success("Reset link sent to your email.");
         navigate("/sellersignin");
       } else {
-        alert("Email not found");
+        toast.error("Email not found.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -87,6 +88,7 @@ export default function SellerSignin() {
 
   return (
     <div className={styles.signincontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>Seller Sign In</h1>
       <div className={styles.signinform}>
         <label htmlFor="email">Email</label>

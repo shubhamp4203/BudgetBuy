@@ -43,12 +43,9 @@ const Cart = () => {
   }, []);
 
   const handleCheckout = async () => {
-    navigate("/payment", { state: { frontcart, cartItem } });
+    navigate("/payment");
   };
 
-  if (isLoading) {
-    return "Loading...";
-  }
 
   return (
     <>

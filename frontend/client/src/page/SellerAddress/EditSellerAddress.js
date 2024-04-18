@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./EditSellerAddress.module.css";
 import { useNavigate } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 export default function EditSellerAddress() {
   const [city, setCity] = useState("");
@@ -14,7 +15,7 @@ export default function EditSellerAddress() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!city || !state || !street || !building_name || !pincode) {
-      alert("Please fill all the required fields");
+      toast.error("Please fill all the required fields.");
       return;
     }
     const data = {
@@ -38,18 +39,19 @@ export default function EditSellerAddress() {
         }
       );
       if (resp.status === 201) {
-        alert("Address added successfully");
+        toast.success("Address added successfully.");
         navigate(-1);
       } else {
-        alert("Something went wrong");
+        toast.error("Something went wrong.");  
       }
     } catch (err) {
-      alert("Something went wrong");
+      toast.error("Something went wrong.");
     }
   };
 
   return (
     <div className={styles.addresscontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>New Address</h1>
       <div className={styles.addressform}>
         <label htmlFor="building_name">Flat no / Building Name</label>

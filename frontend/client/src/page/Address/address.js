@@ -1,54 +1,58 @@
 import { useState } from "react";
 import styles from "./address.module.css";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../component/NavBar/NavBar";
+import { toast, Toaster } from "sonner";
 
 export default function Address() {
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [street, setStreet] = useState("");
-    const [building_name, setBuild_no] = useState("");
-    const [landmark, setlandmark] = useState("");
-    const [pincode, setPincode] = useState("");
-    const navigate = useNavigate();
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [street, setStreet] = useState("");
+  const [building_name, setBuild_no] = useState("");
+  const [landmark, setlandmark] = useState("");
+  const [pincode, setPincode] = useState("");
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!city || !state || !street || !building_name || !pincode) { 
-            alert("Please fill all the required fields");
-            return;
-        }
-        const data = {
-            city,
-            state,
-            street,
-            building_name,
-            landmark,
-            pincode
-        }
-        try {
-            const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/addaddress", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-                credentials: "include",
-            });
-            if (resp.status === 201) {
-                alert("Address added successfully");
-                navigate(-1);
-            }
-            else {
-                alert("Something went wrong");
-            }
-        } catch(err) {
-            alert("Something went wrong");
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!city || !state || !street || !building_name || !pincode) {
+      toast.error("Please fill all the required fields.");
+      return;
     }
+    const data = {
+      city,
+      state,
+      street,
+      building_name,
+      landmark,
+      pincode,
+    };
+    try {
+      const resp = await fetch(
+        process.env.REACT_APP_URL_AUTHENTICATION + "/addaddress",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          credentials: "include",
+        }
+      );
+      if (resp.status === 201) {
+        toast.success("Address added successfully.");
+        navigate(-1);
+      } else {
+        toast.error("Something went wrong.");
+      }
+    } catch (err) {
+      toast.error("Something went wrong.");
+    }
+  };
 
-    return (
-        <div className={styles.addresscontainer}>
+  return (
+    <div className={styles.addresscontainer}>
+      <Toaster richColors position="top-center" />
       <h1>New Address</h1>
       <div className={styles.addressform}>
         <label htmlFor="building_name">Flat no / Building Name</label>
@@ -107,7 +111,7 @@ export default function Address() {
           Add Address
         </button>
       </div>
-      <Navbar/>
+      <Navbar />
     </div>
-    );
+  );
 }
