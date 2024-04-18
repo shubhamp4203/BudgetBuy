@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./card.module.css";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../component/NavBar/NavBar";
+import {toast, Toaster} from "sonner";
 
 export default function Card() {
     const [cardnumber, setCardnumber] = useState("");
@@ -12,11 +13,11 @@ export default function Card() {
     const handlesubmit = async (e) => {
         e.preventDefault();
         if(!cardnumber || !expiry || !cvv || !confirmnum) {
-            alert("Please fill all the required fields");
+            toast.error("Please fill all the required fields.");
             return;
         }
         if(cardnumber !== confirmnum) {
-            alert("Card number and confirm card number do not match");
+            toast.error("Card number and confirm card number do not match.");
             return;
         }
         console.log(confirmnum)
@@ -34,18 +35,19 @@ export default function Card() {
             credentials: "include",
         });
         if(resp.status === 201) {
-            alert("Card added successfully");
+            toast.success("Card added successfully.");
             navigate(-1);
         }
         else if(resp.status === 401) {
-            alert("Card already exists");
+            toast.error("Card already exists.");
         }
         else {
-            alert("Something went wrong");
+            toast.error("Something went wrong.");
         }
     }
     return (
         <div className={styles.cardcontainer}>
+        <Toaster richColors position="top-center"/>
         <h1>New Card</h1>
         <div className={styles.cardform}>
           <label htmlFor="Card Number">Card Number</label>

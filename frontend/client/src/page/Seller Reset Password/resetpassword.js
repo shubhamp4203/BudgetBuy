@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import Button from "@mui/joy/Button";
+import {toast, Toaster} from "sonner";
 
 export default function SellerResetPassword() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function SellerResetPassword() {
     const newpassword = document.getElementById("password1").value;
     const confirmpassword = document.getElementById("password2").value;
     if(newpassword !== confirmpassword){
-      alert("Password does not match");
+      toast.error("Password does not match.");
       return;
     }
     const data = {
@@ -30,19 +31,20 @@ export default function SellerResetPassword() {
       body: JSON.stringify(data),
     })
     if(resp.status === 200) {
-      alert("Password changed Successfully");
+      toast.success("Password changed Successfully.");
       navigate("/sellersignin");
     }
     else if(resp.status === 400) {
-      alert("The reset link is invalid or expired. Please try again");
+      toast.error("The reset link is invalid or expired. Please try again.");
       navigate("/sellersignin");
     }
     else {
-      alert("Something went wrong");
+      toast.error("Something went wrong.");
     }
   };
   return (
     <div className={styles.container}>
+      <Toaster richColors position="top-center"/>
       <div className={styles.formContainer}>
         <h1 className={styles.title}>Forgot Password</h1>
         <form>

@@ -3,6 +3,7 @@ import styles from "./address.module.css";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../component/NavBar/NavBar";
 import { useLocation } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 export default function SellerAddress() {
   const [city, setCity] = useState("");
@@ -18,7 +19,7 @@ export default function SellerAddress() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!city || !state || !street || !building_name || !pincode) {
-      alert("Please fill all the required fields");
+      toast.error("Please fill all the required fields.");
       return;
     }
     const Address_data = {
@@ -34,6 +35,7 @@ export default function SellerAddress() {
   };
   return (
     <div className={styles.addresscontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>Add Address</h1>
       <div className={styles.addressform}>
         <label htmlFor="building_name">Flat no / Building Name*</label>

@@ -4,11 +4,9 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-// import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import {ToastContainer} from 'react-toastify';
 import { Toaster, toast } from 'sonner'
 
 
@@ -46,7 +44,7 @@ const FeedCard = ({ product }) => {
         navigate("/signin");
       }
     } catch (error) {
-      alert("Something went wrong");
+      toast.error("Something went wrong.");
       console.log(error);
     }
   };
@@ -112,7 +110,7 @@ const FeedCard = ({ product }) => {
         navigate("/signin");
       }
     } catch (error) {
-      alert("Something went wrong");
+      toast.error("Something went wrong.");
       console.log(error);
     }
   };
@@ -139,7 +137,7 @@ const FeedCard = ({ product }) => {
         setIsLiked(!isLiked);
       }
     } catch (error) {
-      alert("Something went wrong");
+      toast.error("Something went wrong.");
       console.log(error);
     }
   };
@@ -165,20 +163,12 @@ const FeedCard = ({ product }) => {
         }
       );
       if (resp.status == 201) {
-        toast("Product added to cart", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-        });
-        navigate("/cart");
+        navigate("/payment");
       } else if (resp.status == 401) {
         navigate("/signin");
       }
     } catch (error) {
-      alert("Something went wrong");
+      toast.error("Something went wrong.");
       console.log(error);
     }
   };

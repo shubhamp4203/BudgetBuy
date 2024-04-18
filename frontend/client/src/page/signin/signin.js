@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./signin.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useNavigate } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +53,7 @@ export default function SignIn() {
       if (response.ok) {
         navigate("/home");
       } else {
-        alert("Invalid email or password");
+        toast.error("Invalid email or password.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -63,7 +64,7 @@ export default function SignIn() {
     e.preventDefault();
     setIsLoading(true);
     if(!email) {
-      alert("Please enter email");
+      toast.error("Please enter email.");
       return;
     }
     try {
@@ -83,10 +84,10 @@ export default function SignIn() {
       const responseData = await response.json();
       setIsLoading(false);
       if (response.ok) {
-        alert("Reset link sent to your email");
+        toast.success("Reset link sent to your email.");
         navigate("/signin");
       } else {
-        alert("Email not found");
+        toast.error("Email not found.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -95,6 +96,7 @@ export default function SignIn() {
 
   return (
     <div className={styles.signincontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>Sign In</h1>
       <div className={styles.signinform}>
         <label htmlFor="email">Email</label>

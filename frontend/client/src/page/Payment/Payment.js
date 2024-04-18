@@ -10,15 +10,16 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import Button from "@mui/joy/Button";
 import { ReactComponent as Visa } from "../../assest/visacard.svg";
+import { toast, Toaster } from "sonner";
 
 function Payment() {
+  const [cartdata, setfrontcart] = useState({});
+  const [cartitems, setcartItem] = useState([]);
   const [address, setAddress] = useState([]);
   const [cards, setCard] = useState([]);
   const location = useLocation();
   const [addressId, setAddressId] = useState("");
   const [cardId, setCardId] = useState("");
-  const cartdata = location.state.frontcart;
-  const cartitems = location.state.cartItem;
   const [codselected, setCodselected] = useState(false);
   const navigate = useNavigate();
   const [sendingmail, setSendingmail] = useState(false);
@@ -32,10 +33,21 @@ function Payment() {
           credentials: "include",
         }
       );
-      if (resp.status == 200) {
-        const data = await resp.json();
-        const address_array = data.user.address;
-        const card_array = data.user.card_details;
+      const data = await fetch(
+        process.env.REACT_APP_URL_AUTHENTICATION + "/getCart",
+        {
+          credentials: "include",
+        }
+      );
+      if (resp.status == 200 && data.status == 200) {
+        const userdata = await resp.json();
+        const resdata = await data.json();
+        const address_array = userdata.user.address;
+        const card_array = userdata.user.card_details;
+        const fcart = resdata.cartItems.cart;
+        const cartitems = resdata.cartItems.products;
+        setcartItem(cartitems);
+        setfrontcart(fcart);
         setAddress(address_array);
         setCard(card_array);
       }
@@ -62,11 +74,11 @@ function Payment() {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (addressId === "") {
-      alert("Select an address");
+      toast.error("Please select an Address.");
       return;
     }
     if (cardId === "" && !codselected) {
-      alert("Select a payment method");
+      toast.error("Please select a Payment method.");
       return;
     }
     setSendingmail(true);
@@ -100,10 +112,12 @@ function Payment() {
     });
     setSendingmail(false);
     if (resp.status == 201) {
-      alert("Order Placed Successfully");
-      navigate("/myorders");
+      toast.success("Order Placed Successfully.");
+      setTimeout(() => {
+        navigate("/myorders");
+      }, 2000); // Adjust the delay as needed
     } else {
-      alert("Order Failed");
+      toast.error("Something went wrong.");
     }
   };
 
@@ -120,6 +134,7 @@ function Payment() {
   return (
     <>
       <div className={styles.paymentcontainer}>
+        <Toaster richColors position="top-center" />
         <h1> Payment Preference </h1>
         <div className={styles.cart}>
           <div className={styles.heading}> Order Summary </div>

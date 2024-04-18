@@ -5,7 +5,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
-
+import {toast, Toaster} from "sonner";
 function OrderDetails() {
   const [orderitems, setorderitems] = useState([]);
   const location = useLocation();
@@ -28,7 +28,7 @@ function OrderDetails() {
         setorderitems(data.items);
       } else {
         console.log("Error");
-        alert("Something went wrong");
+        toast.error("Something went wrong.");
         navigate("/myorders");
       }
     };
@@ -50,12 +50,13 @@ function OrderDetails() {
         navigate("/myorders");
     }
     else {
-        alert("Something went wrong");
+        toast.error("Something went wrong.");
     }
   }
 
   return (
     <div className={styles.ordercontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>Order Details</h1>
       <div className={styles.order}>
         <div className={styles.heading}> Items Summary </div>

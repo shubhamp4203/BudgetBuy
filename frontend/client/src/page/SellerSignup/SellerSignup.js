@@ -3,6 +3,7 @@ import styles from "./SellerSignup.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import {toast, Toaster} from "sonner";
 
 const options = [
   { value: "tag1", label: "Tag 1" },
@@ -38,7 +39,7 @@ export default function SellerSignup() {
     e.preventDefault();
 
     if(!name || !email || !password || !phone_number || !aadhar_card || !categories) {
-      alert("Please fill all the required fields");
+      toast.error("Please fill all the required fields.");
       return;
     }
     
@@ -58,6 +59,7 @@ export default function SellerSignup() {
 
   return (
     <div className={styles.signupcontainer}>
+      <Toaster richColors position="top-center"/>
       <h1>Seller Details</h1>
       <div className={styles.signupform}>
         <label htmlFor="name">Name*</label>
