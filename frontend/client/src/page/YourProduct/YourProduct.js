@@ -16,10 +16,21 @@ function YourProduct() {
     fetchdata();
   }, []);
 
+  const handleRemove = (productId) => {
+    const updatedProducts = products.filter(
+      (product) => product._id !== productId
+    );
+    setData(updatedProducts);
+  };
+
   return (
     <>
       <SearchBar onSearch={setSearchTerm} />
-      <YourProductList products={products} searchTerm={searchTerm} />
+      <YourProductList
+        products={products}
+        searchTerm={searchTerm}
+        onRemove={handleRemove}
+      />
       <SellerNavBar />
     </>
   );

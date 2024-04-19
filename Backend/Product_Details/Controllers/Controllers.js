@@ -5,6 +5,7 @@ const axios = require("axios");
 const multer = require("multer");
 
 const { v2: cloudinary } = require("cloudinary");
+const { log } = require("console");
 require("dotenv").config({ path: "../.env" });
 
 cloudinary.config({
@@ -26,10 +27,10 @@ module.exports.insertProduct_post = async (req, res) => {
   const collection = await dataConnect();
   try {
     fs.readFileSync(req.file.path);
-    const exist = await collection.findOne({ 
+    const exist = await collection.findOne({
       "newProduct.skuId": skuid,
-      "newProduct.seller_id": seller_id
-     });
+      "newProduct.seller_id": seller_id,
+    });
     if (!exist) {
       const result = await collection.insertOne({
         newProduct: newProduct,
@@ -53,14 +54,14 @@ module.exports.insertProduct_post = async (req, res) => {
         res.status(400).json({ message: "Something went wrong" });
       }
     } else {
-      console.log("Already")
+      console.log("Already");
       res.status(401).json({ message: "SKU_ID is already in use" });
     }
   } catch (error) {
-    const product = await collection.findOneAndDelete({ 
+    const product = await collection.findOneAndDelete({
       "newProduct.skuId": skuid,
-      "newProduct.seller_id": seller_id
-     });
+      "newProduct.seller_id": seller_id,
+    });
     if (!res.headersSent) {
       res.status(500).json({ message: "Internal server error" });
     }
@@ -68,13 +69,51 @@ module.exports.insertProduct_post = async (req, res) => {
 };
 
 module.exports.getProduct_post = async (req, res) => {
+  // console.log("we just enter");
   const product_id = req.body.products;
   const collection = await dataConnect();
+  // console.log(collection);
   try {
+    console.log("try block");
     const objectIds = product_id.map((id) => new ObjectId(id.toString()));
-    const query = { _id: { $in: objectIds } };
-    const result = await collection.find(query).toArray();
-    res.status(200).json({ message: "Products fetched successfully", result });
+    console.log(objectIds);
+    // const query = { _id: { $in: objectIds } };
+    const result = await collection
+      .aggregate([
+        { $match: { _id: { $in: objectIds } } },
+        {
+          $lookup: {
+            from: process.env.PRODUCT_COLLECTION,
+            localField: "newProduct.seller_id",
+            foreignField: "newProduct.seller_id",
+            as: "sellerData",
+          },
+        },
+        {
+          $lookup: {
+            from: process.env.PRODUCT_COLLECTION,
+            localField: "newProduct.tags",
+            foreignField: "newProduct.tags",
+            as: "tagData",
+          },
+        },
+      ])
+      .toArray();
+    const seller_id = result.newProduct.seller_id;
+    const sellerinfo = await axios.post(
+      process.env.SELLER_DB_URL + "/sellerinfo/",
+      { seller_id }
+    );
+    if (sellerinfo.status == 201) {
+      const finalResult = {
+        result,
+        sellerinfo,
+      };
+      res
+        .status(200)
+        .json({ message: "Products fetched successfully", finalResult });
+    }
+    // console.log(result);
   } catch (err) {
     res.status(400).json({ error: "Failed to fetch products" });
   }
