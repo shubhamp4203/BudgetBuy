@@ -435,3 +435,162 @@ you should set broker_connection_retry_on_startup to True.
 [2024-04-19 11:24:18,229: INFO/MainProcess] Task emailapp.tasks.send_email_task[2615b5a2-5674-4480-a215-124f8b9da1e6] received
 [2024-04-19 11:24:22,510: INFO/SpawnPoolWorker-1] Task emailapp.tasks.send_email_task[2615b5a2-5674-4480-a215-124f8b9da1e6] succeeded in 4.282000000006519s: None
 [2024-04-19 11:24:22,650: INFO/SpawnPoolWorker-2] Task emailapp.tasks.send_email_task[dbaf7af5-fe80-4291-b6ce-953ec0d3897a] succeeded in 4.562000000005355s: None
+[2024-04-19 11:41:57,289: WARNING/MainProcess] C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-04-19 11:41:57,808: INFO/SpawnPoolWorker-2] child process 18268 calling self.run()
+[2024-04-19 11:41:57,826: INFO/SpawnPoolWorker-1] child process 17908 calling self.run()
+[2024-04-19 11:42:01,354: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it..
+Trying again in 2.00 seconds... (1/100)
+
+[2024-04-19 11:42:07,441: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it..
+Trying again in 4.00 seconds... (2/100)
+
+[2024-04-19 11:42:15,522: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it..
+Trying again in 6.00 seconds... (3/100)
+
+[2024-04-19 11:42:21,531: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-04-19 11:42:21,531: WARNING/MainProcess] C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-04-19 11:42:21,540: INFO/MainProcess] mingle: searching for neighbors
+[2024-04-19 11:42:22,568: INFO/MainProcess] mingle: all alone
+[2024-04-19 11:42:22,598: INFO/MainProcess] celery@ClawX ready.
+[2024-04-19 13:03:39,925: WARNING/MainProcess] consumer: Connection to broker lost. Trying to re-establish the connection...
+Traceback (most recent call last):
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py", line 340, in start
+    blueprint.start(self)
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\bootsteps.py", line 116, in start
+    step.start(parent)
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py", line 746, in start
+    c.loop(*c.loop_args())
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\loops.py", line 130, in synloop
+    connection.drain_events(timeout=2.0)
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\kombu\connection.py", line 341, in drain_events
+    return self.transport.drain_events(self.connection, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\kombu\transport\virtual\base.py", line 997, in drain_events
+    get(self._deliver, timeout=timeout)
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\kombu\transport\redis.py", line 591, in get
+    ret = self.handle_event(fileno, event)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\kombu\transport\redis.py", line 573, in handle_event
+    return self.on_readable(fileno), self
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\kombu\transport\redis.py", line 569, in on_readable
+    chan.handlers[type]()
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\kombu\transport\redis.py", line 913, in _receive
+    ret.append(self._receive_one(c))
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\kombu\transport\redis.py", line 923, in _receive_one
+    response = c.parse_response()
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\client.py", line 835, in parse_response
+    response = self._execute(conn, try_read)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\client.py", line 811, in _execute
+    return conn.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\retry.py", line 49, in call_with_retry
+    fail(error)
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\client.py", line 813, in <lambda>
+    lambda error: self._disconnect_raise_connect(conn, error),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\client.py", line 800, in _disconnect_raise_connect
+    raise error
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\retry.py", line 46, in call_with_retry
+    return do()
+           ^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\client.py", line 812, in <lambda>
+    lambda: command(*args, **kwargs),
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\client.py", line 833, in try_read
+    return conn.read_response(disconnect_on_error=False, push_request=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\connection.py", line 512, in read_response
+    response = self._parser.read_response(disable_decoding=disable_decoding)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\_parsers\resp2.py", line 15, in read_response
+    result = self._read_response(disable_decoding=disable_decoding)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\_parsers\resp2.py", line 25, in _read_response
+    raw = self._buffer.readline()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\_parsers\socket.py", line 115, in readline
+    self._read_from_socket()
+  File "C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\redis\_parsers\socket.py", line 68, in _read_from_socket
+    raise ConnectionError(SERVER_CLOSED_CONNECTION_ERROR)
+redis.exceptions.ConnectionError: Connection closed by server.
+[2024-04-19 13:03:44,229: WARNING/MainProcess] C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py:391: CPendingDeprecationWarning: 
+In Celery 5.1 we introduced an optional breaking change which
+on connection loss cancels all currently executed tasks with late acknowledgement enabled.
+These tasks cannot be acknowledged as the connection is gone, and the tasks are automatically redelivered
+back to the queue. You can enable this behavior using the worker_cancel_long_running_tasks_on_connection_loss
+setting. In Celery 5.1 it is set to False by default. The setting will be set to True by default in Celery 6.0.
+
+  warnings.warn(CANCEL_TASKS_BY_DEFAULT, CPendingDeprecationWarning)
+
+[2024-04-19 13:03:56,049: WARNING/MainProcess] C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-04-19 13:03:56,057: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-04-19 13:03:56,058: WARNING/MainProcess] C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-04-19 13:03:56,078: INFO/MainProcess] mingle: searching for neighbors
+[2024-04-19 13:03:57,090: INFO/MainProcess] mingle: all alone
+[2024-04-19 16:25:57,819: WARNING/MainProcess] C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-04-19 16:25:58,236: INFO/SpawnPoolWorker-1] child process 21888 calling self.run()
+[2024-04-19 16:25:58,236: INFO/SpawnPoolWorker-2] child process 18704 calling self.run()
+[2024-04-19 16:26:01,865: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it..
+Trying again in 2.00 seconds... (1/100)
+
+[2024-04-19 16:26:07,949: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it..
+Trying again in 4.00 seconds... (2/100)
+
+[2024-04-19 16:26:15,988: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it..
+Trying again in 6.00 seconds... (3/100)
+
+[2024-04-19 16:26:21,996: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-04-19 16:26:21,997: WARNING/MainProcess] C:\Users\shubh\AppData\Local\Programs\Python\Python311\Lib\site-packages\celery\worker\consumer\consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-04-19 16:26:22,007: INFO/MainProcess] mingle: searching for neighbors
+[2024-04-19 16:26:23,033: INFO/MainProcess] mingle: all alone
+[2024-04-19 16:26:23,060: INFO/MainProcess] celery@ClawX ready.
+[2024-04-19 16:54:51,743: INFO/MainProcess] Task emailapp.tasks.send_email_task[2d2f52bb-a089-43eb-938a-1a1dab328b17] received
+[2024-04-19 16:54:51,901: INFO/MainProcess] Task emailapp.tasks.send_email_task[d1f8a6d4-0b15-4634-a0fa-101855b79821] received
+[2024-04-19 16:54:56,788: INFO/SpawnPoolWorker-2] Task emailapp.tasks.send_email_task[d1f8a6d4-0b15-4634-a0fa-101855b79821] succeeded in 4.89100000000326s: None
+[2024-04-19 16:54:57,448: INFO/SpawnPoolWorker-1] Task emailapp.tasks.send_email_task[2d2f52bb-a089-43eb-938a-1a1dab328b17] succeeded in 5.703000000008615s: None
+[2024-04-19 16:57:03,761: INFO/MainProcess] Task emailapp.tasks.send_email_task[bb1a38ed-e14e-46c4-92b7-00757be17af8] received
+[2024-04-19 16:57:03,851: INFO/MainProcess] Task emailapp.tasks.send_email_task[dcf3f19b-395c-408f-bb25-563abc5a2018] received
+[2024-04-19 16:57:07,761: INFO/SpawnPoolWorker-1] Task emailapp.tasks.send_email_task[dcf3f19b-395c-408f-bb25-563abc5a2018] succeeded in 3.9070000000065193s: None
+[2024-04-19 16:57:08,036: INFO/SpawnPoolWorker-2] Task emailapp.tasks.send_email_task[bb1a38ed-e14e-46c4-92b7-00757be17af8] succeeded in 4.2810000000026776s: None
+[2024-04-19 16:57:57,113: INFO/MainProcess] Task emailapp.tasks.send_email_task[e51eaee1-0707-4420-8aa8-0286249bed48] received
+[2024-04-19 16:57:57,209: INFO/MainProcess] Task emailapp.tasks.send_email_task[13117ce5-85f9-4d66-8b67-6b71b82e8301] received
+[2024-04-19 16:58:01,390: INFO/SpawnPoolWorker-1] Task emailapp.tasks.send_email_task[e51eaee1-0707-4420-8aa8-0286249bed48] succeeded in 4.26600000000326s: None
+[2024-04-19 16:58:01,796: INFO/SpawnPoolWorker-2] Task emailapp.tasks.send_email_task[13117ce5-85f9-4d66-8b67-6b71b82e8301] succeeded in 4.578000000008615s: None
+[2024-04-19 16:58:19,939: INFO/MainProcess] Task emailapp.tasks.send_email_task[ac5235d7-dd1f-4954-ba43-7b1ad4061ac9] received
+[2024-04-19 16:58:20,041: INFO/MainProcess] Task emailapp.tasks.send_email_task[786b593e-4b1a-4e2b-8c4e-1368cd6ee6a5] received
+[2024-04-19 16:58:24,504: INFO/SpawnPoolWorker-1] Task emailapp.tasks.send_email_task[ac5235d7-dd1f-4954-ba43-7b1ad4061ac9] succeeded in 4.5789999999979045s: None
+[2024-04-19 16:58:25,137: INFO/SpawnPoolWorker-2] Task emailapp.tasks.send_email_task[786b593e-4b1a-4e2b-8c4e-1368cd6ee6a5] succeeded in 5.0939999999973224s: None

@@ -69,53 +69,53 @@ module.exports.insertProduct_post = async (req, res) => {
 };
 
 module.exports.getProduct_post = async (req, res) => {
-  // console.log("we just enter");
   const product_id = req.body.products;
   const collection = await dataConnect();
-  // console.log(collection);
   try {
-    console.log("try block");
     const objectIds = product_id.map((id) => new ObjectId(id.toString()));
-    console.log(objectIds);
-    // const query = { _id: { $in: objectIds } };
-    const result = await collection
-      .aggregate([
-        { $match: { _id: { $in: objectIds } } },
-        {
-          $lookup: {
-            from: process.env.PRODUCT_COLLECTION,
-            localField: "newProduct.seller_id",
-            foreignField: "newProduct.seller_id",
-            as: "sellerData",
+    if (req.body.type == "productDetail") {
+      const result = await collection
+        .aggregate([
+          { $match: { _id: { $in: objectIds } } },
+          {
+            $lookup: {
+              from: process.env.PRODUCT_COLLECTION,
+              localField: "newProduct.seller_id",
+              foreignField: "newProduct.seller_id",
+              as: "sellerData",
+            },
           },
-        },
-        {
-          $lookup: {
-            from: process.env.PRODUCT_COLLECTION,
-            localField: "newProduct.tags",
-            foreignField: "newProduct.tags",
-            as: "tagData",
+          {
+            $lookup: {
+              from: process.env.PRODUCT_COLLECTION,
+              localField: "newProduct.tags",
+              foreignField: "newProduct.tags",
+              as: "tagData",
+            },
           },
-        },
-      ])
-      .toArray();
-    const seller_id = result.newProduct.seller_id;
-    const sellerinfo = await axios.post(
-      process.env.SELLER_DB_URL + "/sellerinfo/",
-      { seller_id }
-    );
-    if (sellerinfo.status == 201) {
-      const finalResult = {
-        result,
-        sellerinfo,
-      };
-      res
-        .status(200)
-        .json({ message: "Products fetched successfully", finalResult });
+        ])
+        .toArray();
+      const seller_id = result[0].newProduct.seller_id;
+      const sellerinfo = await axios.post(
+        process.env.SELLER + "/getSellerData/",
+        { seller_id }
+      );
+      if (sellerinfo.status == 200) {
+        const finalResult = {
+          result: result[0],
+          sellerinfo: sellerinfo.data,
+        };
+        res
+          .status(200)
+          .json({ message: "Products fetched successfully", finalResult });
+      }
+    } else {
+      const query = { _id: { $in: objectIds } };
+      const result = await collection.find(query).toArray();
+      res.status(200).json({message: "Products fetched successfully", result});
     }
-    // console.log(result);
   } catch (err) {
-    res.status(400).json({ error: "Failed to fetch products" });
+    res.status(400).json({ error: err.message });
   }
 };
 function shuffleArray(array) {

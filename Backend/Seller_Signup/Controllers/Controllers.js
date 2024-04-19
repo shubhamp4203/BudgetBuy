@@ -207,7 +207,6 @@ module.exports.addProduct = async (req, res) => {
 };
 
 module.exports.getSellerData = async (req, res) => {
-  console.log("called")
   try {
     const seller_id = req.body.seller_id;
     const seller = await Seller.findOne({ _id: new ObjectId(seller_id) });

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "./productDetail.module.css";
-import FeedCard from "../CustomerHomePage/FeedCard";
+import FeedCard from "../suggestcard/FeedCard";
 // import products from "../../data/products";
 
 const ProductDetail = () => {
@@ -18,14 +18,11 @@ const ProductDetail = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ products: product_list }),
+          body: JSON.stringify({ products: product_list, type: "productDetail" }),
         }
       );
       const data = await resp.json();
-      const product = data.result["0"];
-      console.log(product.newProduct);
-      console.log("sellerData:", product.sellerData);
-      console.log("tagData", product.tagData);
+      const product = data.finalResult.result;
       setproduct(product);
     };
     getproduct();
@@ -87,7 +84,7 @@ const ProductDetail = () => {
               <div className={style.protag}> Product from Seller</div>
               <div className={style.sellerData}>
                 {item.sellerData.map((product) => (
-                  <FeedCard product={product} />
+                  <FeedCard product={product} key={product._id}/>
                 ))}
               </div>
             </div>
@@ -95,7 +92,7 @@ const ProductDetail = () => {
               <div className={style.protag}>Similar Product</div>
               <div className={style.sellerData}>
                 {item.tagData.map((product) => (
-                  <FeedCard product={product} />
+                  <FeedCard product={product} key={product._id}/>
                 ))}
               </div>
             </div>
