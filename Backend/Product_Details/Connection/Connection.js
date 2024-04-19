@@ -13,7 +13,6 @@ async function dataConnect() {
         .db(process.env.PRODUCT_DB)
         .collection(process.env.PRODUCT_COLLECTION);
     }
-    console.log("Connected to the database");
     return collection;
   } catch (error) {
     console.error("Error connecting to the database:", error);

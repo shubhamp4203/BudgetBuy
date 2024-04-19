@@ -9,6 +9,7 @@ from pathlib import Path
 import requests
 from django.shortcuts import get_object_or_404
 from ordermanagement.settings import micro_services
+import json
 
 def test_func(arg):
     resDict = {'data':{}}
@@ -79,13 +80,15 @@ def getCart(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
     else:
         item_data = CartItemSerializer(items, many=True)
-        prod_ids = {'products': list(items.values_list('product_id', flat=True))}
+        prod_ids = {'products': list(items.values_list('product_id', flat=True)), 'type': "Cart"}
         productInfo = requests.post(f"{micro_services['PRODUCT']}/getproduct", json=prod_ids)
         if(productInfo.status_code==200):
             productInfo = productInfo.json()
             for i in item_data.data:
                 for j in productInfo["result"]:
-                    if(i['product_id'] == j["_id"]):
+                    print(i['product_id'])
+                    print(j['_id'])
+                    if(i['product_id'] == j['_id']):
                         i["name"] = j['newProduct']["name"]
                         break
             return Response({"cart": cart_data.data, "products": item_data.data}, status=status.HTTP_200_OK)
@@ -148,7 +151,6 @@ def addOrder(request):
         payment_method = data['payment_method']
         cart = get_object_or_404(Cart, user_id=user_id)
         user_email = cart.user_email
-        print(user_email)
         items = Cart_item.objects.filter(user_id=user_id)
 
         #user order saving
@@ -174,8 +176,10 @@ def addOrder(request):
             seller_order.order_status = "Pending"
             seller_order.save()
         
-        resp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email})
-        if resp.status_code == 200:
+        userresp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email})
+        sellerresp = requests.post(f"{micro_services['EMAIL']}/sellerOrderMail/", json={'seller_id_list': list(seller_ids)})
+        print(sellerresp.status_code)
+        if userresp.status_code == 200 and sellerresp.status_code == 200:
             update_data = {'products': []}  
             for item in items:
                 update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})

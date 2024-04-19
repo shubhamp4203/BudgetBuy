@@ -2,4 +2,6 @@
 *.yml
 start_servers.bat
 .cache_ggshield
-/product_images
+product_images/
+Backend/emailservice/celery.log
+

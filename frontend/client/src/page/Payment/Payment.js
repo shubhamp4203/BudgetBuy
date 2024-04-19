@@ -115,7 +115,7 @@ function Payment() {
       toast.success("Order Placed Successfully.");
       setTimeout(() => {
         navigate("/myorders");
-      }, 2000); // Adjust the delay as needed
+      }, 1800);
     } else {
       toast.error("Something went wrong.");
     }
