@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./YourProductList.module.css";
 import YourCard from "./YourCard";
-const YourProductList = ({ products, searchTerm }) => {
+const YourProductList = ({ products, searchTerm, onRemove }) => {
   console.log(searchTerm);
   const filteredProducts = searchTerm
     ? products.filter((product) =>
@@ -18,7 +18,7 @@ const YourProductList = ({ products, searchTerm }) => {
         {/* {products.map((product) => (
           <FeedCard product={product} key={product._id}/> */}
         {filteredProducts.map((product) => (
-          <YourCard product={product} key={product._id}/>
+          <YourCard product={product} key={product._id} onRemove={onRemove} />
         ))}
       </div>
     </div>

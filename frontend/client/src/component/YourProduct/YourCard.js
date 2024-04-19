@@ -12,143 +12,27 @@ import { useNavigate } from "react-router-dom";
 
 // toast.configure();
 
-const YourCard = ({ product }) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+const YourCard = ({ product, onRemove }) => {
+  // const navigate = useNavigate();
 
-  const navigate = useNavigate();
-
-  const handleaddcart = async (e) => {
-    e.preventDefault();
-    const data = {
-      product_id: product._id,
-      seller_id: product.newProduct.seller_id,
-      amount: 1,
-      product_price: product.newProduct.price,
-    };
+  const handleRemove = async () => {
     try {
-      const resp = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/addCart",
+      await fetch(
+        `${process.env.REACT_APP_URL_PRODUCT}/delete/${product._id}`,
         {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
+          method: "DELETE",
         }
       );
-      if (resp.status == 201) {
-        toast("Product added to cart", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } else if (resp.status == 401) {
-        navigate("/signin");
-      }
+      onRemove(product._id);
+      toast.success("Product removed successfully");
     } catch (error) {
-      alert("Something went wrong");
-      console.log(error);
+      toast.error("Failed to remove product");
     }
   };
 
-  const handleWishlist = async (e) => {
-    e.preventDefault();
-    const data = {
-      product_id: product._id,
-      seller_id: product.newProduct.seller_id,
-      amount: 1,
-      product_price: product.newProduct.price,
-    };
-    try {
-      let resp;
-      if (isWishlisted) {
-        resp = await fetch(
-          `${process.env.REACT_APP_URL_AUTHENTICATION}/wishlist/${product._id}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-      } else {
-        resp = await fetch(
-          process.env.REACT_APP_URL_AUTHENTICATION + "/wishlist",
-          {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-      }
-      if (resp.status == 201 || resp.status == 200) {
-        setIsWishlisted(!isWishlisted);
-        if (isWishlisted == false) {
-          toast("Product removed from wishlist", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          toast("Product added to wishlist", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      } else if (resp.status == 401) {
-        navigate("/signin");
-      }
-    } catch (error) {
-      alert("Something went wrong");
-      console.log(error);
-    }
-  };
-
-  const handleLikes = async (e) => {
-    e.preventDefault();
-    const data = {
-      product_id: product._id,
-      like: isLiked ? -1 : 1,
-    };
-    try {
-      const resp = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/like",
-        {
-          method: "PUT",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
-      if (resp.status == 200) {
-        setIsLiked(!isLiked);
-      }
-    } catch (error) {
-      alert("Something went wrong");
-      console.log(error);
-    }
-  };
+  function getStockValueClass(stock) {
+    return stock <= 10 ? styles.redstock : "";
+  }
 
   return (
     <div className={styles.productCard}>
@@ -179,40 +63,21 @@ const YourCard = ({ product }) => {
             gap: "0.2rem",
           }}
         >
-          {isLiked ? (
-            <ThumbUpIcon
-              sx={{ fontSize: 25, color: "#221f1f" }}
-              onClick={handleLikes}
-            />
-          ) : (
-            <ThumbUpOutlinedIcon
-              sx={{ fontSize: 25, color: "#221f1f" }}
-              onClick={handleLikes}
-            />
-          )}
+          <ThumbUpOutlinedIcon sx={{ fontSize: 25, color: "#221f1f" }} />
+
           {product.newProduct.likes}
         </div>
       </div>
       <div className={styles.prodescription}>
         <p>{product.newProduct.description}</p>
       </div>
+      <div className={styles.stock}>
+        <div className={styles.stockdes}>Stock:</div>
+        <div className={` ${getStockValueClass(product.newProduct.stock)}`}>
+          {product.newProduct.stock}
+        </div>
+      </div>
       <div className={styles.infodiv}>
-        {/* <button
-          onClick={handleaddcart}
-          className={`${styles.buybut} ${styles.but1}`}
-        >
-          <ShoppingCartIcon sx={{ fontSize: 25, color: "##221f1f" }} />
-        </button>
-        <button
-          className={`${styles.buybut} ${styles.but2}`}
-          onClick={handleWishlist}
-        >
-          {isWishlisted ? (
-            <FavoriteIcon sx={{ fontSize: 25, color: "#221f1f" }} />
-          ) : (
-            <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
-          )}
-        </button> */}
         <Link
           to={{
             pathname: "/editproduct",
@@ -221,7 +86,7 @@ const YourCard = ({ product }) => {
           style={{ textDecoration: "none", width: "100%" }}
         >
           <button
-            className={`${styles.buybut} ${styles.but3}`}
+            className={`${styles.buybut} `}
             style={{
               backgroundColor: "#221f1f",
               color: "white",
@@ -230,6 +95,16 @@ const YourCard = ({ product }) => {
             Edit Product
           </button>
         </Link>
+        <button
+          className={`${styles.buybut} `}
+          style={{
+            backgroundColor: "#221f1f",
+            color: "white",
+          }}
+          onClick={handleRemove}
+        >
+          Remove Item
+        </button>
       </div>
     </div>
   );
