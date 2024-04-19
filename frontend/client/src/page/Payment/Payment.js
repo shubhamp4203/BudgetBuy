@@ -113,9 +113,7 @@ function Payment() {
     setSendingmail(false);
     if (resp.status == 201) {
       toast.success("Order Placed Successfully.");
-      setTimeout(() => {
-        navigate("/myorders");
-      }, 2000); // Adjust the delay as needed
+      navigate("/myorders");
     } else {
       toast.error("Something went wrong.");
     }

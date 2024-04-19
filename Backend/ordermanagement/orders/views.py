@@ -148,7 +148,6 @@ def addOrder(request):
         payment_method = data['payment_method']
         cart = get_object_or_404(Cart, user_id=user_id)
         user_email = cart.user_email
-        print(user_email)
         items = Cart_item.objects.filter(user_id=user_id)
 
         #user order saving
@@ -174,8 +173,10 @@ def addOrder(request):
             seller_order.order_status = "Pending"
             seller_order.save()
         
-        resp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email})
-        if resp.status_code == 200:
+        userresp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email})
+        sellerresp = requests.post(f"{micro_services['EMAIL']}/sellerOrderMail/", json={'seller_id_list': list(seller_ids)})
+        print(sellerresp.status_code)
+        if userresp.status_code == 200 and sellerresp.status_code == 200:
             update_data = {'products': []}  
             for item in items:
                 update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})

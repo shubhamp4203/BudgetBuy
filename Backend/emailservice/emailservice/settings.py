@@ -41,6 +41,7 @@ PORT=8002
 micro_services = {
     'inventory': os.getenv("INVENTORY"),
     'order': os.getenv("ORDER"),
+    'SELLER': os.getenv("SELLER")
 }
 # Application definition
 
@@ -84,7 +85,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'emailservice.wsgi.application'
-
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

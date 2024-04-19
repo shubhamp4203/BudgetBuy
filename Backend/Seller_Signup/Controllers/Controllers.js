@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "../.env" });
 const tokencookies = require("../Token/CreateToken");
 const axios = require("axios");
-const FormData = require('form-data');
+const FormData = require("form-data");
+const { ObjectId } = require("mongodb");
 
 //This  function handles all the error that could possibly be there while registering
 const errorHandle = (err) => {
@@ -38,7 +39,7 @@ module.exports.seller_signup_post = async (req, res) => {
     GSTnumber,
     categories,
     address,
-    bank_details
+    bank_details,
   } = req.body;
   try {
     const seller = await Seller.create({
@@ -50,7 +51,7 @@ module.exports.seller_signup_post = async (req, res) => {
       aadhar_card,
       GSTnumber,
       Categories: categories,
-      bank_details
+      bank_details,
     });
     res.status(201).json({ seller: seller._id });
   } catch (err) {
@@ -77,7 +78,7 @@ module.exports.seller_login_post = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.clearCookie("userjwt");
-    res.status(400).json({message: "Login failed", error: err});
+    res.status(400).json({ message: "Login failed", error: err });
   }
 };
 
@@ -140,19 +141,19 @@ module.exports.forgotPassword = async (req, res) => {
       });
       const resetlink =
         process.env.FRONTEND + "/seller/reset-password/" + uid + "/" + token;
-        const resp = await axios.post(process.env.EMAIL + "/resetlink/", {
-          resetlink,
-          email,
-        });
+      const resp = await axios.post(process.env.EMAIL + "/resetlink/", {
+        resetlink,
+        email,
+      });
       if (resp.status == 200) {
-        console.log("OK")
+        console.log("OK");
         res.status(200).json({ message: "Reset link sent to your email" });
       } else {
         res.status(401).json({ message: "Something went wrong" });
       }
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(402).json({ message: "Something went wrong" });
   }
 };
@@ -177,27 +178,43 @@ module.exports.resetPassword = async (req, res) => {
 module.exports.addProduct = async (req, res) => {
   const seller_id = req.authdata.id;
   const formData = new FormData();
-  formData.append('image', req.file.buffer, req.file.originalname);
+  formData.append("image", req.file.buffer, req.file.originalname);
   for (let key in req.body) {
     formData.append(key, req.body[key]);
   }
-  formData.append('seller_id', seller_id);
+  formData.append("seller_id", seller_id);
 
   try {
-    const resp = await axios.post(process.env.PRODUCT + "/insertProduct", formData, {
-      headers: formData.getHeaders(),
-      validateStatus: function (status) {
-        return status >= 200 && status < 500; 
+    const resp = await axios.post(
+      process.env.PRODUCT + "/insertProduct",
+      formData,
+      {
+        headers: formData.getHeaders(),
+        validateStatus: function (status) {
+          return status >= 200 && status < 500;
+        },
       }
-    });
+    );
 
-    if(resp.status == 201) {
+    if (resp.status == 201) {
       res.status(201).json({ message: "Product inserted" });
-    }
-    else if(resp.status == 401) {
+    } else if (resp.status == 401) {
       res.status(401).json({ message: "SKU ID is already in use" });
     }
   } catch (err) {
     res.status(500).json({ message: "Product not inserted" });
+  }
+};
+
+module.exports.getSellerData = async (req, res) => {
+  console.log("called")
+  try {
+    const seller_id = req.body.seller_id;
+    const seller = await Seller.findOne({ _id: new ObjectId(seller_id) });
+    console.log(seller)
+    res.status(200).json({ seller });
+  } catch (err) {
+    console.log(err.message)
+    res.status(400).json({ message: "Something went wrong" });
   }
 };
