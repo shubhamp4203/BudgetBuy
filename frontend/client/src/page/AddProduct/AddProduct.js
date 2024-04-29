@@ -3,6 +3,7 @@ import { toast, Toaster } from "sonner";
 import styles from "./AddProduct.module.css";
 import Select from "react-select";
 import SellerNavbar from "../../component/Seller Navbar/NavBar";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
   const [stock, setStock] = useState("");
@@ -14,6 +15,7 @@ export default function AddProduct() {
   const [dimension, setDimension] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
   const [image, setImage] = useState(null);
+  const navigate = useNavigate();
 
   const options = [
     { value: 'Clothes', label: 'Clothes' },
@@ -61,7 +63,10 @@ export default function AddProduct() {
       );
       if (response.status === 201) {
         toast.success("Product is added successfully");
-      } 
+        setTimeout(() => {
+          navigate("/yourproducts");
+        }, 1800);
+      }   
       else if(response.status === 401) {
         toast.error("SKU ID is already in use");
       }else {

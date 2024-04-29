@@ -118,7 +118,6 @@ def seller_order_mail(request):
             if seller_data.status_code == 200:
                 seller_data = seller_data.json()
                 seller_email = seller_data['seller']['email']
-                print(seller_email)
                 admin_email = EMAIL_HOST_USER
                 subject = "Received an Order"
                 body = "You have received an order."

@@ -35,7 +35,7 @@ micro_services = {
     'PRODUCT': os.getenv("PRODUCT"),
     'EMAIL': os.getenv("EMAIL"),
 }
-
+MEDIA_ROOT = 'C:/Users/shubh/Desktop/BudgetBuy/invoices'
 # Application definition
 
 INSTALLED_APPS = [
