@@ -11,7 +11,7 @@ import random
 import requests
 from emailapp.models import UserOtp
 from emailservice.settings import micro_services
-from .tasks import send_email_task
+from .tasks import send_email_task, send_pdf_email_task
 
 
 @csrf_exempt
@@ -94,11 +94,13 @@ def user_order_mail(request):
     try:
         data = JSONParser().parse(request)
         user_email = data['user_email']
+        order_id = data['order_id']
         admin_email = EMAIL_HOST_USER
         subject = "Order Placed Successfully"
-        body = "Your order has been placed successfully. You will receive a confirmation email shortly."
+        body = "Your order has been placed successfully and will be delivered soon. Below is the attached invoice for the order."
+        pdf_path = f'C:/Users/shubh/Desktop/BudgetBuy/Backend/ordermanagement/invoices/invoice_{order_id}.pdf'
         try:
-            send_email_task.delay(subject, body, admin_email, [user_email])
+            send_pdf_email_task.delay(subject, body, admin_email, [user_email], pdf_path)
             return Response({'message': 'Order Placed Successfully'}, status=status.HTTP_200_OK)
         except BadHeaderError:
             return Response({'error': 'Invalid header found.'}, status=status.HTTP_400_BAD_REQUEST)

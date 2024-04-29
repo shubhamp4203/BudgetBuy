@@ -35,7 +35,6 @@ micro_services = {
     'PRODUCT': os.getenv("PRODUCT"),
     'EMAIL': os.getenv("EMAIL"),
 }
-MEDIA_ROOT = 'C:/Users/shubh/Desktop/BudgetBuy/invoices'
 # Application definition
 
 INSTALLED_APPS = [
@@ -68,7 +67,7 @@ ROOT_URLCONF = 'ordermanagement.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
