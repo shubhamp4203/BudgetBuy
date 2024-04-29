@@ -192,7 +192,7 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
         className={styles.filbut}
       />
       <Drawer
-        anchor="right"
+        anchor="left"
         open={filteropen}
         onClose={filtertoggleDrawer(false)}
       >
@@ -212,7 +212,7 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
         />
       </div>
       <MenuIcon onClick={toggleDrawer(true)} className={styles.profbut} />
-      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
     </div>

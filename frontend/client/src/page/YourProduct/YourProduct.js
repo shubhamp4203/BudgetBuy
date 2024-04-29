@@ -8,7 +8,13 @@ function YourProduct() {
   const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     const fetchdata = async () => {
-      const resp = await fetch(process.env.REACT_APP_URL_PRODUCT + "/getAll");
+      const resp = await fetch(
+        process.env.REACT_APP_URL_SELLER + "/getSellerProduct",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       const data = await resp.json();
       // console.log(data.result);
       setData(data.result);
@@ -26,11 +32,15 @@ function YourProduct() {
   return (
     <>
       <SearchBar onSearch={setSearchTerm} />
-      <YourProductList
-        products={products}
-        searchTerm={searchTerm}
-        onRemove={handleRemove}
-      />
+      {products.length > 0 ? (
+        <YourProductList
+          products={products}
+          searchTerm={searchTerm}
+          onRemove={handleRemove}
+        />
+      ) : (
+        <h1>No Products Found</h1>
+      )}
       <SellerNavBar />
     </>
   );

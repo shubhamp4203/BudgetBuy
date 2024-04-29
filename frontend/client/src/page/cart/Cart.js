@@ -11,7 +11,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const [frontcart, setfrontcart] = useState({});
   const [cartItem, setcartItem] = useState([]);
-  const [isEmpty, setIsEmpty] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getcart = async () => {
@@ -29,6 +29,8 @@ const Cart = () => {
           setcartItem(cartitems);
           setfrontcart(fcart);
           setIsLoading(false);
+          setIsEmpty(false);
+          console.log(data.status);
         } else if (data.status === 204) {
           setIsEmpty(true);
           setIsLoading(false);

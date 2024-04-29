@@ -3,12 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "./productDetail.module.css";
 import FeedCard from "../suggestcard/FeedCard";
+import { useNavigate } from "react-router-dom";
 // import products from "../../data/products";
-
+import {toast, Toaster} from "sonner";
 const ProductDetail = () => {
   const { productId } = useParams();
   const product_list = [productId];
   const [item, setproduct] = useState({});
+  const [seller, setseller] = useState({});
+  const navigate = useNavigate();
   useEffect(() => {
     const getproduct = async () => {
       const resp = await fetch(
@@ -22,14 +25,48 @@ const ProductDetail = () => {
         }
       );
       const data = await resp.json();
+      const sellerinf = data.finalResult.sellerinfo.seller;
       const product = data.finalResult.result;
       setproduct(product);
+      setseller(sellerinf);
     };
     getproduct();
   }, []);
 
+  const handlebuynow = async (e) => {
+    e.preventDefault();
+    const data = {
+      product_id: item._id,
+      seller_id: item.newProduct.seller_id,
+      amount: 1,
+      product_price: item.newProduct.price,
+    };
+    try {
+      const resp = await fetch(
+        process.env.REACT_APP_URL_AUTHENTICATION + "/addCart",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      if (resp.status == 201) {
+        navigate("/payment");
+      } else if (resp.status == 401) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      toast.error("Something went wrong.");
+      console.log(error);
+    }
+  };
+
   return (
     <>
+    <Toaster richColors position="top-center"/>
       {item.newProduct ? (
         <div className={style.container}>
           <div className={style.header}>
@@ -73,11 +110,7 @@ const ProductDetail = () => {
 
             <div className={style.proinfo}>
               <div className={style.protag}>Seller Name:</div>
-              <div className={style.provalue}>{item.newProduct.name}</div>
-              <div className={style.protag}>Price: </div>
-              <div className={style.provalue}>{item.newProduct.price}</div>
-              <div className={style.protag}>Stock:</div>
-              <div className={style.provalue}> {item.newProduct.stock}</div>
+              <div className={style.provalue}>{seller.name}</div>
               <button>Chat with Seller</button>
             </div>
             <div className={style.description}>
@@ -102,7 +135,7 @@ const ProductDetail = () => {
             </div>
           </div>
           <div className={style.footer}>
-            <button>Buy Now</button>
+            <button onClick={handlebuynow}>Buy Now</button>
           </div>
         </div>
       ) : (

@@ -35,5 +35,9 @@
   margin:0rem;
   width: 40%;
   border-radius: 4px;
-  
+  background-color: black;
+  color: white;
+  padding:0rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }

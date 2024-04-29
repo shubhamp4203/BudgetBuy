@@ -10,6 +10,7 @@ class User_Order(models.Model):
     total_value = models.IntegerField(null=True, default=0)
     payment_method = models.CharField(max_length=50, null=True) 
     item_count = models.IntegerField(null=True, default=0)
+    seller_id = models.CharField(max_length=100, null=True)
 
     class Meta:
         db_table = 'user_order' 

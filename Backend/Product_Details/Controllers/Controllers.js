@@ -26,7 +26,6 @@ module.exports.insertProduct_post = async (req, res) => {
   newProduct.likeUsers = [];
   const collection = await dataConnect();
   try {
-    fs.readFileSync(req.file.path);
     const exist = await collection.findOne({
       "newProduct.skuId": skuid,
       "newProduct.seller_id": seller_id,
@@ -58,6 +57,7 @@ module.exports.insertProduct_post = async (req, res) => {
       res.status(401).json({ message: "SKU_ID is already in use" });
     }
   } catch (error) {
+    console.log(error);
     const product = await collection.findOneAndDelete({
       "newProduct.skuId": skuid,
       "newProduct.seller_id": seller_id,
@@ -137,6 +137,17 @@ module.exports.allproducts_get = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch products" });
   }
 };
+
+module.exports.getSellerProduct_post = async (req, res) => {
+  const collection = await dataConnect();
+  const seller_id = req.body.seller_id;
+  try {
+    const result = await collection.find({ "newProduct.seller_id": seller_id }).toArray();
+    res.status(200).json({ message: "Products fetched successfully", result });
+  } catch (err) {
+    res.status(400).json({ error: "Failed to fetch products" });
+  }
+}
 
 // module.exports.getlike = async (req,res) => {
 //   const collection = await dataConnect();

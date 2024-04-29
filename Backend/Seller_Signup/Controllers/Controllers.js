@@ -217,3 +217,15 @@ module.exports.getSellerData = async (req, res) => {
     res.status(400).json({ message: "Something went wrong" });
   }
 };
+
+module.exports.getSellerProduct = async (req, res) => {
+  const seller_id = req.authdata.id;
+  try {
+    const resp = await axios.post(process.env.PRODUCT + "/getSellerProduct", {
+      seller_id,
+    });
+    res.status(200).json({ result: resp.data.result });
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
+  }
+}

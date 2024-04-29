@@ -10,5 +10,6 @@ router.post('/getproduct',Controller.getProduct_post);
 router.get('/getAll',Controller.allproducts_get);
 router.post('/wishlist',Controller.wishlist_post);
 router.post('/removeWishlist',Controller.removeWishlist_post);
+router.post('/getSellerProduct',Controller.getSellerProduct_post);
 
 module.exports=router;

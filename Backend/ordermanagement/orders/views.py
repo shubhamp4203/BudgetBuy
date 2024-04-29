@@ -8,8 +8,9 @@ from rest_framework.response import Response
 from pathlib import Path
 import requests
 from django.shortcuts import get_object_or_404
-from ordermanagement.settings import micro_services
+from ordermanagement.settings import micro_services, MEDIA_ROOT
 import json
+
 
 def test_func(arg):
     resDict = {'data':{}}
@@ -86,8 +87,6 @@ def getCart(request):
             productInfo = productInfo.json()
             for i in item_data.data:
                 for j in productInfo["result"]:
-                    print(i['product_id'])
-                    print(j['_id'])
                     if(i['product_id'] == j['_id']):
                         i["name"] = j['newProduct']["name"]
                         break
@@ -152,23 +151,26 @@ def addOrder(request):
         cart = get_object_or_404(Cart, user_id=user_id)
         user_email = cart.user_email
         items = Cart_item.objects.filter(user_id=user_id)
+        sellers = list(set(items.values_list('seller_id', flat=True)))
 
         #user order saving
-        user_order = User_Order.objects.create(user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, total_value=cart.total_value)
-        user_order.order_status = "Pending"
-        user_order.item_count = items.count()
-        user_order.save()
-        for item in items:
-            order_item = User_Order_item.objects.create(user_order_id=user_order, product_id=item.product_id, amount=item.amount, item_status="pending")
-            order_item.save()
+        for seller in sellers:
+            user_order =  User_Order.objects.create(user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, seller_id=seller, total_value=0)
+            user_order.order_status = "Pending"
+            ind_seller_items = items.filter(seller_id=seller)
+            order_amt = 0
+            item_cnt=ind_seller_items.count()
+            user_order.item_count = item_cnt
+            for item in ind_seller_items:
+                order_amt += item.amount * item.product_price
+                order_item = User_Order_item.objects.create(user_order_id=user_order, product_id=item.product_id, amount=item.amount, item_status="pending")
+                order_item.save()
+            user_order.total_value = order_amt
+            user_order.save()
 
-        #seller order saving
-        seller_ids = set(items.values_list('seller_id', flat=True))
-        for i in seller_ids:
-            seller_order = Seller_Order.objects.create(user_email=user_email, user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, seller_id=i, user_order_id=user_order.user_order_id)
-            seller_items = items.filter(seller_id=i)
+            seller_order = Seller_Order.objects.create(user_email=user_email, user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, seller_id=seller, user_order_id=user_order.user_order_id)
             seller_value = 0
-            for item in seller_items:
+            for item in ind_seller_items:
                 seller_order_item = Seller_Order_item.objects.create(seller_order_id=seller_order, product_id=item.product_id, amount=item.amount)
                 seller_value += item.amount * item.product_price
                 seller_order_item.save()
@@ -177,8 +179,7 @@ def addOrder(request):
             seller_order.save()
         
         userresp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email})
-        sellerresp = requests.post(f"{micro_services['EMAIL']}/sellerOrderMail/", json={'seller_id_list': list(seller_ids)})
-        print(sellerresp.status_code)
+        sellerresp = requests.post(f"{micro_services['EMAIL']}/sellerOrderMail/", json={'seller_id_list': sellers})
         if userresp.status_code == 200 and sellerresp.status_code == 200:
             update_data = {'products': []}  
             for item in items:

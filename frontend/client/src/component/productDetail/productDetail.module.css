@@ -38,7 +38,7 @@ body {
   width: 100%;
   padding: 0.5rem;
   border-bottom: 1px solid #221f1f;
-  gap: 1.5rem;
+  
   justify-content: start;
   align-items: flex-start;
 }
@@ -48,6 +48,7 @@ body {
   color: #221f1f;
   text-align: start;
   padding-inline: 1rem;
+  width: max-content;
 }
 .proinfo .provalue {
   font-size: 1.2rem;
@@ -55,6 +56,7 @@ body {
   font-weight: 600;
   text-align: end;
   padding-inline: 1rem;
+  width: max-content;
 }
 .proinfo button {
   grid-column: 1 / -1;

@@ -15,6 +15,7 @@ router.post("/forgotpassword", authController.forgotPassword)
 router.post("/resetpassword", authController.resetPassword)
 router.post("/addproduct", auth, upload.single('image'), authController.addProduct);
 router.post("/getSellerData", authController.getSellerData)
+router.post("/getSellerProduct", auth, authController.getSellerProduct)
 
 module.exports=router
 

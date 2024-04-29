@@ -4,4 +4,7 @@ start_servers.bat
 .cache_ggshield
 product_images/
 Backend/emailservice/celery.log
-
+start_envsetter.bat
+envsetter.py
+test.py
+invoices/
