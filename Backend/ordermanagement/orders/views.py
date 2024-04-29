@@ -8,8 +8,12 @@ from rest_framework.response import Response
 from pathlib import Path
 import requests
 from django.shortcuts import get_object_or_404
-from ordermanagement.settings import micro_services, MEDIA_ROOT
+from ordermanagement.settings import micro_services
 import json
+from django.template.loader import get_template
+from weasyprint import HTML
+import os
+from django.shortcuts import render
 
 
 def test_func(arg):
@@ -140,13 +144,27 @@ def delCart(request):
         reqData = {'items': serializer.data, 'cartValue': cart.total_value}
         return Response(reqData, status=status.HTTP_200_OK)
    
+def generate_invoice_pdf(order, items):
+    try:
+        for item in items:
+            item['subtotal'] = item['amount']*item['product_price']
+        template = get_template('invoice.html')
+        html_content = template.render({
+            "order": order,
+            "items": items
+        })   
+        pdf_path = f'C:/Users/shubh/Desktop/BudgetBuy/Backend/ordermanagement/invoices/invoice_{order.user_order_id}.pdf'
+        pdf = HTML(string=html_content).write_pdf(pdf_path)
+    except Exception as e:
+        print(e)
+
 @csrf_exempt
 @api_view(['POST'])
 def addOrder(request):
     try:
         data = JSONParser().parse(request)
         user_id = data['user_id']
-        shipping_address = data['address']
+        shipping_address = data['address'].split('Address:')[1]
         payment_method = data['payment_method']
         cart = get_object_or_404(Cart, user_id=user_id)
         user_email = cart.user_email
@@ -158,6 +176,16 @@ def addOrder(request):
             user_order =  User_Order.objects.create(user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, seller_id=seller, total_value=0)
             user_order.order_status = "Pending"
             ind_seller_items = items.filter(seller_id=seller)
+            ind_items = CartItemSerializer(ind_seller_items, many=True)
+            prod_ids = {'products': list(ind_seller_items.values_list('product_id', flat=True)), 'type': "Cart"}
+            productInfo = requests.post(f"{micro_services['PRODUCT']}/getproduct", json=prod_ids)
+            if(productInfo.status_code==200):
+                productInfo = productInfo.json()
+                for i in ind_items.data:
+                    for j in productInfo["result"]:
+                        if(i['product_id'] == j['_id']):
+                            i["name"] = j['newProduct']["name"]
+                            break
             order_amt = 0
             item_cnt=ind_seller_items.count()
             user_order.item_count = item_cnt
@@ -167,6 +195,8 @@ def addOrder(request):
                 order_item.save()
             user_order.total_value = order_amt
             user_order.save()
+            generate_invoice_pdf(user_order, ind_items.data)
+            userresp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email, 'order_id': user_order.user_order_id})
 
             seller_order = Seller_Order.objects.create(user_email=user_email, user_id=user_id, shipping_address=shipping_address, payment_method=payment_method, seller_id=seller, user_order_id=user_order.user_order_id)
             seller_value = 0
@@ -177,30 +207,19 @@ def addOrder(request):
             seller_order.total_value = seller_value
             seller_order.order_status = "Pending"
             seller_order.save()
+            sellerresp = requests.post(f"{micro_services['EMAIL']}/sellerOrderMail/", json={'seller_id_list': sellers})
         
-        userresp = requests.post(f"{micro_services['EMAIL']}/userOrderMail/", json={'user_email': user_email})
-        sellerresp = requests.post(f"{micro_services['EMAIL']}/sellerOrderMail/", json={'seller_id_list': sellers})
-        if userresp.status_code == 200 and sellerresp.status_code == 200:
-            update_data = {'products': []}  
-            for item in items:
-                update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})
-            stock_update = requests.post(f"{micro_services['INVENTORY']}/updateStock/", json=update_data)
-            items.delete()
-            cart.total_value = 0
-            cart.status = True
-            cart.out_of_stock = 0
-            cart.user_email = user_email
-            cart.save()
-            return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
-        else:
-            seller_orders = Seller_Order.objects.filter(user_order_id=user_order.user_order_id)
-            seller_items = Seller_Order_item.objects.filter(seller_order_id_id__in=seller_orders)
-            seller_items.delete()
-            seller_orders.delete()
-            user_items = User_Order_item.objects.filter(user_order_id=user_order)
-            user_items.delete() 
-            user_order.delete()
-            return Response({'error': 'Something Went Wrong'}, status=status.HTTP_400_BAD_REQUEST)
+        update_data = {'products': []}  
+        for item in items:
+            update_data['products'].append({'product_id': item.product_id, 'amount': item.amount})
+        stock_update = requests.post(f"{micro_services['INVENTORY']}/updateStock/", json=update_data)
+        items.delete()
+        cart.total_value = 0
+        cart.status = True
+        cart.out_of_stock = 0
+        cart.user_email = user_email
+        cart.save()
+        return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
     except Exception as e:
         seller_orders = Seller_Order.objects.filter(user_order_id=user_order.user_order_id)
         seller_items = Seller_Order_item.objects.filter(seller_order_id__in=seller_orders)
@@ -322,6 +341,8 @@ def cancelOrder(request):
     try:
         data = JSONParser().parse(request)
         order_id = data['order_id']
+        pdf_path = f'C:/Users/shubh/Desktop/BudgetBuy/Backend/ordermanagement/invoices/invoice_{order_id}.pdf'
+        os.remove(pdf_path)
         user_order_items = User_Order_item.objects.filter(user_order_id=order_id)
         user_order_items.delete()
         user_order = get_object_or_404(User_Order, user_order_id=order_id)
@@ -332,4 +353,5 @@ def cancelOrder(request):
         seller_orders.delete()
         return Response({'message': 'Order Cancelled Successfully'}, status=status.HTTP_200_OK)
     except Exception as e:
+        print(e)
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
