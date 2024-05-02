@@ -1,9 +1,9 @@
 from django.db import models
-
+from django.utils import timezone
 
 class User_Order(models.Model):
     user_order_id = models.BigAutoField(primary_key=True)
-    order_date = models.DateTimeField(auto_now_add=True)
+    order_date = models.DateTimeField(default=timezone.now)
     order_status = models.CharField(max_length=50, null=True)
     user_id = models.CharField(max_length=100)   
     shipping_address = models.CharField(max_length=200, null=True)
@@ -17,7 +17,7 @@ class User_Order(models.Model):
     
 class Seller_Order(models.Model):
     seller_order_id = models.BigAutoField(primary_key=True)
-    order_date = models.DateTimeField(auto_now_add=True)
+    order_date = models.DateTimeField(default=timezone.now)
     order_status = models.CharField(max_length=50, null=True)
     user_id = models.CharField(max_length=100)   
     shipping_address = models.CharField(max_length=200, null=True)

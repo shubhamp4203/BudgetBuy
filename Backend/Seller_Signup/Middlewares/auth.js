@@ -6,6 +6,7 @@ const JWTverify = async (req, res, next) => {
   const cookies = cookie.parse(req.headers.cookie || "");
   const token = cookies.sellerjwt;
   if (!token) {
+    console.log("NO token");
     res.status(401).json({ message: "no token found" });
   } else {
     try {
