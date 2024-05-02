@@ -90,9 +90,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'order_db',
-        'USER': os.getenv("RDS_USER"),
-        'PASSWORD': os.getenv("RDS_PASSWORD"),
-        'HOST': os.getenv("AMAZON_RDS_ENDPOINT"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
@@ -122,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 

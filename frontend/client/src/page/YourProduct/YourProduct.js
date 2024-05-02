@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import SearchBar from "../../component/searchBar/searchBar";
 import SellerNavBar from "../../component/Seller Navbar/NavBar";
 import YourProductList from "../../component/YourProduct/YourProductList";
+const { useNavigate } = require("react-router-dom");
 
 function YourProduct() {
   const [products, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchdata = async () => {
       const resp = await fetch(
@@ -15,9 +17,12 @@ function YourProduct() {
           credentials: "include",
         }
       );
-      const data = await resp.json();
-      // console.log(data.result);
-      setData(data.result);
+      if (resp.status === 401) {
+        navigate("/sellersignin");
+      } else {
+        const data = await resp.json();
+        setData(data.result);
+      }
     };
     fetchdata();
   }, []);

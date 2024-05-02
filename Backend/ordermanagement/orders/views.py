@@ -153,7 +153,7 @@ def generate_invoice_pdf(order, items):
             "order": order,
             "items": items
         })   
-        pdf_path = f'C:/Users/shubh/Desktop/BudgetBuy/Backend/ordermanagement/invoices/invoice_{order.user_order_id}.pdf'
+        pdf_path = f'./invoices/invoice_{order.user_order_id}.pdf'
         pdf = HTML(string=html_content).write_pdf(pdf_path)
     except Exception as e:
         print(e)
@@ -221,6 +221,7 @@ def addOrder(request):
         cart.save()
         return Response({'message': 'Order placed successfully'}, status=status.HTTP_201_CREATED)
     except Exception as e:
+        print(str(e))
         seller_orders = Seller_Order.objects.filter(user_order_id=user_order.user_order_id)
         seller_items = Seller_Order_item.objects.filter(seller_order_id__in=seller_orders)
         seller_items.delete()
@@ -228,7 +229,6 @@ def addOrder(request):
         user_items = User_Order_item.objects.filter(user_order_id=user_order)
         user_items.delete()
         user_order.delete()
-        print(str(e))
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
@@ -341,7 +341,7 @@ def cancelOrder(request):
     try:
         data = JSONParser().parse(request)
         order_id = data['order_id']
-        pdf_path = f'C:/Users/shubh/Desktop/BudgetBuy/Backend/ordermanagement/invoices/invoice_{order_id}.pdf'
+        pdf_path = f'./invoices/invoice_{order_id}.pdf'
         os.remove(pdf_path)
         user_order_items = User_Order_item.objects.filter(user_order_id=order_id)
         user_order_items.delete()
