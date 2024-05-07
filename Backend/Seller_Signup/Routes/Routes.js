@@ -16,6 +16,8 @@ router.post("/resetpassword", authController.resetPassword)
 router.post("/addproduct", auth, upload.single('image'), authController.addProduct);
 router.post("/getSellerData", authController.getSellerData)
 router.post("/getSellerProduct", auth, authController.getSellerProduct)
+router.get("/authenticate", auth, authController.authenticate)
+router.post("/getSellerOrder", auth, authController.getSellerOrder)
 
 module.exports=router
 

@@ -13,13 +13,13 @@ import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ViewListIcon from "@mui/icons-material/ViewList";
-
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SellerNavbar from "../../component/Seller Navbar/NavBar";
-import {useNavigate} from "react-router-dom"
-import {toast, Toaster} from  "sonner";
+import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner";
 export default function SellerAccount() {
   const navigate = useNavigate();
   async function handlelogout() {
@@ -118,6 +118,19 @@ export default function SellerAccount() {
               </ListItem>
             </Link>
             <Divider />
+            <Link to="/orders" className={styles.navto}>
+              <ListItem key="My Orders" disablePadding>
+                <ListItemButton
+                  sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                >
+                  <ListItemIcon>
+                    <LocalShippingIcon sx={{ color: "black" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="My Orders" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Divider />
             <Link to="/yourproducts" className={styles.navto}>
               <ListItem key="your products" disablePadding>
                 <ListItemButton
@@ -158,7 +171,7 @@ export default function SellerAccount() {
           </List>
         </Box>
       </div>
-      <SellerNavbar/>
+      <SellerNavbar />
     </div>
   );
 }

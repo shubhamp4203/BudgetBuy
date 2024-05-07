@@ -17,8 +17,8 @@ router.post("/addaddress", auth, authController.insertAddress);
 router.post("/addcard", auth, authController.insertCard);
 router.get("/getuser", auth, authController.getUser);
 router.post("/getUserOrder", auth, authController.getUserOrder);
-router.post('/wishlist',auth,authController.wishlist_post);
-router.post('/removeWishlist',auth,authController.removeWishlist_post);
-
-
+router.post("/wishlist",auth,authController.wishlist_post);
+router.post("/removeWishlist",auth,authController.removeWishlist_post);
+router.route("/authenticate").get(auth, authController.authenticate).post(auth, authController.authenticate);
+    
 module.exports = router;

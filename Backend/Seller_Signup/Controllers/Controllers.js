@@ -229,3 +229,28 @@ module.exports.getSellerProduct = async (req, res) => {
     res.status(400).json({ message: "Something went wrong" });
   }
 }
+
+module.exports.authenticate = async (req,res) => {
+  res.status(200).json({message: "Authenticated"});
+}
+module.exports.getSellerOrder = async (req, res) => {
+  const seller_id = req.authdata.id;
+  const status = req.body.type;
+  try {
+    const resp = await axios.get(process.env.ORDER + "/getSellerOrder/", {
+      params: {
+        seller_id,
+        status,
+      },
+    });
+    if (resp.status == 200) {
+      res.status(200).json({ result: resp.data });
+    } else if (resp.status == 204) {
+      res.status(204).json({ message: "No orders found" });
+    } else {
+      res.status(400).json({ message: "Something went wrong" });
+    }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};

@@ -82,7 +82,7 @@ def getCart(request):
     items = Cart_item.objects.filter(user_id=user_id)
     cart_data = CartSerializer(cart)
     if not items:
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Cart is empty"}, status=status.HTTP_204_NO_CONTENT)
     else:
         item_data = CartItemSerializer(items, many=True)
         prod_ids = {'products': list(items.values_list('product_id', flat=True)), 'type': "Cart"}
@@ -96,7 +96,7 @@ def getCart(request):
                         break
             return Response({"cart": cart_data.data, "products": item_data.data}, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
     
 @csrf_exempt
 @api_view(['DELETE'])
@@ -238,11 +238,11 @@ def orderDelivered(request):
         data = JSONParser().parse(request)
         order_id = data['order_id']
         seller_id = data['seller_id']
-        order = get_object_or_404(Seller_Order, seller_order_id=order_id, seller_id=seller_id)
+        order = get_object_or_404(Seller_Order, user_order_id=order_id, seller_id=seller_id)
         order.order_status = "Delivered"
         order.save()
 
-        order_items = Seller_Order_item.objects.filter(seller_order_id=order_id)
+        order_items = Seller_Order_item.objects.filter(seller_order_id=order.seller_order_id)
         user_order = get_object_or_404(User_Order, user_order_id=order.user_order_id)
         for i in order_items:
             user_item = User_Order_item.objects.get(user_order_id=user_order, product_id=i.product_id)
@@ -254,6 +254,7 @@ def orderDelivered(request):
         user_order.save()
         return Response({'message': 'Order status updated successfully'}, status=status.HTTP_200_OK)
     except Exception as e:
+        print(str(e))
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt

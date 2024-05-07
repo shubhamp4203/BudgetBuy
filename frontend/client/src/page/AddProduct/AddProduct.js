@@ -162,7 +162,7 @@ export default function AddProduct() {
 
         <label htmlFor="image">Product Image*</label>
         <input
-          className={`${styles.input} ${styles.inputFileHidden}  ${styles.customFileUpload}`}
+          className={`${styles.input}`}
           type="file"
           id="image"
           accept="image/*"

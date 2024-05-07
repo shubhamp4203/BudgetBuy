@@ -2,26 +2,190 @@ import React, { useEffect, useState } from "react";
 import SearchBar from "../../component/searchBar/searchBar";
 import Navbar from "../../component/NavBar/NavBar";
 import SellerOrder from "../../component/SellerOrder/SellerOrderList";
-
+import SellerNavbar from "../../component/Seller Navbar/NavBar";
+import styles from "./SellerOrder.module.css";
+import Divider from "@mui/material/Divider";
+import { useNavigate } from "react-router-dom";
 function YourProduct() {
-  const [products, setData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [selected, setSelected] = useState("Pending");
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchdata = async () => {
-      const resp = await fetch(process.env.REACT_APP_URL_PRODUCT + "/getAll");
-      const data = await resp.json();
-      // console.log(data.result);
-      setData(data.result);
+      const data = {
+        type: selected,
+      };
+      const resp = await fetch(
+        process.env.REACT_APP_URL_SELLER + "/getSellerOrder",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          credentials: "include",
+        }
+      );
+      if (resp.status === 200) {
+        const res = await resp.json();
+        setOrders(
+          res.result.orders.sort(
+            (a, b) => new Date(a.order_date) - new Date(b.order_date)
+          )
+        );
+        setIsLoading(false);
+        setIsEmpty(false);
+      } else if (resp.status === 204) {
+        setIsEmpty(true);
+        setIsLoading(false);
+      } else {
+        console.log("Error");
+      }
     };
     fetchdata();
   }, []);
 
+  const handleSelected = async (selected) => {
+    setSelected(selected);
+    const data = {
+      type: selected,
+    };
+    const resp = await fetch(
+      process.env.REACT_APP_URL_SELLER + "/getSellerOrder",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      }
+    );
+    if (resp.status === 200) {
+      const res = await resp.json();
+      setOrders(
+        res.result.orders.sort(
+          (a, b) => selected == "Delivered" ? new Date(b.order_date) - new Date(a.order_date) : new Date(a.order_date) - new Date(b.order_date)
+        )
+      );
+      setIsLoading(false);
+      setIsEmpty(false);
+    } else if (resp.status === 204) {
+      setIsEmpty(true);
+      setIsLoading(false);
+    } else {
+      console.log("Error");
+    }
+  };
+
+  const handleOrder = async (order) => {
+    navigate(`/seller/orderdetails/${order.user_order_id}`, { state: { orderdet: order } });
+  };
+
   return (
-    <>
-      <SearchBar onSearch={setSearchTerm} />
-      <SellerOrder products={products} searchTerm={searchTerm} />
-      <Navbar />
-    </>
+    <div>
+      {/* <SearchBar /> */}
+      <div className={styles.parcontainer}>
+        <div className={styles.tabContainer}>
+          <div
+            className={`${styles.all} ${
+              selected === "ALL" ? styles.selected : ""
+            }`}
+            onClick={() => handleSelected("ALL")}
+          >
+            <h3>All</h3>
+          </div>
+          <div
+            className={`${styles.all} ${
+              selected === "Pending" ? styles.selected : ""
+            }`}
+            onClick={() => handleSelected("Pending")}
+          >
+            <h3> Pending</h3>
+          </div>
+          <div
+            className={`${styles.all} ${
+              selected === "Delivered" ? styles.selected : ""
+            }`}
+            onClick={() => handleSelected("Delivered")}
+          >
+            <h3> Delivered</h3>
+          </div>
+        </div>
+        <div className={styles.orders}>
+          {isEmpty ? (
+            <h2>No order found</h2>
+          ) : (
+            <>
+              {orders.map((order) => (
+                <React.Fragment key={order.user_order_id}>
+                    <div key={order.user_order_id} className={styles.orderitem} onClick={() => handleOrder(order)}>
+                      <div className={styles.inditem}>
+                        <h4>Order ID:</h4>
+                        <div>{order.user_order_id}</div>
+                      </div>
+                      <div className={styles.inditem}>
+                        <h4>Order Date:</h4>
+                        <div>
+                          {new Date(order.order_date).toLocaleString(
+                            "default",
+                            {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
+                        </div>
+                      </div>
+                      <div className={styles.inditem}>
+                        <h4>Payment Method:</h4>
+                        <div>{order.payment_method}</div>
+                      </div>
+                      <div className={styles.inditem}>
+                        <h4>User Email:</h4>
+                        <div>{order.user_email}</div>
+                      </div>
+                      <div className={styles.inditem}>
+                        <h4>Address:</h4>
+                        <div>{order.shipping_address}</div>
+                      </div>
+                      <div className={styles.inditem}>
+                        <h4>Order Total:</h4>
+                        <div className={styles.itemprice}>
+                          ₹{" "}
+                          {new Intl.NumberFormat("en-US", {
+                            style: "decimal",
+                            minimumFractionDigits: 2,
+                          }).format(order.total_value)}{" "}
+                        </div>
+                      </div>
+                      <div className={styles.inditem}>
+                        <h4>Order Status:</h4>
+                        <div
+                          style={{
+                            color:
+                              order.order_status == "Pending" ? "red" : "green",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {order.order_status}
+                        </div>
+                      </div>
+                    </div>
+                  <Divider />
+                </React.Fragment>
+              ))}
+            </>
+          )}
+        </div>
+      </div>
+      <SellerNavbar />
+    </div>
   );
 }
 export default YourProduct;

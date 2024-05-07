@@ -30,6 +30,7 @@ import SellerBank from "./page/Sellerbank/bank";
 import SellerResetPassword from "./page/Seller Reset Password/resetpassword";
 import Splash from "./page/Splash/splash";
 import EditSellerAddress from "./page/Selleraddress/EditSellerAddress";
+import SellerOrderDetails from "./page/sellerorderdetails/orderdetails";
 
 const AppRouter = () => {
   return (
@@ -63,6 +64,7 @@ const AppRouter = () => {
         <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/advertiselist" element={<AdvertiseProduct />} />
         <Route path="/orderdetails/:orderId" element={<OrderDetails />} />
+        <Route path="/seller/orderdetails/:orderId" element={<SellerOrderDetails/>} />
         <Route path="/sellerbank" element={<SellerBank />} />
 
         <Route path="/editselleraddress" element={<EditSellerAddress />} />
@@ -70,7 +72,7 @@ const AppRouter = () => {
 
         <Route path="/yourproducts" element={<YourProduct />} />
         <Route path="/editproduct" element={<EditProduct />} />
-        <Route path="/sellerorder" element={<SellerOrder />} />
+        <Route path="/orders" element={<SellerOrder />} />
       </Routes>
     </Router>
   );

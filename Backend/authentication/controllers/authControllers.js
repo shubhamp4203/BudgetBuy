@@ -420,3 +420,8 @@ module.exports.removeWishlist_post = async (req, res) => {
     res.status(400).json({ message: "Something went wrong" });
   }
 }
+
+
+module.exports.authenticate = async (req,res) => {
+  res.status(200).json({message: "Authenticated"});
+}
