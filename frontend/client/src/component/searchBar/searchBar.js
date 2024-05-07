@@ -19,14 +19,31 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterListIcon from "@mui/icons-material/FilterList";
-
-const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
+import PersonIcon from '@mui/icons-material/Person';
+const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedin }) => {
   const [open, setOpen] = React.useState(false);
   const [filteropen, setfilterOpen] = React.useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [loggedin, setIsLoggedin] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const authenticate = async () => {
+      const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/authenticate", {
+        credentials: "include",
+      })
+      if(resp.ok) {
+        setIsLoggedin(true);
+      }
+      else {
+        setIsLoggedin(false);
+      }
+    };
+    authenticate();
+  }, []);
+
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
@@ -38,6 +55,10 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
     setSearchInput(event.target.value);
     onSearch(event.target.value);
   };
+
+  const login = async () => {
+    navigate("/signin");
+  }
 
   async function handlelogout() {
     try {
@@ -211,7 +232,7 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange }) => {
           className={styles.searchico}
         />
       </div>
-      <MenuIcon onClick={toggleDrawer(true)} className={styles.profbut} />
+      {loggedin ? <MenuIcon onClick={toggleDrawer(true)} className={styles.profbut} /> : (<><PersonIcon onClick={login} className={styles.profbut}/></>)}
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

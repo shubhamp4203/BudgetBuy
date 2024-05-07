@@ -51,7 +51,7 @@ def verify_otp(request):
     try:
         data = JSONParser().parse(request)
         user_email = data['email']
-        otp = data['otp']
+        otp = int(data['otp'])
         seller_id = data['seller_id']
         order_id = data['order_id']
         user = get_object_or_404(UserOtp, email=user_email)

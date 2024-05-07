@@ -57,6 +57,7 @@ export default function SellerSignin() {
     setIsLoading(true);
     if(!email) {
       toast.error("Please enter email.");
+      setIsLoading(false);
       return;
     }
     try {
@@ -111,7 +112,7 @@ export default function SellerSignin() {
         />
         {/* <br /> */}
 
-        <button onClick={handleSubmit}>Sign In</button>
+        <button className={styles.signin}onClick={handleSubmit}>Sign In</button>
       </div>
 
       <div className={styles.privacyPolicy}>

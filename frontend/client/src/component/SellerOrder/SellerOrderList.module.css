@@ -19,3 +19,21 @@
   text-decoration: none;
   color: black;
 }
+
+.tabContainer {
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 1px solid #e0e0e0;
+}
+.selected {
+  background-color: black;
+  color: white;
+}
+
+.tabContainer h3 {
+  margin: 0rem;
+  padding: 2.2rem;  
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: fit-content;
+}

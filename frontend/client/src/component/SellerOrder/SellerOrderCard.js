@@ -248,11 +248,13 @@ const SellerOrderCard = ({ product }) => {
             width: "100%",
             flex: 3,
             padding: "0.6rem",
-            backgroundColor: isClicked ? "white" : "#221f1f",
-            color: isClicked ? "#221f1f" : "white",
+            backgroundColor: "#221f1f",
+            color: "white"
+            // backgroundColor: isClicked ? "white" : "#221f1f",
+            // color: isClicked ? "#221f1f" : "white",
           }}
         >
-          delivered
+          Confirm Delivery
         </button>
       </div>
     </div>
