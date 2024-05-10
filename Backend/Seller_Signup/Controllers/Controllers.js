@@ -208,12 +208,13 @@ module.exports.addProduct = async (req, res) => {
 
 module.exports.getSellerData = async (req, res) => {
   try {
+    console.log("called");
     const seller_id = req.body.seller_id;
     const seller = await Seller.findOne({ _id: new ObjectId(seller_id) });
-    console.log(seller)
+    console.log(seller);
     res.status(200).json({ seller });
   } catch (err) {
-    console.log(err.message)
+    console.log(err.message);
     res.status(400).json({ message: "Something went wrong" });
   }
 };
@@ -228,4 +229,24 @@ module.exports.getSellerProduct = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: "Something went wrong" });
   }
-}
+};
+
+module.exports.chatgroup_get = async (req, res) => {
+  const user_id = req.authdata.id;
+
+  try {
+    const resp = await axios.get(process.env.CHAT + "/chatgroups/grouplist", {
+      params: {
+        user_id,
+      },
+    });
+    if (resp.status == 200) {
+      console.log("resp.data:", resp.data);
+      res.status(200).json({ chatGroup: resp.data, userId: user_id });
+    } else {
+      res.status(400).json({ message: "Something went wrong" });
+    }
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
+  }
+};
