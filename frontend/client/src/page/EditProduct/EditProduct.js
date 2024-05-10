@@ -17,10 +17,11 @@ export default function EditProduct() {
   const [image, setImage] = useState(null);
 
   const options = [
-    { value: "tag1", label: "Tag 1" },
-    { value: "tag2", label: "Tag 2" },
-    { value: "tag3", label: "Tag 3" },
-    // Add more predefined tags as needed
+    { value: 'Clothes', label: 'Clothes' },
+    { value: 'Eletronics', label: 'Electronics' },
+    { value: 'Home Appliances', label: 'Home Appliances' },
+    { value: 'Gaming Mouse', label: 'Gaming Mouse' },
+    // Add more options as needed
   ];
 
   const customStyles = {
@@ -93,16 +94,17 @@ export default function EditProduct() {
     <div className={styles.signupcontainer}>
       <h1>Edit Product</h1>
       <div className={styles.signupform}>
-        <label htmlFor="stock">Stock</label>
+        <label htmlFor="name">Name*</label>
         <input
           className={styles.input}
-          type="number"
-          id="stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
 
-        <label htmlFor="skuId">SKU ID</label>
+        <label htmlFor="skuId">SKU ID*</label>
         <input
           className={styles.input}
           type="text"
@@ -111,39 +113,32 @@ export default function EditProduct() {
           onChange={(e) => setSkuId(e.target.value)}
         />
 
-        <label htmlFor="name">Name</label>
+        <label htmlFor="stock">Stock*</label>
         <input
           className={styles.input}
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          type="number"
+          id="stock"
+          value={stock}
+          onChange={(e) => setStock(e.target.value)}
         />
 
-        <label htmlFor="price">Price</label>
+        <label htmlFor="price">Price*</label>
         <input
           className={styles.input}
           type="number"
           id="price"
           value={price}
+          required
           onChange={(e) => setPrice(e.target.value)}
         />
 
-        <label htmlFor="likes">Likes</label>
-        <input
-          className={styles.input}
-          type="number"
-          id="likes"
-          value={likes}
-          onChange={(e) => setLikes(e.target.value)}
-        />
-
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description">Description*</label>
         <textarea
           className={styles.input}
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
         />
 
         <label htmlFor="color">Color</label>
@@ -163,25 +158,28 @@ export default function EditProduct() {
           value={dimension}
           onChange={(e) => setDimension(e.target.value)}
         />
-        <label htmlFor="Select Tags">Select Tags</label>
+
+        <label htmlFor="Select Tags">Product Category*</label>
         <Select
-          isMulti
           options={options}
           value={selectedTags}
           styles={customStyles}
           onChange={handleTagChange}
-        />
-        <label htmlFor="image">Image</label>
+          required
+        /> 
+
+        <label htmlFor="image">Product Image*</label>
         <input
-          className={`${styles.input} ${styles.inputFileHidden}  ${styles.customFileUpload}`}
+          className={`${styles.input}`}
           type="file"
           id="image"
           accept="image/*"
           onChange={handleImageChange}
+          required
         />
 
-        <button className={styles.signupbutton} onClick={handleSubmit}>
-          Submit
+        <button className={styles.editbutton} onClick={handleSubmit}>
+          Edit
         </button>
       </div>
     </div>

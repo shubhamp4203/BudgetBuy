@@ -1,4 +1,3 @@
-import SearchBar from "../../component/searchBar/searchBar";
 import styles from "./SellerAccount.module.css";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -47,7 +46,6 @@ export default function SellerAccount() {
   return (
     <div>
       <Toaster richColors position="top-center" />
-      <SearchBar />
       <div className={styles.container}>
         <div className={styles.dashboard}>
           <div className={styles.dash1}>

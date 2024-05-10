@@ -1,0 +1,92 @@
+.searchBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  font-size: 1rem;
+  /* margin-right: 1rem;
+  margin-left: 1rem; */
+  width: 90%;
+  height: 40px;
+  margin-top: 1rem;
+  margin-right: 1.5rem;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.searchico {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.navto {
+  text-decoration: none;
+  color: black;
+}
+
+.search {
+  margin: 0;
+  padding: 0;
+  padding-left: 0.5rem;
+  border: 0;
+  width: 90%;
+  height: 85%;
+  outline: none;
+  border-radius: 5px;
+}
+
+/* button:hover {
+  background-color: #0066b3;
+} */
+.profbut {
+  margin-right: 1rem;
+  color: white;
+}
+.homenav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  border-bottom: 1px solid #ccc;
+  background-color: #221f1f;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+.filterDrawerList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.filterDrawerList .ListItemheading {
+  padding-inline: 1rem;
+  padding-block-start: 1rem;
+  font-size: large;
+  font-weight: bold;
+}
+
+.filterDrawerList .ListItemInput {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding-inline: 1rem;
+  width: 100%;
+  /* border-bottom: 1px solid #ccc; */
+}
+.smallInput {
+  margin-block: 1px;
+  width: 50px;
+  height: 20px;
+}
+
+.filbut {
+  margin-left:1rem;
+  color:white;
+}

@@ -206,22 +206,6 @@ const SellerOrderCard = ({ product }) => {
         <div className={styles.cusvalue}>A-57, Dongari, navi mumbai</div>
       </div>
       <div className={styles.infodiv}>
-        {/* <button
-          onClick={handleaddcart}
-          className={`${styles.buybut} ${styles.but1}`}
-        >
-          <ShoppingCartIcon sx={{ fontSize: 25, color: "##221f1f" }} />
-        </button>
-        <button
-          className={`${styles.buybut} ${styles.but2}`}
-          onClick={handleWishlist}
-        >
-          {isWishlisted ? (
-            <FavoriteIcon sx={{ fontSize: 25, color: "#221f1f" }} />
-          ) : (
-            <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
-          )}
-        </button> */}
         <Link
           to={{
             pathname: "/editproduct",

@@ -37,17 +37,17 @@
   font-size: 14px;
 }
 
-/* button {
+.editbutton {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
   background-color: #221f1f;
   color: white;
   border: none;
-  border-radius: 17px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-} */
+  font-size: 1.2rem;
+}
 
 input[type="submit"]:hover {
   background-color: #45a049;

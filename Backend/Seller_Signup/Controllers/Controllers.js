@@ -254,3 +254,23 @@ module.exports.getSellerOrder = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+module.exports.advertise = async (req, res) => {
+  const seller_id = req.authdata.id;
+  const { products, regiondata } = req.body;
+  try {
+    const resp = await axios.post(process.env.GEOFENCING + "/geofence", {
+      seller_id,
+      products,
+      regiondata,
+    });
+    if (resp.status == 200) {
+      res.status(200).json({ message: "Advertise created" });
+    } else {
+      res.status(400).json({ message: "Something went wrong" });
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({ message: err.message });
+  }
+};

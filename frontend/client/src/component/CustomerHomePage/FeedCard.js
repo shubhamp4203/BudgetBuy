@@ -7,8 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from 'sonner'
-
+import { Toaster, toast } from "sonner";
 
 // toast.configure();
 
@@ -173,21 +172,21 @@ const FeedCard = ({ product }) => {
     }
   };
 
-  const productDetails = async(product_id) => {
+  const productDetails = async (product_id) => {
     navigate(`/product/${product_id}`, { state: { product: product } });
-  }
+  };
 
   return (
     <div className={styles.productCard}>
-      <Toaster richColors position="top-center"/>
-        <img
-          src={
-            "https://res.cloudinary.com/dt0mkdvqx/image/upload/f_auto,q_auto/v1/product_images/" +
-            product._id
-          }
-          alt={product.name}
-          onClick={() => productDetails(product._id)}
-        />
+      <Toaster richColors position="top-center" />
+      <img
+        src={
+          "https://res.cloudinary.com/dt0mkdvqx/image/upload/f_auto,q_auto/v1/product_images/" +
+          product._id
+        }
+        alt={product.name}
+        onClick={() => productDetails(product._id)}
+      />
       <div className={styles.prodinfo}>
         <p> {product.newProduct.name} </p>
         <div
