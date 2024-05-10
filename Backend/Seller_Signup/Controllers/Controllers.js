@@ -208,12 +208,13 @@ module.exports.addProduct = async (req, res) => {
 
 module.exports.getSellerData = async (req, res) => {
   try {
+    console.log("called");
     const seller_id = req.body.seller_id;
     const seller = await Seller.findOne({ _id: new ObjectId(seller_id) });
-    console.log(seller)
+    console.log(seller);
     res.status(200).json({ seller });
   } catch (err) {
-    console.log(err.message)
+    console.log(err.message);
     res.status(400).json({ message: "Something went wrong" });
   }
 };
@@ -228,6 +229,22 @@ module.exports.getSellerProduct = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: "Something went wrong" });
   }
+<<<<<<< HEAD
+};
+
+module.exports.chatgroup_get = async (req, res) => {
+  const user_id = req.authdata.id;
+
+  try {
+    const resp = await axios.get(process.env.CHAT + "/chatgroups/grouplist", {
+      params: {
+        user_id,
+      },
+    });
+    if (resp.status == 200) {
+      console.log("resp.data:", resp.data);
+      res.status(200).json({ chatGroup: resp.data, userId: user_id });
+=======
 }
 
 module.exports.authenticate = async (req,res) => {
@@ -247,10 +264,16 @@ module.exports.getSellerOrder = async (req, res) => {
       res.status(200).json({ result: resp.data });
     } else if (resp.status == 204) {
       res.status(204).json({ message: "No orders found" });
+>>>>>>> bc5e3455a4ba135499ba64cda293c27c4a0ee457
     } else {
       res.status(400).json({ message: "Something went wrong" });
     }
   } catch (err) {
+<<<<<<< HEAD
+    res.status(400).json({ message: "Something went wrong" });
+  }
+};
+=======
     res.status(400).json({ message: err.message });
   }
 };
@@ -274,3 +297,4 @@ module.exports.advertise = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+>>>>>>> bc5e3455a4ba135499ba64cda293c27c4a0ee457

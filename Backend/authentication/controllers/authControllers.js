@@ -419,11 +419,71 @@ module.exports.removeWishlist_post = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: "Something went wrong" });
   }
-}
+};
 
+module.exports.chat_post = async (req, res) => {
+  console.log("chatpost");
+  const user_id = req.authdata.id;
+  const seller_id = req.body.seller_id;
+  const seller_name = req.body.seller_name;
 
-module.exports.authenticate = async (req,res) => {
-  res.status(200).json({message: "Authenticated"});
-}
+  try {
+    const user = await User.findById(user_id);
+    console.log("user", user);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    const user_name = user.name;
 
+    const resp = await axios.post(process.env.CHAT + "/chatgroups/", {
+      user_id,
+      user_name,
+      seller_id,
+      seller_name,
+    });
+
+    if (resp.status == 201) {
+      res.status(201).json({
+        message: "Chat group created",
+        chatGroup: resp.data.chatGroup,
+        userId: user_id,
+      });
+    } else if (resp.status == 200) {
+      res.status(200).json({
+        message: "Chat group created already",
+        chatGroup: resp.data.chatGroup,
+        userId: user_id,
+      });
+    } else {
+      console.log("400");
+      res.status(400).json({ message: "Something went wrong" });
+    }
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports.chatgroup_get = async (req, res) => {
+  const user_id = req.authdata.id;
+
+  try {
+    const resp = await axios.get(process.env.CHAT + "/chatgroups/grouplist", {
+      params: {
+        user_id,
+      },
+    });
+    if (resp.status == 200) {
+      console.log("resp.data:", resp.data);
+      res.status(200).json({ chatGroup: resp.data, userId: user_id });
+    } else {
+      res.status(400).json({ message: "Something went wrong" });
+    }
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports.authenticate = async (req, res) => {
+  res.status(200).json({ message: "Authenticated" });
+};

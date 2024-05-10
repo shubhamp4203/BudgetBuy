@@ -70,8 +70,11 @@ module.exports.getProduct_post = async (req, res) => {
   const product_id = req.body.products;
   const collection = await dataConnect();
   try {
+    console.log("start");
     const objectIds = product_id.map((id) => new ObjectId(id.toString()));
+    console.log("objectIds", objectIds);
     if (req.body.type == "productDetail") {
+      console.log("inside");
       const result = await collection
         .aggregate([
           { $match: { _id: { $in: objectIds } } },
@@ -93,12 +96,15 @@ module.exports.getProduct_post = async (req, res) => {
           },
         ])
         .toArray();
+      console.log(result);
       const seller_id = result[0].newProduct.seller_id;
       const sellerinfo = await axios.post(
         process.env.SELLER + "/getSellerData/",
         { seller_id }
       );
+      console.log(sellerinfo.status);
       if (sellerinfo.status == 200) {
+        console.log(sellerinfo.data);
         const finalResult = {
           result: result[0],
           sellerinfo: sellerinfo.data,
@@ -110,7 +116,9 @@ module.exports.getProduct_post = async (req, res) => {
     } else {
       const query = { _id: { $in: objectIds } };
       const result = await collection.find(query).toArray();
-      res.status(200).json({message: "Products fetched successfully", result});
+      res
+        .status(200)
+        .json({ message: "Products fetched successfully", result });
     }
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -140,12 +148,14 @@ module.exports.getSellerProduct_post = async (req, res) => {
   const collection = await dataConnect();
   const seller_id = req.body.seller_id;
   try {
-    const result = await collection.find({ "newProduct.seller_id": seller_id }).toArray();
+    const result = await collection
+      .find({ "newProduct.seller_id": seller_id })
+      .toArray();
     res.status(200).json({ message: "Products fetched successfully", result });
   } catch (err) {
     res.status(400).json({ error: "Failed to fetch products" });
   }
-}
+};
 
 // module.exports.getlike = async (req,res) => {
 //   const collection = await dataConnect();

@@ -6,7 +6,7 @@ import ProductDetail from "./component/productDetail/productDetail";
 import CustomerHome from "./page/CustomerHome/CustomerHome";
 import Orders from "./page/MyOrders/OrdersTabs";
 import SignIn from "./page/signin/signin";
-import Signup from "./page/signup/signup";
+import Signup from "./page/SignUp/signup";
 import Cart from "./page/cart/Cart";
 import UserProfile from "./page/UserProfile/UserProfile";
 import ResetPassword from "./page/Reset Password/resetpassword";
@@ -15,7 +15,7 @@ import SellerSignup from "./page/SellerSignup/SellerSignup";
 import SellerSignin from "./page/sellerSignin/SellerSignin";
 import SellerProfile from "./page/SellerProfile/SellerProfile";
 import Address from "./page/Address/address";
-import SellerAddress from "./page/Selleraddress/address";
+import SellerAddress from "./page/SellerAddress/address";
 import UserAccount from "./page/useraccount/useraccount";
 import Card from "./page/Card/card";
 import EditBank from "./page/Sellerbank/EditBank";
@@ -29,7 +29,11 @@ import OrderDetails from "./page/orderdetails/orderdetails";
 import SellerBank from "./page/Sellerbank/bank";
 import SellerResetPassword from "./page/Seller Reset Password/resetpassword";
 import Splash from "./page/Splash/splash";
-import EditSellerAddress from "./page/Selleraddress/EditSellerAddress";
+import EditSellerAddress from "./page/SellerAddress/EditSellerAddress";
+import ChatApp from "./page/ChatApp/ChatApp";
+import ChatGroup from "./page/ChatApp/ChatGroup";
+import WishList from "./page/WishList/WishList";
+import SellerChatGroup from "./page/ChatApp/SellerChatGroup";
 import SellerOrderDetails from "./page/sellerorderdetails/orderdetails";
 import Geofencing from "./page/Geofencing/geofencing";
 
@@ -65,7 +69,10 @@ const AppRouter = () => {
         <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/advertiselist" element={<AdvertiseProduct />} />
         <Route path="/orderdetails/:orderId" element={<OrderDetails />} />
-        <Route path="/seller/orderdetails/:orderId" element={<SellerOrderDetails/>} />
+        <Route
+          path="/seller/orderdetails/:orderId"
+          element={<SellerOrderDetails />}
+        />
         <Route path="/sellerbank" element={<SellerBank />} />
 
         <Route path="/editselleraddress" element={<EditSellerAddress />} />
@@ -73,8 +80,12 @@ const AppRouter = () => {
 
         <Route path="/yourproducts" element={<YourProduct />} />
         <Route path="/editproduct" element={<EditProduct />} />
+        <Route path="/chat" element={<ChatApp />} />
+        <Route path="/chatgroup" element={<ChatGroup />} />
+        <Route path="/sellerchatgroup" element={<SellerChatGroup />} />
+        <Route path="/wishlist" element={<WishList />} />
         <Route path="/orders" element={<SellerOrder />} />
-        <Route path="/map" element = {<Geofencing />} />
+        <Route path="/map" element={<Geofencing />} />
       </Routes>
     </Router>
   );
