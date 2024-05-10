@@ -229,6 +229,7 @@ module.exports.getSellerProduct = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: "Something went wrong" });
   }
+<<<<<<< HEAD
 };
 
 module.exports.chatgroup_get = async (req, res) => {
@@ -243,10 +244,57 @@ module.exports.chatgroup_get = async (req, res) => {
     if (resp.status == 200) {
       console.log("resp.data:", resp.data);
       res.status(200).json({ chatGroup: resp.data, userId: user_id });
+=======
+}
+
+module.exports.authenticate = async (req,res) => {
+  res.status(200).json({message: "Authenticated"});
+}
+module.exports.getSellerOrder = async (req, res) => {
+  const seller_id = req.authdata.id;
+  const status = req.body.type;
+  try {
+    const resp = await axios.get(process.env.ORDER + "/getSellerOrder/", {
+      params: {
+        seller_id,
+        status,
+      },
+    });
+    if (resp.status == 200) {
+      res.status(200).json({ result: resp.data });
+    } else if (resp.status == 204) {
+      res.status(204).json({ message: "No orders found" });
+>>>>>>> bc5e3455a4ba135499ba64cda293c27c4a0ee457
     } else {
       res.status(400).json({ message: "Something went wrong" });
     }
   } catch (err) {
+<<<<<<< HEAD
     res.status(400).json({ message: "Something went wrong" });
   }
 };
+=======
+    res.status(400).json({ message: err.message });
+  }
+};
+
+module.exports.advertise = async (req, res) => {
+  const seller_id = req.authdata.id;
+  const { products, regiondata } = req.body;
+  try {
+    const resp = await axios.post(process.env.GEOFENCING + "/geofence", {
+      seller_id,
+      products,
+      regiondata,
+    });
+    if (resp.status == 200) {
+      res.status(200).json({ message: "Advertise created" });
+    } else {
+      res.status(400).json({ message: "Something went wrong" });
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({ message: err.message });
+  }
+};
+>>>>>>> bc5e3455a4ba135499ba64cda293c27c4a0ee457

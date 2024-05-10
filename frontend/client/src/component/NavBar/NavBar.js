@@ -9,13 +9,26 @@ import {
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavBar.module.css";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ChatIcon from '@mui/icons-material/Chat';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ChatIcon from "@mui/icons-material/Chat";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const myaccount = async() => {
+    const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/authenticate", {
+      credentials: "include",
+    })
+    if(resp.ok) {
+      navigate("/myaccount");
+    }
+    else {
+      navigate("/signin")
+    }
+  };
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
@@ -30,16 +43,14 @@ const Navbar = () => {
           </li>
         </a>
         <li className={styles.navbarItem}>
-          <ChatIcon sx={{color: "black"}}/>
+          <ChatIcon sx={{ color: "black" }} />
         </li>
         <li className={styles.navbarItem}>
-          <FavoriteIcon sx={{color: "black"}}/>
+          <FavoriteIcon sx={{ color: "black" }} />
         </li>
-        <a href="/myaccount">
-          <li className={styles.navbarItem}>
-            <AccountCircleIcon sx={{ color: "black" }} />
-          </li>
-        </a>
+        <li className={styles.navbarItem} onClick={myaccount}>
+          <AccountCircleIcon sx={{ color: "black" }} />
+        </li>
       </ul>
     </nav>
   );

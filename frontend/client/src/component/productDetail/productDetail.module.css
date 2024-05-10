@@ -65,6 +65,9 @@ body {
   font-size: 1.2rem;
   border-radius: 4px;
   font-weight: 600;
+  background-color: #221f1f;
+  color: white;
+  margin-top: 1rem;
   justify-self: center;
 }
 

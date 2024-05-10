@@ -3,9 +3,8 @@ const dataConnect = require("../Connection/Connection");
 const { ObjectId } = require("mongodb");
 const axios = require("axios");
 const multer = require("multer");
-
 const { v2: cloudinary } = require("cloudinary");
-const { log } = require("console");
+
 require("dotenv").config({ path: "../.env" });
 
 cloudinary.config({
@@ -53,7 +52,6 @@ module.exports.insertProduct_post = async (req, res) => {
         res.status(400).json({ message: "Something went wrong" });
       }
     } else {
-      console.log("Already");
       res.status(401).json({ message: "SKU_ID is already in use" });
     }
   } catch (error) {
@@ -171,7 +169,6 @@ module.exports.getSellerProduct_post = async (req, res) => {
 // }
 
 module.exports.wishlist_post = async (req, res) => {
-  console.log("CAlled");
   const collection = await dataConnect();
   const { user_id, product_id } = req.body;
   try {
@@ -224,3 +221,18 @@ module.exports.removeWishlist_post = async (req, res) => {
     res.status(500).json({ message: "An error occurred" });
   }
 };
+
+module.exports.updateStock = async (req, res) => {
+  const {products} = req.body
+  const collection= await dataConnect();
+  try{
+    for (let i=0;i<products.length;i++){
+      const product = await collection.findOne({_id : new ObjectId(products[i].product_id)})
+      const newamt = parseInt(product.newProduct.stock) - products[i].amount
+      const result = await collection.updateOne({_id : new ObjectId(products[i].product_id)},{$set : {"newProduct.stock": newamt}})  
+  }}catch(err){
+    console.log(err.message);
+    res.status(400).json({message: "Failed to update stock"});
+  }
+  res.status(200).json({message: "Order Placed"});
+}

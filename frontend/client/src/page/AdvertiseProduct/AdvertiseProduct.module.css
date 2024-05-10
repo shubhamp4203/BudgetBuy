@@ -34,12 +34,11 @@
     text-indent: -100%;
   }
 }
-
 .done {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-content: center;
-  /* border-bottom: 1px solid #ccc; */
+  justify-content: space-evenly;
   background-color: white;
   position: sticky;
   bottom: 0;
@@ -47,7 +46,6 @@
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
   padding: 1rem;
   padding-bottom: 2rem;
-  justify-content: center;
   align-items: center;
   margin-top: auto;
   position: sticky;
@@ -56,11 +54,15 @@
 
 .done button {
   margin-top: 0;
-  width: 70%;
+  width: max-content;
   background-color: #221f1f;
   color: white;
   font-weight: 600;
   border-radius: 4px;
   font-size: 1.2rem;
   padding: 0.5rem;
+}
+
+.done p{
+  color: black
 }

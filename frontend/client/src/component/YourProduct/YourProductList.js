@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./YourProductList.module.css";
 import YourCard from "./YourCard";
 const YourProductList = ({ products, searchTerm, onRemove }) => {
-  console.log(searchTerm);
   const filteredProducts = searchTerm
     ? products.filter((product) =>
         product.newProduct.name

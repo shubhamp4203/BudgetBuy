@@ -206,22 +206,6 @@ const SellerOrderCard = ({ product }) => {
         <div className={styles.cusvalue}>A-57, Dongari, navi mumbai</div>
       </div>
       <div className={styles.infodiv}>
-        {/* <button
-          onClick={handleaddcart}
-          className={`${styles.buybut} ${styles.but1}`}
-        >
-          <ShoppingCartIcon sx={{ fontSize: 25, color: "##221f1f" }} />
-        </button>
-        <button
-          className={`${styles.buybut} ${styles.but2}`}
-          onClick={handleWishlist}
-        >
-          {isWishlisted ? (
-            <FavoriteIcon sx={{ fontSize: 25, color: "#221f1f" }} />
-          ) : (
-            <FavoriteBorderIcon sx={{ fontSize: 25, color: "#221f1f" }} />
-          )}
-        </button> */}
         <Link
           to={{
             pathname: "/editproduct",
@@ -248,11 +232,13 @@ const SellerOrderCard = ({ product }) => {
             width: "100%",
             flex: 3,
             padding: "0.6rem",
-            backgroundColor: isClicked ? "white" : "#221f1f",
-            color: isClicked ? "#221f1f" : "white",
+            backgroundColor: "#221f1f",
+            color: "white"
+            // backgroundColor: isClicked ? "white" : "#221f1f",
+            // color: isClicked ? "#221f1f" : "white",
           }}
         >
-          delivered
+          Confirm Delivery
         </button>
       </div>
     </div>

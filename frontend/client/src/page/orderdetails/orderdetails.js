@@ -5,7 +5,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
-import {toast, Toaster} from "sonner";
+import { toast, Toaster } from "sonner";
+import ChatIcon from "@mui/icons-material/Chat";
 function OrderDetails() {
   const [orderitems, setorderitems] = useState([]);
   const location = useLocation();
@@ -34,29 +35,32 @@ function OrderDetails() {
     };
     fetchorderitem();
   }, []);
-  
+
   const handlecancelorder = async () => {
     const data = {
-        order_id: order.user_order_id,
-    }
-    const resp = await fetch(process.env.REACT_APP_URL_ORDER + "/cancelOrder/", {
+      order_id: order.user_order_id,
+    };
+    const resp = await fetch(
+      process.env.REACT_APP_URL_ORDER + "/cancelOrder/",
+      {
         method: "DELETE",
         body: JSON.stringify(data),
         headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    if(resp.status == 200) {
-        navigate("/myorders");
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (resp.status == 200) {
+      toast.success("Order Cancelled Successfully.")
+      setTimeout(() => {navigate("/myorders")}, 1500);
+    } else {
+      toast.error("Something went wrong.");
     }
-    else {
-        toast.error("Something went wrong.");
-    }
-  }
+  };
 
   return (
     <div className={styles.ordercontainer}>
-      <Toaster richColors position="top-center"/>
+      <Toaster richColors position="top-center" />
       <h1>Order Details</h1>
       <div className={styles.order}>
         <div className={styles.heading}> Items Summary </div>
@@ -100,11 +104,9 @@ function OrderDetails() {
       <div className={styles.orderSummary}>
         <div className={styles.heading}> Order Summary </div>
         <div className={styles.ordersummaryitems}>
-        <div className={styles.inditem}>
+          <div className={styles.inditem}>
             <h4> Order Id: </h4>
-            <div>
-              {order.user_order_id}
-            </div>
+            <div>{order.user_order_id}</div>
           </div>
           <div className={styles.inditem}>
             <h4> Order Date: </h4>

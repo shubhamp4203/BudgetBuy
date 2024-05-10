@@ -14,7 +14,6 @@ function CustomerHome() {
     };
     fetchdata();
   }, []);
-
   return (
     <>
       <SearchBar onSearch={setSearchTerm} />

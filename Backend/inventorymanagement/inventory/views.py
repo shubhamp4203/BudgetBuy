@@ -7,6 +7,7 @@ from rest_framework.response import Response
 import requests
 import os
 from dotenv import load_dotenv
+from inventorymanagement.settings import micro_services
 
 load_dotenv()
 
@@ -83,8 +84,10 @@ def updateStock(request):
             inventory = Inventory.objects.get(product_id=i['product_id'])
             inventory.product_stock -= i['amount']
             inventory.save()
+        product_res = requests.post(f"{micro_services['Product']}/updateStock", json={'products': data['products']})
         return Response({'message': 'Stock updated successfully'}, status=status.HTTP_200_OK)
     except Exception as e:
+        print(str(e))
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
