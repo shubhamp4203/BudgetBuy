@@ -425,3 +425,5 @@ module.exports.removeWishlist_post = async (req, res) => {
 module.exports.authenticate = async (req,res) => {
   res.status(200).json({message: "Authenticated"});
 }
+
+

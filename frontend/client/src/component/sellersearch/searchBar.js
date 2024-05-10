@@ -13,7 +13,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ChatIcon from "@mui/icons-material/Chat";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -21,10 +20,16 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import PersonIcon from '@mui/icons-material/Person';
-import MapIcon from '@mui/icons-material/Map';
+import PersonIcon from "@mui/icons-material/Person";
+import MapIcon from "@mui/icons-material/Map";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
-const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedin }) => {
+const SearchBar = ({
+  onSearch,
+  onPriceRangeChange,
+  onLikesRangeChange,
+  isLoggedin,
+}) => {
   const [open, setOpen] = React.useState(false);
   const [filteropen, setfilterOpen] = React.useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -33,13 +38,15 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedi
 
   useEffect(() => {
     const authenticate = async () => {
-      const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/authenticate", {
-        credentials: "include",
-      })
-      if(resp.ok) {
+      const resp = await fetch(
+        process.env.REACT_APP_URL_SELLER + "/authenticate",
+        {
+          credentials: "include",
+        }
+      );
+      if (resp.ok) {
         setIsLoggedin(true);
-      }
-      else {
+      } else {
         setIsLoggedin(false);
       }
     };
@@ -60,12 +67,12 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedi
 
   const login = async () => {
     navigate("/signin");
-  }
+  };
 
   async function handlelogout() {
     try {
       const response = await fetch(
-        process.env.REACT_APP_URL_AUTHENTICATION + "/logout",
+        process.env.REACT_APP_URL_SELLER + "/sellerlogout",
         {
           method: "POST",
           credentials: "include",
@@ -86,14 +93,18 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedi
     }
   }
 
+  const handlemap = () => {
+    navigate("/advertiselist");
+  };
+
   const DrawerList = (
     <Box
-      sx={{ width: 200, height: "100%", backgroundColor: "white" }}
+      sx={{ width: 220, height: "100%", backgroundColor: "white" }}
       role="presentation"
       onClick={toggleDrawer(false)}
     >
       <List>
-        <Link to="/myaccount" className={styles.navto}>
+        <Link to="/selleraccount" className={styles.navto}>
           <ListItem key="My Account" disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -104,18 +115,18 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedi
           </ListItem>
         </Link>
 
-        <Link to="/cart" className={styles.navto}>
-          <ListItem key="Cart" disablePadding>
+        <Link to="/yourproducts" className={styles.navto}>
+          <ListItem key="myproducts" disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <ShoppingCartIcon sx={{ color: "black" }} />
+                <InventoryIcon sx={{ color: "black" }} />
               </ListItemIcon>
-              <ListItemText primary="My Cart" />
+              <ListItemText primary="My Products" />
             </ListItemButton>
           </ListItem>
         </Link>
 
-        <Link to="/myorders" className={styles.navto}>
+        <Link to="/orders" className={styles.navto}>
           <ListItem key="My Orders" disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -136,6 +147,14 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedi
             </ListItemButton>
           </ListItem>
         </Link>
+        <ListItem key="Advertise Product" disablePadding>
+          <ListItemButton onClick={handlemap}>
+            <ListItemIcon>
+              <MapIcon sx={{ color: "black" }} />
+            </ListItemIcon>
+            <ListItemText primary="Advertise Product" />
+          </ListItemButton>
+        </ListItem>
 
         <ListItem key="Log Out" disablePadding>
           <ListItemButton onClick={handlelogout}>
@@ -234,7 +253,13 @@ const SearchBar = ({ onSearch, onPriceRangeChange, onLikesRangeChange, isLoggedi
           className={styles.searchico}
         />
       </div>
-      {loggedin ? <MenuIcon onClick={toggleDrawer(true)} className={styles.profbut} /> : (<><PersonIcon onClick={login} className={styles.profbut}/></>)}
+      {loggedin ? (
+        <MenuIcon onClick={toggleDrawer(true)} className={styles.profbut} />
+      ) : (
+        <>
+          <PersonIcon onClick={login} className={styles.profbut} />
+        </>
+      )}
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

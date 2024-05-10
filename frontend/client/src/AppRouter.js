@@ -31,6 +31,7 @@ import SellerResetPassword from "./page/Seller Reset Password/resetpassword";
 import Splash from "./page/Splash/splash";
 import EditSellerAddress from "./page/Selleraddress/EditSellerAddress";
 import SellerOrderDetails from "./page/sellerorderdetails/orderdetails";
+import Geofencing from "./page/Geofencing/geofencing";
 
 const AppRouter = () => {
   return (
@@ -73,6 +74,7 @@ const AppRouter = () => {
         <Route path="/yourproducts" element={<YourProduct />} />
         <Route path="/editproduct" element={<EditProduct />} />
         <Route path="/orders" element={<SellerOrder />} />
+        <Route path="/map" element = {<Geofencing />} />
       </Routes>
     </Router>
   );
