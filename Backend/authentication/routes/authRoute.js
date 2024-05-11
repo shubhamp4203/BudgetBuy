@@ -25,5 +25,6 @@ router
   .route("/authenticate")
   .get(auth, authController.authenticate)
   .post(auth, authController.authenticate);
+router.put("/like", auth, authController.like_put);
 
 module.exports = router;

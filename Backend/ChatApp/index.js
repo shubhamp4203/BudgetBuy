@@ -20,7 +20,7 @@ app.use("/messages", messageRoutes);
 const server = http.createServer(app);
 const io = socketIO(server, { cors: { origin: "*" } });
 
-const port = process.env.CHAT_PORT || 5000;
+const port = process.env.CHAT_PORT || 8007;
 
 mongoose.connect(process.env.CHAT_DB_URL).then(() => {
   console.log("Connected to MongoDB");

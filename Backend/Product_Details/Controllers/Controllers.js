@@ -223,16 +223,64 @@ module.exports.removeWishlist_post = async (req, res) => {
 };
 
 module.exports.updateStock = async (req, res) => {
-  const {products} = req.body
-  const collection= await dataConnect();
-  try{
-    for (let i=0;i<products.length;i++){
-      const product = await collection.findOne({_id : new ObjectId(products[i].product_id)})
-      const newamt = parseInt(product.newProduct.stock) - products[i].amount
-      const result = await collection.updateOne({_id : new ObjectId(products[i].product_id)},{$set : {"newProduct.stock": newamt}})  
-  }}catch(err){
+  const { products } = req.body;
+  const collection = await dataConnect();
+  try {
+    for (let i = 0; i < products.length; i++) {
+      const product = await collection.findOne({
+        _id: new ObjectId(products[i].product_id),
+      });
+      const newamt = parseInt(product.newProduct.stock) - products[i].amount;
+      const result = await collection.updateOne(
+        { _id: new ObjectId(products[i].product_id) },
+        { $set: { "newProduct.stock": newamt } }
+      );
+    }
+  } catch (err) {
     console.log(err.message);
-    res.status(400).json({message: "Failed to update stock"});
+    res.status(400).json({ message: "Failed to update stock" });
   }
-  res.status(200).json({message: "Order Placed"});
-}
+  res.status(200).json({ message: "Order Placed" });
+};
+
+module.exports.like_put = async (req, res) => {
+  const collection = await dataConnect();
+  const { product_id, userId, like } = req.body;
+  console.log("pro:", product_id);
+  console.log("userid:", userId);
+  try {
+    console.log("enter likes");
+    const result = await collection.findOne({ _id: new ObjectId(product_id) });
+    if (result) {
+      const newLikes = parseInt(result.newProduct.likes) + like;
+      let newLikeUsers;
+
+      if (like == 1) {
+        newLikeUsers = [...result.newProduct.likeUsers, userId];
+      } else {
+        const index = result.newProduct.likeUsers.indexOf(userId);
+        newLikeUsers = [...result.newProduct.likeUsers];
+        newLikeUsers.splice(index, 1);
+      }
+      const updateResult = await collection.updateOne(
+        { _id: new ObjectId(product_id) },
+        {
+          $set: {
+            "newProduct.likes": newLikes,
+            "newProduct.likeUsers": newLikeUsers,
+          },
+        }
+      );
+      if (updateResult.modifiedCount > 0) {
+        res.status(200).json({ message: "Product liked" });
+      } else {
+        res.status(500).json({ message: "Failed to like product" });
+      }
+    } else {
+      res.status(404).json({ message: "Product not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "An error occurred" });
+  }
+};

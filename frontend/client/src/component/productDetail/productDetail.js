@@ -56,9 +56,14 @@ const ProductDetail = () => {
         }
       );
       const respData = await resp.json();
+      console.log("resp:", respData);
       if (resp.ok) {
         navigate("/chat", {
-          state: { groupId: respData.chatGroup._id, userId: respData.userId },
+          state: {
+            groupId: respData.chatGroup._id,
+            userId: respData.userId,
+            groupData: respData.chatGroup,
+          },
         });
       } else {
         console.log("signin");

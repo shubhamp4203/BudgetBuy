@@ -132,7 +132,7 @@ const FeedCard = ({ product }) => {
           credentials: "include",
         }
       );
-      if (resp.status == 200) {
+      if (resp.ok) {
         setIsLiked(!isLiked);
       }
     } catch (error) {
