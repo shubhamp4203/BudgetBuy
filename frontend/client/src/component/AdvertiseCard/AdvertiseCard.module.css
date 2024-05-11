@@ -29,8 +29,7 @@
 }
 
 .productCard img {
-  width: max-content;
-  height: max-content;
+  width: 100%;
   border-radius: 4px;
   margin-top: 0rem;
 }

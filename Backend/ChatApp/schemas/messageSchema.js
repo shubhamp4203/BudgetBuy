@@ -4,8 +4,7 @@ const Message = mongoose.model("Message", {
   groupId: String,
   userId: String,
   text: String,
-  createdAt: { type: Date, default: Date.now },
-  // expireAt: { type: Date, default: Date.now, index: { expires: "10s" } },
+  createdAt: { type: Date, expires: "2s", default: Date.now },
 });
 
 module.exports = Message;

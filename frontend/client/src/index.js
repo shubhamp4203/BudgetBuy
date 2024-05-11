@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import 'mapbox-gl/dist/mapbox-gl.css';
-import "./index.css"; 
+import "mapbox-gl/dist/mapbox-gl.css";
+import "./index.css";
 import App from "./App";
 
 // const PUBLISHABLE_KEY =
@@ -10,7 +10,7 @@ import App from "./App";
 // if (!PUBLISHABLE_KEY) {
 //   throw new Error("Missing Publishable Key");
 // }
-document.title = "React.js Client"
+document.title = "React.js Client";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

@@ -5,8 +5,7 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import * as turf from "@turf/turf";
 import { useNavigate, useLocation } from "react-router-dom";
-import {toast, Toaster} from "sonner";
-
+import { toast, Toaster } from "sonner";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY2xhd3giLCJhIjoiY2x2eGVrbWJ5MDA4ODJwcW1sMjgwMXczayJ9.9oScypRscFnCzhA2lSQiTA";
@@ -65,7 +64,7 @@ const Geofencing = () => {
         });
         setadvlng(e.lngLat.lng);
         setadvlat(e.lngLat.lat);
-        setadvradius(radius)
+        setadvradius(radius);
       };
       map.current.on("click", addCircle);
       let markers = [];
@@ -105,49 +104,51 @@ const Geofencing = () => {
   });
   const handleBack = () => {
     navigate(-1);
-  }
+  };
 
   function isPointInCircle(center, radius, point) {
-    const toRadians = (degrees) => degrees * Math.PI / 180;
-  
+    const toRadians = (degrees) => (degrees * Math.PI) / 180;
+
     const lat1 = toRadians(center[0]);
     const lon1 = toRadians(center[1]);
     const lat2 = toRadians(point[0]);
     const lon2 = toRadians(point[1]);
-  
+
     const dLat = lat2 - lat1;
     const dLon = lon2 - lon1;
-  
+
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  
+
     // Radius of earth in kilometers. Use 3956 for miles
     const R = 6371;
-  
+
     // Calculate Distance
     const distance = R * c;
-  
+
     return distance <= radius;
   }
 
-  const handleConfirm = async(e) => {
+  const handleConfirm = async (e) => {
     e.preventDefault();
-    if(!advlat || !advlng || !advradius) {
-      toast.error("Please select the location on map where you want to sell your product");
+    if (!advlat || !advlng || !advradius) {
+      toast.error(
+        "Please select the location on map where you want to sell your product"
+      );
       return;
     }
     const regiondata = {
       latitude: advlat,
       longitude: advlng,
       radius: advradius,
-    }
+    };
 
     const data = {
       products,
-      regiondata
-    }
+      regiondata,
+    };
 
     const resp = await fetch(process.env.REACT_APP_URL_SELLER + "/advertise", {
       method: "POST",
@@ -156,10 +157,10 @@ const Geofencing = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
+    });
     const res = await resp.json();
     console.log(res);
-  }
+  };
   return (
     <div>
       <Toaster richColors position="top-center" />
@@ -168,12 +169,28 @@ const Geofencing = () => {
         ref={mapContainer}
         className={styles.mapcontainer}
       >
-        <div style={{ position: "absolute", bottom: "30px", zIndex:1,width: "100%" }} className={styles.butdiv}>
-          <button type="submit" className={styles.confirmbutton} onClick={handleConfirm}>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "30px",
+            zIndex: 1,
+            width: "100%",
+          }}
+          className={styles.butdiv}
+        >
+          <button
+            type="submit"
+            className={styles.confirmbutton}
+            onClick={handleConfirm}
+          >
             {" "}
             Confirm{" "}
           </button>
-          <button type="submit" className={styles.confirmbutton} onClick={handleBack}>
+          <button
+            type="submit"
+            className={styles.confirmbutton}
+            onClick={handleBack}
+          >
             {" "}
             Back{" "}
           </button>

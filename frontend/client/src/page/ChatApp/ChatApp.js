@@ -8,13 +8,22 @@ const ChatApp = () => {
   const location = useLocation();
   const [userId, setUserId] = useState(location.state.userId);
   const [groupId, setGroupId] = useState(location.state.groupId);
+  const [groupData, setGroupData] = useState(location.state.groupData);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const socket = useRef(null);
+  const lastMessageRef = useRef(null);
 
   useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  console.log("groupdata:", groupData);
+  useEffect(() => {
     console.log("groupID:", groupId);
-    fetch(`http://localhost:5000/messages?groupId=${groupId}`)
+    fetch(`http://localhost:8007/messages?groupId=${groupId}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Received messages:", data);
@@ -24,17 +33,12 @@ const ChatApp = () => {
         console.error("Error fetching messages:", error);
       });
 
-    socket.current = io("http://localhost:5000");
+    socket.current = io("http://localhost:8007");
 
     socket.current.on("connect", () => {
       console.log("Connected to server");
     });
     socket.current.emit("joinRoom", { groupId });
-    // socket.current.on("groupCreated", ({ groupId }) => {
-    //   console.log("Group created with ID:", groupId);
-    //   setGroupId(groupId);
-    // });
-    // console.log("updated groupId:", groupId);
 
     socket.current.on("message", (message) => {
       console.log("Received message taken:", message);
@@ -45,7 +49,6 @@ const ChatApp = () => {
       console.log("Disconnected from server");
     });
 
-    // Clean up the effect
     return () => {
       socket.current.disconnect();
       console.log("Disconnected from server");
@@ -67,11 +70,13 @@ const ChatApp = () => {
     (
       <div className={style.container}>
         <div className={style.header}>
-          <h1>Chat App</h1>
+          <h1>
+            {groupData.userId1 == userId ? groupData.name2 : groupData.name1}
+          </h1>
         </div>
         <div className={style.list}>
           {messages.map(
-            (message) => (
+            (message, index) => (
               console.log("messageId:", message.messageId),
               (
                 <div
@@ -81,6 +86,7 @@ const ChatApp = () => {
                       : style.messageleft
                   }
                   key={message.messageId}
+                  ref={index === messages.length - 1 ? lastMessageRef : null}
                 >
                   <div>{message.text}</div>
                 </div>
