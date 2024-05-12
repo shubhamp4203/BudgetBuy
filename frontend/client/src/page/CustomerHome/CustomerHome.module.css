@@ -1,41 +1,9 @@
-/* .homenav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    border-bottom: 1px solid #ccc;
-    background-color: #221f1f;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+.Carousel img{
+  height:500px;
+  width:100%;
 }
 
-.parentdiv {
-  overflow: visible;
-  height: auto;
+.Carousel p {
+  color: green;
+  font-weight: bold;
 }
-
-.navto {
-  text-decoration: none;
-  color: black;
-}
-
-.profbut {
-  margin-right: 1rem;
-  color: white;
-}
-
-.profimg {
-  height: 15%;
-}
-
-.proflist {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem;
-    font-family: 'Sans-serrif';
-    font-weight: 1000;
-    font-size: x-large;
-    /* text-decoration: none; */

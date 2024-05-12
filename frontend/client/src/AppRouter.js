@@ -36,6 +36,7 @@ import WishList from "./page/WishList/WishList";
 import SellerChatGroup from "./page/ChatApp/SellerChatGroup";
 import SellerOrderDetails from "./page/sellerorderdetails/orderdetails";
 import Geofencing from "./page/Geofencing/geofencing";
+import InterestItemList from "./page/Geofencing/InterestItemList";
 
 const AppRouter = () => {
   return (
@@ -86,6 +87,7 @@ const AppRouter = () => {
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/orders" element={<SellerOrder />} />
         <Route path="/map" element={<Geofencing />} />
+        <Route path="/interestitem" element={<InterestItemList/>}/>
       </Routes>
     </Router>
   );

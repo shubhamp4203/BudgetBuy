@@ -26,8 +26,8 @@ function ChatGroup() {
 
   const navigate = useNavigate();
 
-  const handleUserChat = (groupId) => {
-    navigate("/chat", { state: { groupId, userId } });
+  const handleUserChat = (groupData) => {
+    navigate("/chat", { state: { groupId:groupData._id, userId, groupData } });
   };
 
   return (
@@ -41,7 +41,7 @@ function ChatGroup() {
             <div
               className={style.group}
               key={groupItem._id}
-              onClick={() => handleUserChat(groupItem._id)}
+              onClick={() => handleUserChat(groupItem)}
             >
               <div className={style.icon}>
                 <AccountCircleIcon sx={{ color: "black", fontSize: 50 }} />
