@@ -20,7 +20,6 @@ app.use("/messages", messageRoutes);
 const server = http.createServer(app);
 const io = socketIO(server, { cors: { origin: "*" } });
 
-const port = process.env.CHAT_PORT || 5000;
 
 mongoose.connect(process.env.CHAT_DB_URL).then(() => {
   console.log("Connected to MongoDB");
@@ -59,6 +58,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(port, () => {
-  console.log(`Express server listening at http://localhost:${port}`);
-});
+console.log("Chat Server running")
+// server.listen(8007, process.env.CHAT.split("http://")[1].split(":")[0]);
+server.listen(8007)

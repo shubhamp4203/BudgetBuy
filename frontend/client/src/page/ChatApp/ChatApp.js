@@ -14,7 +14,7 @@ const ChatApp = () => {
 
   useEffect(() => {
     console.log("groupID:", groupId);
-    fetch(`http://localhost:5000/messages?groupId=${groupId}`)
+    fetch(`${process.env.REACT_APP_URL_CHAT}/messages?groupId=${groupId}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Received messages:", data);
@@ -24,7 +24,7 @@ const ChatApp = () => {
         console.error("Error fetching messages:", error);
       });
 
-    socket.current = io("http://localhost:5000");
+    socket.current = io(process.env.REACT_APP_URL_CHAT);
 
     socket.current.on("connect", () => {
       console.log("Connected to server");

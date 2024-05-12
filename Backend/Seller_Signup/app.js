@@ -26,5 +26,5 @@ app.use(Routes);
 //connection to data base
 const connection=mongoose.connect(process.env.SELLER_DB_URL)
 console.log("Seller Server is running");
-app.listen(8005, process.env.SELLER.split("http://")[1].split(":")[0]);
-// app.listen(8005);
+// app.listen(8005, process.env.SELLER.split("http://")[1].split(":")[0]);
+app.listen(8005);
