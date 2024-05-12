@@ -278,13 +278,15 @@ module.exports.advertise = async (req, res) => {
   const seller_id = req.authdata.id;
   const { products, regiondata } = req.body;
   try {
+    const seller = await Seller.findOne({_id: new ObjectId(seller_id)});
     const resp = await axios.post(process.env.GEOFENCING + "/geofence", {
-      seller_id,
+      seller,
       products,
       regiondata,
     });
     if (resp.status == 200) {
-      res.status(200).json({ message: "Advertise created" });
+      const advertiseData = await resp.data.advertiseData;
+      res.status(200).json({ message: "Advertise created", advertiseData });
     } else {
       res.status(400).json({ message: "Something went wrong" });
     }

@@ -23,7 +23,8 @@ const Navbar = () => {
       credentials: "include",
     })
     if(resp.ok) {
-      navigate("/myaccount");
+      const data = await resp.json();
+      navigate("/myaccount", {state: {user: data.user_id}});
     }
     else {
       navigate("/signin")

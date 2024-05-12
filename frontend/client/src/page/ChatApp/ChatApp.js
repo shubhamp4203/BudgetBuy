@@ -13,21 +13,17 @@ const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const socket = useRef(null);
   const lastMessageRef = useRef(null);
-
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  console.log("groupdata:", groupData);
+  // console.log(groupData, userId);
   useEffect(() => {
-    console.log("enter the room");
-    console.log("groupID:", groupId);
     fetch(`${process.env.REACT_APP_URL_CHAT}/messages?groupId=${groupId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Received messages:", data);
         setMessages(data);
       })
       .catch((error) => {
@@ -42,7 +38,6 @@ const ChatApp = () => {
     socket.current.emit("joinRoom", { groupId });
 
     socket.current.on("message", (message) => {
-      console.log("Received message taken:", message);
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
@@ -62,12 +57,10 @@ const ChatApp = () => {
       return;
     }
     socket.current.emit("message", { groupId, userId, text: message });
-    console.log({ groupId, userId, message });
     setMessage("");
   };
 
   return (
-    console.log("userId:", userId),
     (
       <div className={style.container}>
         <div className={style.header}>
@@ -78,7 +71,6 @@ const ChatApp = () => {
         <div className={style.list}>
           {messages.map(
             (message, index) => (
-              console.log("messageId:", message.messageId),
               (
                 <div
                   className={

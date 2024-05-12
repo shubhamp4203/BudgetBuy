@@ -31,6 +31,7 @@ DEBUG = True
 ALLOWED_HOSTS = [os.getenv("ORDER").split("http://")[1].split(":")[0]]
 PORT = 8000 
 micro_services = {
+    'AUTHENTICATION': os.getenv("AUTHENTICATION"),
     'INVENTORY': os.getenv("INVENTORY"),
     'PRODUCT': os.getenv("PRODUCT"),
     'EMAIL': os.getenv("EMAIL"),

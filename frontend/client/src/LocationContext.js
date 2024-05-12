@@ -18,13 +18,11 @@ export const LocationProvider = ({ children }) => {
         const data = await auth.json();
         const userid = data.user_id;
         if (userLng && userLat) {
-          console.log("sending location");
           const reqdata = {
             userid,
             lng: userLng,
             lat: userLat,
           };
-          console.log("sending location");
           const loc = await fetch(
             process.env.REACT_APP_URL_GEOFENCING + "/userLocation",
             {
@@ -41,6 +39,20 @@ export const LocationProvider = ({ children }) => {
       setServerIsRunning(false);
     }
   };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setUserLng(position.coords.longitude.toFixed(6));
+      setUserLat(position.coords.latitude.toFixed(6));
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!serverIsRunning) {
+      return;
+    }
+    sendLocation();
+  })
 
   useEffect(() => {
     if (!serverIsRunning) {

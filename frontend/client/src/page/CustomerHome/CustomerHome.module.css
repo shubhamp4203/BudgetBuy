@@ -7,3 +7,37 @@
   color: green;
   font-weight: bold;
 }
+.arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+  opacity: 0.5;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.arrow:hover {
+  opacity: 1;
+}
+
+.arrow.hidden {
+  display: none;
+}
+
+.arrow.left {
+  left: 0;
+}
+
+.arrow.right {
+  right: 0;
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  color: black;
+}
