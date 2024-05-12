@@ -84,7 +84,7 @@ const SearchBar = ({
       const responseData = await response.json();
       if (response.ok) {
         console.log("logged out");
-        navigate("/signin");
+        navigate("/sellersignin");
       } else {
         console.log("Logout failed");
       }
@@ -168,68 +168,68 @@ const SearchBar = ({
       <Divider sx={{ color: "black" }} />
     </Box>
   );
-  const filterDrawerList = (
-    <Box
-      sx={{ width: 200, height: "100%", backgroundColor: "white" }}
-      role="presentation"
-      onClick={filtertoggleDrawer(false)}
-    >
-      <div className={styles.filterDrawerList}>
-        <List>
-          <ListItem
-            key="Price"
-            disablePadding
-            className={styles.ListItemheading}
-          >
-            Price:
-          </ListItem>
-          <ListItem key="Price" disablePadding className={styles.ListItemInput}>
-            <label htmlFor="min">min:</label>
-            <input
-              type="tel"
-              id="min"
-              className={styles.smallInput}
-              onClick={(e) => e.stopPropagation()}
-            />
-            <label htmlFor="max">max:</label>
-            <input
-              type="tel"
-              id="max"
-              className={styles.smallInput}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </ListItem>
+  // const filterDrawerList = (
+  //   <Box
+  //     sx={{ width: 200, height: "100%", backgroundColor: "white" }}
+  //     role="presentation"
+  //     onClick={filtertoggleDrawer(false)}
+  //   >
+  //     <div className={styles.filterDrawerList}>
+  //       <List>
+  //         <ListItem
+  //           key="Price"
+  //           disablePadding
+  //           className={styles.ListItemheading}
+  //         >
+  //           Price:
+  //         </ListItem>
+  //         <ListItem key="Price" disablePadding className={styles.ListItemInput}>
+  //           <label htmlFor="min">min:</label>
+  //           <input
+  //             type="tel"
+  //             id="min"
+  //             className={styles.smallInput}
+  //             onClick={(e) => e.stopPropagation()}
+  //           />
+  //           <label htmlFor="max">max:</label>
+  //           <input
+  //             type="tel"
+  //             id="max"
+  //             className={styles.smallInput}
+  //             onClick={(e) => e.stopPropagation()}
+  //           />
+  //         </ListItem>
 
-          <ListItem
-            key="Price"
-            disablePadding
-            className={styles.ListItemheading}
-          >
-            Likes:
-          </ListItem>
-          <ListItem key="Likes" disablePadding className={styles.ListItemInput}>
-            <label htmlFor="min">min:</label>
-            <input
-              type="tel"
-              id="min"
-              className={styles.smallInput}
-              onClick={(e) => e.stopPropagation()}
-            />
-            <label htmlFor="max">max:</label>
-            <input
-              type="tel"
-              id="max"
-              className={styles.smallInput}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </ListItem>
-        </List>
-      </div>
-    </Box>
-  );
+  //         <ListItem
+  //           key="Price"
+  //           disablePadding
+  //           className={styles.ListItemheading}
+  //         >
+  //           Likes:
+  //         </ListItem>
+  //         <ListItem key="Likes" disablePadding className={styles.ListItemInput}>
+  //           <label htmlFor="min">min:</label>
+  //           <input
+  //             type="tel"
+  //             id="min"
+  //             className={styles.smallInput}
+  //             onClick={(e) => e.stopPropagation()}
+  //           />
+  //           <label htmlFor="max">max:</label>
+  //           <input
+  //             type="tel"
+  //             id="max"
+  //             className={styles.smallInput}
+  //             onClick={(e) => e.stopPropagation()}
+  //           />
+  //         </ListItem>
+  //       </List>
+  //     </div>
+  //   </Box>
+  // );
   return (
     <div className={styles.homenav}>
-      <FilterListIcon
+      {/* <FilterListIcon
         onClick={filtertoggleDrawer(true)}
         className={styles.filbut}
       />
@@ -239,7 +239,7 @@ const SearchBar = ({
         onClose={filtertoggleDrawer(false)}
       >
         {filterDrawerList}
-      </Drawer>
+      </Drawer> */}
       <div className={styles.searchBar}>
         <input
           value={searchInput}

@@ -7,6 +7,7 @@ export const LocationProvider = ({ children }) => {
   const [serverIsRunning, setServerIsRunning] = useState(true);
 
   const sendLocation = async () => {
+    console.log("Called")
     try {
       const auth = await fetch(
         process.env.REACT_APP_URL_AUTHENTICATION + "/authenticate",
@@ -17,6 +18,7 @@ export const LocationProvider = ({ children }) => {
       if (auth.ok) {
         const data = await auth.json();
         const userid = data.user_id;
+        console.log(userLng, userLat)
         if (userLng && userLat) {
           console.log("sending location");
           const reqdata = {
@@ -41,6 +43,20 @@ export const LocationProvider = ({ children }) => {
       setServerIsRunning(false);
     }
   };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setUserLng(position.coords.longitude.toFixed(6));
+      setUserLat(position.coords.latitude.toFixed(6));
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!serverIsRunning) {
+      return;
+    }
+    sendLocation();
+  })
 
   useEffect(() => {
     if (!serverIsRunning) {

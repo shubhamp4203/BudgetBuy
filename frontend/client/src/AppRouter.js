@@ -65,7 +65,7 @@ const AppRouter = () => {
         <Route path="/selleraccount" element={<SellerAccount />} />
         <Route path="/addaddress" element={<Address />} />
         <Route path="/myaccount" element={<UserAccount />} />
-        <Route path="/addcard" element={<Card />} />
+        {/* <Route path="/addcard" element={<Card />} /> */}
         <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/advertiselist" element={<AdvertiseProduct />} />
         <Route path="/orderdetails/:orderId" element={<OrderDetails />} />

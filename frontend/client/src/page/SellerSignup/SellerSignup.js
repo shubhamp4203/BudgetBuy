@@ -134,22 +134,9 @@ export default function SellerSignup() {
           Continue
         </button>
       </div>
-
-      {/* <div className={styles.socialSignUp}>
-        <div className={styles.orText}>OR</div>
-        <div className={styles.socialIcons}>
-          <a href="http://surl.li/rqecf">
-            <i className="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://myaccount.google.com/?utm_source=sign_in_no_continue&pli=1">
-            <i className="fab fa-google"></i>
-          </a>
-          <a href="https://github.com/topics/login">
-            <i className="fab fa-github"></i>
-          </a>
-        </div>
-      </div> */}
-
+      <div className={styles.signin}>
+        Already have an account? <a href="/signin">Sign In</a>
+      </div>
       <div className={styles.privacyPolicy}>
         By signing up, you agree to our <a href="#">Privacy Policy</a> and{" "}
         <a href="#">Terms of Service</a>

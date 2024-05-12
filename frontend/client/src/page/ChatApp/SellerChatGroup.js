@@ -15,19 +15,19 @@ function SellerChatGroup() {
         }
       );
       const data = await response.json();
-      console.log("data:", data);
+      // console.log("data:", data);
       setGroup(data.chatGroup);
       setUserId(data.userId);
     };
     fetchChatgroup();
   }, []);
-  console.log("chatgroup", group);
+  // console.log("chatgroup", group);
   // console.log("grouplength:", group.length);
 
   const navigate = useNavigate();
 
-  const handleUserChat = (groupId) => {
-    navigate("/chat", { state: { groupId, userId } });
+  const handleUserChat = (group) => {
+    navigate("/chat", { state: { groupId: group._id, userId, groupData: group } });
   };
 
   return (
@@ -41,7 +41,7 @@ function SellerChatGroup() {
             <div
               className={style.group}
               key={groupItem._id}
-              onClick={() => handleUserChat(groupItem._id)}
+              onClick={() => handleUserChat(groupItem)}
             >
               <div className={style.icon}>
                 <AccountCircleIcon sx={{ color: "black", fontSize: 50 }} />

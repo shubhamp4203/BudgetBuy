@@ -106,31 +106,6 @@ const Geofencing = () => {
     navigate(-1);
   };
 
-  function isPointInCircle(center, radius, point) {
-    const toRadians = (degrees) => (degrees * Math.PI) / 180;
-
-    const lat1 = toRadians(center[0]);
-    const lon1 = toRadians(center[1]);
-    const lat2 = toRadians(point[0]);
-    const lon2 = toRadians(point[1]);
-
-    const dLat = lat2 - lat1;
-    const dLon = lon2 - lon1;
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    // Radius of earth in kilometers. Use 3956 for miles
-    const R = 6371;
-
-    // Calculate Distance
-    const distance = R * c;
-
-    return distance <= radius;
-  }
-
   const handleConfirm = async (e) => {
     e.preventDefault();
     if (!advlat || !advlng || !advradius) {

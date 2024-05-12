@@ -205,7 +205,7 @@ function Payment() {
         </div>
         <div className={styles.payment}>
           <div className={styles.heading}> Select Payment Method </div>
-          {cards.map((card) => (
+          {/* {cards.map((card) => (
             <React.Fragment key={card._id}>
               <div
                 className={`${styles.card} ${
@@ -233,7 +233,7 @@ function Payment() {
               </div>
               <Divider />
             </React.Fragment>
-          ))}
+          ))} */}
           <div
             className={`${styles.card} ${codselected ? styles.selected : ""}`}
             onClick={() => handleselectcod()}
@@ -245,10 +245,10 @@ function Payment() {
               <div className={styles.card1}>Cash On Delivery</div>
             </div>
           </div>
-          <div className={styles.addcard} onClick={handleaddcard}>
+          {/* <div className={styles.addcard} onClick={handleaddcard}>
             <AddIcon sx={{ color: "white" }} />
             <span>Add New Card</span>
-          </div>
+          </div> */}
         </div>
         <div className={styles.placeorder}>
           <div>
