@@ -22,6 +22,7 @@ const ChatApp = () => {
 
   console.log("groupdata:", groupData);
   useEffect(() => {
+    console.log("enter the room");
     console.log("groupID:", groupId);
     fetch(`${process.env.REACT_APP_URL_CHAT}/messages?groupId=${groupId}`)
       .then((response) => response.json())
