@@ -29,6 +29,18 @@ const Navbar = () => {
       navigate("/signin")
     }
   };
+
+  const handleChat = async() => {
+    const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/authenticate", {
+      credentials: "include",
+    })
+    if(resp.ok) {
+      navigate("/chatgroup");
+    }
+    else {
+      navigate("/signin")
+    }
+  }
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
@@ -42,7 +54,7 @@ const Navbar = () => {
             <ShoppingCartIcon sx={{ color: "black" }} />
           </li>
         </a>
-        <li className={styles.navbarItem}>
+        <li className={styles.navbarItem} onClick={handleChat}>
           <ChatIcon sx={{ color: "black" }} />
         </li>
         <li className={styles.navbarItem}>

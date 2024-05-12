@@ -485,7 +485,7 @@ module.exports.chatgroup_get = async (req, res) => {
 };
 
 module.exports.authenticate = async (req, res) => {
-  res.status(200).json({ message: "Authenticated" });
+  res.status(200).json({ message: "Authenticated", user_id: req.authdata.id});
 };
 
 module.exports.like_put = async (req, res) => {

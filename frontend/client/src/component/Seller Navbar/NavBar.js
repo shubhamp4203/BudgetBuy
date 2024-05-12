@@ -46,6 +46,10 @@ const SellerNavbar = () => {
     }
   };
 
+  const handleChat = () => {
+    navigate("/sellerchatgroup");
+  }
+
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarList}>
@@ -55,7 +59,7 @@ const SellerNavbar = () => {
         <li className={styles.navbarItem} onClick={insertproduct}>
           <AddIcon sx={{ color: "black" }} />
         </li>
-        <li className={styles.navbarItem}>
+        <li className={styles.navbarItem} onClick={handleChat}>
           <ChatIcon sx={{ color: "black" }} />
         </li>
         <li className={styles.navbarItem} onClick={myorders}>
