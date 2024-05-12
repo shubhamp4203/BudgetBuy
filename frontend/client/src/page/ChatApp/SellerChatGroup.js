@@ -26,8 +26,8 @@ function SellerChatGroup() {
 
   const navigate = useNavigate();
 
-  const handleUserChat = (group) => {
-    navigate("/chat", { state: { groupId: group._id, userId, groupData: group } });
+  const handleUserChat = (groupData) => {
+    navigate("/chat", { state: { groupId:groupData._id, userId, groupData } });
   };
 
   return (
