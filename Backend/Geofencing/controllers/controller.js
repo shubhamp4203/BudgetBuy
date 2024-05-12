@@ -67,3 +67,13 @@ module.exports.addUserLocation = async (req, res) => {
     res.status(200).json({ success: true, message: "OK" });
   }
 };
+
+module.exports.getNearbyProducts = async (req, res) => {
+  const {user_id} = req.body;
+  const nearbyProd = await AdvertiseData.find( {interestedUsers: { $in: [user_id]}});
+  const products = [];
+  for (let i=0; i<nearbyProd.length; i++){
+    products.push(...nearbyProd[i].products);
+  }
+  res.status(200).json({success: true, message: "OK", products});
+}

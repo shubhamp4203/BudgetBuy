@@ -26,12 +26,9 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 
 const SearchBar = ({
   onSearch,
-  onPriceRangeChange,
-  onLikesRangeChange,
   isLoggedin,
 }) => {
   const [open, setOpen] = React.useState(false);
-  const [filteropen, setfilterOpen] = React.useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [loggedin, setIsLoggedin] = useState(false);
   const navigate = useNavigate();
@@ -55,9 +52,6 @@ const SearchBar = ({
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
-  };
-  const filtertoggleDrawer = (newfilterOpen) => () => {
-    setfilterOpen(newfilterOpen);
   };
 
   const handleSearch = (event) => {
@@ -137,7 +131,7 @@ const SearchBar = ({
           </ListItem>
         </Link>
 
-        <Link to="/mychat" className={styles.navto}>
+        {/* <Link to="/mychat" className={styles.navto}>
           <ListItem key="My Chat" disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -146,7 +140,7 @@ const SearchBar = ({
               <ListItemText primary="My Chat" />
             </ListItemButton>
           </ListItem>
-        </Link>
+        </Link> */}
         <ListItem key="Advertise Product" disablePadding>
           <ListItemButton onClick={handlemap}>
             <ListItemIcon>

@@ -7,6 +7,8 @@ import AddIcon from "@mui/icons-material/Add";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useNavigate } from "react-router-dom";
+import MapIcon from "@mui/icons-material/Map";
+
 
 const SellerNavbar = () => {
   const navigate = useNavigate();
@@ -46,8 +48,8 @@ const SellerNavbar = () => {
     }
   };
 
-  const handleChat = () => {
-    navigate("/sellerchatgroup");
+  const handleAdvertise = () => {
+    navigate("/advertiselist");
   }
 
   return (
@@ -59,8 +61,8 @@ const SellerNavbar = () => {
         <li className={styles.navbarItem} onClick={insertproduct}>
           <AddIcon sx={{ color: "black" }} />
         </li>
-        <li className={styles.navbarItem} onClick={handleChat}>
-          <ChatIcon sx={{ color: "black" }} />
+        <li className={styles.navbarItem} onClick={handleAdvertise}>
+          <MapIcon sx={{ color: "black" }} />
         </li>
         <li className={styles.navbarItem} onClick={myorders}>
           <LocalShippingIcon sx={{ color: "black" }} />

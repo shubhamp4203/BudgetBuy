@@ -26,16 +26,11 @@ import MapIcon from "@mui/icons-material/Map";
 
 const SearchBar = ({
   onSearch,
-  onPriceRangeChange,
-  onLikesRangeChange,
   isLoggedin,
 }) => {
   const [open, setOpen] = React.useState(false);
-  const [filteropen, setfilterOpen] = React.useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [loggedin, setIsLoggedin] = useState(false);
-  const [userLng, setlng] = useState("test");
-  const [userLat, setlat] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,9 +56,6 @@ const SearchBar = ({
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
-  };
-  const filtertoggleDrawer = (newfilterOpen) => () => {
-    setfilterOpen(newfilterOpen);
   };
 
   const handleSearch = (event) => {

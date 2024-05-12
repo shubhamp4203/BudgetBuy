@@ -7,7 +7,6 @@ export const LocationProvider = ({ children }) => {
   const [serverIsRunning, setServerIsRunning] = useState(true);
 
   const sendLocation = async () => {
-    console.log("Called")
     try {
       const auth = await fetch(
         process.env.REACT_APP_URL_AUTHENTICATION + "/authenticate",
@@ -18,15 +17,12 @@ export const LocationProvider = ({ children }) => {
       if (auth.ok) {
         const data = await auth.json();
         const userid = data.user_id;
-        console.log(userLng, userLat)
         if (userLng && userLat) {
-          console.log("sending location");
           const reqdata = {
             userid,
             lng: userLng,
             lat: userLat,
           };
-          console.log("sending location");
           const loc = await fetch(
             process.env.REACT_APP_URL_GEOFENCING + "/userLocation",
             {

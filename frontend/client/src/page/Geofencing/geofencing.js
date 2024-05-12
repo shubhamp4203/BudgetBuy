@@ -133,8 +133,13 @@ const Geofencing = () => {
       },
       body: JSON.stringify(data),
     });
-    const res = await resp.json();
-    console.log(res);
+
+    if (resp.ok) {
+      toast.success("Product advertised successfully");
+      setTimeout(() => navigate("/yourproducts"),1500);
+    } else {
+      toast.error("Failed to advertise product");
+    }
   };
   return (
     <div>
