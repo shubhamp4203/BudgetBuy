@@ -442,7 +442,7 @@ module.exports.chat_post = async (req, res) => {
       seller_id,
       seller_name,
     });
-
+    console.log("just enter");
     if (resp.status == 201) {
       res.status(201).json({
         message: "Chat group created",
@@ -486,4 +486,25 @@ module.exports.chatgroup_get = async (req, res) => {
 
 module.exports.authenticate = async (req, res) => {
   res.status(200).json({ message: "Authenticated", user_id: req.authdata.id});
+};
+
+module.exports.like_put = async (req, res) => {
+  const product_id = req.body.product_id;
+  const like = req.body.like;
+  const userId = req.authdata.id;
+
+  try {
+    const resp = await axios.put(process.env.PRODUCT + "/like/", {
+      product_id,
+      like,
+      userId,
+    });
+    // console.log("resp:", resp);
+    if (resp.status == 200) {
+      res.status(200).json({ message: "Liked" });
+    }
+  } catch (err) {
+    console.log("400", err);
+    res.status(400).json({ message: "Something went wrong" });
+  }
 };

@@ -1,16 +1,21 @@
-const {Router}=require("express");
+const { Router } = require("express");
 const Controller = require("../Controllers/Controllers");
-const router=Router();
+const router = Router();
 const multer = require("multer");
 
-const upload = multer({dest: 'uploads/'});
+const upload = multer({ dest: "uploads/" });
 
-router.post('/insertproduct',upload.single('image'),Controller.insertProduct_post);
-router.post('/getproduct',Controller.getProduct_post);
-router.get('/getAll',Controller.allproducts_get);
-router.post('/wishlist',Controller.wishlist_post);
-router.post('/removeWishlist',Controller.removeWishlist_post);
-router.post('/getSellerProduct',Controller.getSellerProduct_post);
-router.post('/updateStock', Controller.updateStock)
+router.post(
+  "/insertproduct",
+  upload.single("image"),
+  Controller.insertProduct_post
+);
+router.post("/getproduct", Controller.getProduct_post);
+router.get("/getAll", Controller.allproducts_get);
+router.post("/wishlist", Controller.wishlist_post);
+router.post("/removeWishlist", Controller.removeWishlist_post);
+router.post("/getSellerProduct", Controller.getSellerProduct_post);
+router.post("/updateStock", Controller.updateStock);
+router.put("/like", Controller.like_put);
 
-module.exports=router;
+module.exports = router;
