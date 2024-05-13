@@ -18,9 +18,47 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SellerNavbar from "../../component/Seller Navbar/NavBar";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { toast, Toaster } from "sonner";
+import { useLocation } from "react-router-dom";
 export default function SellerAccount() {
+  const [totalsales, settotalsales] = useState(0);
+  const location = useLocation();
+  const [totalProducts, settotalProducts] = useState(0);
+  const [totalRevenue, settotalRevenue] = useState(0);
+  const seller_id = location.state.sellerid
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+
+        const data = {
+          seller_id
+        }
+
+        const resp = await fetch(process.env.REACT_APP_URL_SELLER + "/getDashboard", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        if(resp.ok) {
+          const data = await resp.json();
+          settotalRevenue(data.seller.total_revenue);
+          settotalProducts(data.seller.total_products);
+          settotalsales(data.seller.total_sales);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchdata();
+  }, [])
+
+
+
   async function handlelogout() {
     try {
       const response = await fetch(
@@ -48,15 +86,24 @@ export default function SellerAccount() {
       <Toaster richColors position="top-center" />
       <div className={styles.container}>
         <div className={styles.dashboard}>
-          <div className={styles.dash1}>
-            <div>div1</div>
-            <div>div2</div>
+        <div className={styles.dashchild}>
+            <div>Total Revenue:</div>
+            <p>₹  {new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    minimumFractionDigits: 2,
+                  }).format(totalRevenue)}</p>
           </div>
-          <div className={styles.dash2}>
-            <div>div1</div>
-            <div>div2</div>
+          <div className={styles.dashchild}>
+            <div>Total Sales:</div>
+            <p>{totalsales}</p>
+          </div>
+          <div className={styles.dashchild}>
+            <div>Total Listed Products:</div>
+            <p>{totalProducts}</p>
           </div>
         </div>
+        <br/>
+        <br/>
         <Divider />
         <Box
           sx={{ width: "100%", height: "100%", backgroundColor: "white" }}

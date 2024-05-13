@@ -20,6 +20,9 @@ router.post("/getSellerProduct", auth, authController.getSellerProduct)
 router.get("/authenticate", auth, authController.authenticate)
 router.post("/getSellerOrder", auth, authController.getSellerOrder)
 router.post("/advertise", auth, authController.advertise)
+router.post("/getDashboard", authController.getDashboard)
+router.post("/updateDashboard", authController.updateDashboard)
+
 
 module.exports=router
 

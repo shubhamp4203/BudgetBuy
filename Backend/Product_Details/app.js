@@ -28,6 +28,6 @@ dataConnect().catch(error => {
 
 app.use(Routes);
 console.log("Product Server is running");
-// app.listen(8004, process.env.PRODUCT.split("http://")[1].split(":")[0]);
-app.listen(8004);
+app.listen(8004, process.env.PRODUCT.split("http://")[1].split(":")[0]);
+// app.listen(8004);
 

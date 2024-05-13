@@ -28,7 +28,6 @@ const ProductDetail = () => {
         }
       );
       const data = await resp.json();
-      console.log(data);
       const sellerinf = data.finalResult.sellerinfo.seller;
       const product = data.finalResult.result;
       setproduct(product);
@@ -56,7 +55,6 @@ const ProductDetail = () => {
         }
       );
       const respData = await resp.json();
-      console.log("resp:", respData);
       if (resp.ok) {
         navigate("/chat", {
           state: {

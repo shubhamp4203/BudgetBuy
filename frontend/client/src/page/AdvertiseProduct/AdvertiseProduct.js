@@ -54,7 +54,7 @@ function AdvertiseProduct() {
     <div className={Styles.container}>
       <Toaster richColors position="top-center" />
       <div className={Styles.header}>
-        <h1>Product List</h1>
+        <h1>Advertise Products</h1>
         <marquee className={Styles.marquee}>
           From here you can choose product that you want to Advertise or make
           notification to user for better reach...

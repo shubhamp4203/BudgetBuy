@@ -6,23 +6,21 @@ import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 
 const options = [
-  { value: "clothes", label: "clothes" },
-  { value: "shoes", label: "shoes" },
-  { value: "electronic item", label: "elctronic item" },
-  { value: "jewellery", label: "jewellery" },
-  { value: "cosmetics", label: "cosmetics" },
-  { value: "electronic item", label: "elctronic item" },
-  { value: "grocery", label: "grocery" },
-  { value: "stationary", label: "stationary" },
-  { value: "books", label: "books" },
+  { value: "clothes", label: "clothes" }, //done
+  { value: "shoes", label: "shoes" }, //done
+  { value: "electronic item", label: "elctronic item" }, //done
+  { value: "jewellery", label: "jewellery" }, //done
+  { value: "cosmetics", label: "cosmetics" }, //done
+  { value: "showpiece", label: "showpiece" },
+  { value: "grocery", label: "grocery" }, //done
+  { value: "stationary", label: "stationary" }, //done
+  { value: "books", label: "books" }, //done
   { value: "toys", label: "toys" },
   { value: "sports", label: "sports" },
   { value: "kitchen", label: "kitchen" },
   { value: "home", label: "home" },
   { value: "accessories", label: "accessories" },
   { value: "bags", label: "bags" },
-
-  // Add more predefined tags as needed
 ];
 
 const customStyles = {

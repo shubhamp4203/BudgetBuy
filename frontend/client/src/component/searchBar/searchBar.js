@@ -32,6 +32,7 @@ const SearchBar = ({
   const [searchInput, setSearchInput] = useState("");
   const [loggedin, setIsLoggedin] = useState(false);
   const navigate = useNavigate();
+  const [userid, setUserid] = useState(null);
 
   useEffect(() => {
     const authenticate = async () => {
@@ -43,7 +44,9 @@ const SearchBar = ({
           }
         );
         if (resp.ok) {
+          const data = await resp.json()
           setIsLoggedin(true);
+          setUserid(data.user_id);
         } else {
           setIsLoggedin(false);
         }
@@ -91,6 +94,10 @@ const SearchBar = ({
     }
   }
 
+  const handleAccount = () => {
+    navigate("/myaccount", { state: { user: userid } })
+  }
+
   const DrawerList = (
     <Box
       sx={{ width: 200, height: "100%", backgroundColor: "white" }}
@@ -98,8 +105,7 @@ const SearchBar = ({
       onClick={toggleDrawer(false)}
     >
       <List>
-        <Link to="/myaccount" className={styles.navto}>
-          <ListItem key="My Account" disablePadding>
+          <ListItem key="My Account" disablePadding onClick={handleAccount}>
             <ListItemButton>
               <ListItemIcon>
                 <AccountCircleIcon sx={{ color: "black" }} />
@@ -107,7 +113,6 @@ const SearchBar = ({
               <ListItemText primary="My Account" />
             </ListItemButton>
           </ListItem>
-        </Link>
 
         <Link to="/cart" className={styles.navto}>
           <ListItem key="Cart" disablePadding>
@@ -131,7 +136,7 @@ const SearchBar = ({
           </ListItem>
         </Link>
 
-        <Link to="/mychat" className={styles.navto}>
+        <Link to="/chatgroup" className={styles.navto}>
           <ListItem key="My Chat" disablePadding>
             <ListItemButton>
               <ListItemIcon>

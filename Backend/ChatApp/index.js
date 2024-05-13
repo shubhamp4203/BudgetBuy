@@ -59,5 +59,5 @@ io.on("connection", (socket) => {
 });
 
 console.log("Chat Server running")
-// server.listen(8007, process.env.CHAT.split("http://")[1].split(":")[0]);
-server.listen(8007)
+server.listen(8007, process.env.CHAT.split("http://")[1].split(":")[0]);
+// server.listen(8007)

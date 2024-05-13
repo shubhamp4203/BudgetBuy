@@ -252,7 +252,7 @@ module.exports.chatgroup_get = async (req, res) => {
 };
 
 module.exports.authenticate = async (req, res) => {
-  res.status(200).json({ message: "Authenticated" });
+  res.status(200).json({ message: "Authenticated", seller_id: req.authdata.id });
 };
 module.exports.getSellerOrder = async (req, res) => {
   const seller_id = req.authdata.id;
@@ -295,3 +295,44 @@ module.exports.advertise = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+module.exports.getDashboard = async (req, res) => {
+  const seller_id = req.body.seller_id;
+  try {
+    const seller = await Seller.findOne({_id: seller_id});
+    res.status(200).json({message: "Dashboard fetched", seller});
+  } catch (err) {
+    res.status(400).json({message: "Something went wrong"});
+  }
+}
+
+module.exports.updateDashboard = async (req,res) => {
+  const {type} = req.body;
+  try {
+    if(type=="confirm_order") {
+      const {seller_id, value, sales} = req.body;
+      const seller = await Seller.updateOne({
+        _id: seller_id,
+      }, {
+        $inc : {
+          total_revenue: value,
+          total_sales: sales
+        }
+      });
+      res.status(200).json({message: "Dashboard updated", success: true});
+    }
+    else {
+      const {seller_id} = req.body;
+      const seller = await Seller.updateOne({
+        _id: seller_id,
+      }, {
+        $inc : {
+          total_products: 1
+        }
+      });
+      res.status(200).json({message: "Dashboard updated", success: true});
+    }
+  } catch (err) {
+    res.status(400).json({message: "Something went wrong"});
+  }
+}

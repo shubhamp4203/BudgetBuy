@@ -1,8 +1,11 @@
 .Carousel img{
-  height:500px;
-  width:100%;
+  height:400px;
+  width:auto;
 }
 
+.Carousel h2 {
+  margin-top: 0.25rem;
+}
 .Carousel p {
   color: green;
   font-weight: bold;

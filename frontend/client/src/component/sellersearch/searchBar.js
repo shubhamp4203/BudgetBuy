@@ -31,6 +31,7 @@ const SearchBar = ({
   const [open, setOpen] = React.useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [loggedin, setIsLoggedin] = useState(false);
+  const [sellerid, setseller] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +43,9 @@ const SearchBar = ({
         }
       );
       if (resp.ok) {
+        const data = await resp.json();
         setIsLoggedin(true);
+        setseller(data.seller_id);
       } else {
         setIsLoggedin(false);
       }
@@ -91,6 +94,10 @@ const SearchBar = ({
     navigate("/advertiselist");
   };
 
+  const handleAccount = () => {
+    navigate("/selleraccount", { state: { sellerid } });
+  }
+  
   const DrawerList = (
     <Box
       sx={{ width: 220, height: "100%", backgroundColor: "white" }}
@@ -98,8 +105,7 @@ const SearchBar = ({
       onClick={toggleDrawer(false)}
     >
       <List>
-        <Link to="/selleraccount" className={styles.navto}>
-          <ListItem key="My Account" disablePadding>
+          <ListItem key="My Account" disablePadding onClick={handleAccount}>
             <ListItemButton>
               <ListItemIcon>
                 <AccountCircleIcon sx={{ color: "black" }} />
@@ -107,7 +113,6 @@ const SearchBar = ({
               <ListItemText primary="My Account" />
             </ListItemButton>
           </ListItem>
-        </Link>
 
         <Link to="/yourproducts" className={styles.navto}>
           <ListItem key="myproducts" disablePadding>
@@ -131,7 +136,7 @@ const SearchBar = ({
           </ListItem>
         </Link>
 
-        {/* <Link to="/mychat" className={styles.navto}>
+        <Link to="/sellerchatgroup" className={styles.navto}>
           <ListItem key="My Chat" disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -140,7 +145,7 @@ const SearchBar = ({
               <ListItemText primary="My Chat" />
             </ListItemButton>
           </ListItem>
-        </Link> */}
+        </Link>
         <ListItem key="Advertise Product" disablePadding>
           <ListItemButton onClick={handlemap}>
             <ListItemIcon>

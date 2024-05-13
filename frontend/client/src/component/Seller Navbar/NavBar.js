@@ -20,7 +20,8 @@ const SellerNavbar = () => {
       }
     );
     if (resp.ok) {
-      navigate("/selleraccount");
+      const data = await resp.json();
+      navigate("/selleraccount", {state: {sellerid: data.seller_id}});
     } else {
       navigate("/sellersignin");
     }

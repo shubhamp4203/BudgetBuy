@@ -23,7 +23,7 @@ export default function AddProduct() {
     { value: "electronic item", label: "elctronic item" },
     { value: "jewellery", label: "jewellery" },
     { value: "cosmetics", label: "cosmetics" },
-    { value: "furniture", label: "furniture" },
+    { value: "showpiece", label: "showpiece" },
     { value: "grocery", label: "grocery" },
     { value: "stationary", label: "stationary" },
     { value: "books", label: "books" },
@@ -33,7 +33,6 @@ export default function AddProduct() {
     { value: "home", label: "home" },
     { value: "accessories", label: "accessories" },
     { value: "bags", label: "bags" },
-    // Add more options as needed
   ];
 
   const customStyles = {

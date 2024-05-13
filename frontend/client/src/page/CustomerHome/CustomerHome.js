@@ -69,7 +69,7 @@ function CustomerHome() {
   return (
     <>
       <SearchBar onSearch={setSearchTerm} />
-      {nearby.length == 0 && loggedIn ? "" : (<><h2 style={{textAlign: "center"}}>Nearby Products</h2>
+      {nearby.length == 0 || !loggedIn ? "" : (<><h2 style={{textAlign: "center"}}>Nearby Products</h2>
       <Carousel
         autoPlay
         interval={3000}
@@ -110,7 +110,7 @@ function CustomerHome() {
               }
               alt={product.newProduct.name}
             />
-            <b>{product.newProduct.name}</b>
+            <h2>{product.newProduct.name}</h2>
             <p>₹  {new Intl.NumberFormat("en-US", {
                     style: "decimal",
                     minimumFractionDigits: 2,

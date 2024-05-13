@@ -42,7 +42,7 @@ const Geofencing = () => {
           map.current.removeLayer("circle");
           map.current.removeSource("circle");
         }
-
+        console.log(e.lngLat.lng.toFixed(6), e.lngLat.lat.toFixed(6));
         const circle = turf.circle([e.lngLat.lng, e.lngLat.lat], radius, {
           steps: 100,
           units: "kilometers",
