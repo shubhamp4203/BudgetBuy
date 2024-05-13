@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import style from "./ChatGroup.module.css";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
+import SellerNavbar from "../../component/Seller Navbar/NavBar";
 
 function SellerChatGroup() {
   const [group, setGroup] = useState([]);
@@ -53,6 +54,7 @@ function SellerChatGroup() {
           <h1>No Chats</h1>
         )}
       </div>
+      <SellerNavbar/>
     </div>
   );
 }

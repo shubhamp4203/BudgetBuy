@@ -2,6 +2,7 @@ const { Router } = require("express");
 const authController = require("../controllers/authControllers");
 const router = Router();
 const auth = require("../Middlewares/auth");
+const homepageauth = require("../Middlewares/homepageAuth")
 
 //Routes handelling
 router.post("/signup", authController.signup_post);
@@ -21,6 +22,7 @@ router.post("/wishlist", auth, authController.wishlist_post);
 router.post("/removeWishlist", auth, authController.removeWishlist_post);
 router.post("/chat", auth, authController.chat_post);
 router.get("/chatgroup", auth, authController.chatgroup_get);
+router.get("/getAll",homepageauth, authController.allproducts_get);
 router
   .route("/authenticate")
   .get(auth, authController.authenticate)

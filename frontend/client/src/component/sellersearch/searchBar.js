@@ -136,7 +136,7 @@ const SearchBar = ({
           </ListItem>
         </Link>
 
-        {/* <Link to="/mychat" className={styles.navto}>
+        <Link to="/sellerchatgroup" className={styles.navto}>
           <ListItem key="My Chat" disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -145,7 +145,7 @@ const SearchBar = ({
               <ListItemText primary="My Chat" />
             </ListItemButton>
           </ListItem>
-        </Link> */}
+        </Link>
         <ListItem key="Advertise Product" disablePadding>
           <ListItemButton onClick={handlemap}>
             <ListItemIcon>
