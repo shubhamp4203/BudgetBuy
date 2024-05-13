@@ -11,9 +11,20 @@ import { Toaster, toast } from "sonner";
 
 // toast.configure();
 
-const FeedCard = ({ product }) => {
+const FeedCard = ({ product, userId }) => {
+
   const [isLiked, setIsLiked] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [likesCount, setLikesCount] = useState(product.newProduct.likes)
+  const [likeUsers, setLikeUsers] = useState(product.newProduct.likeUsers)
+  
+
+  useEffect(() => {
+    console.log("go",likeUsers);
+    console.log(userId);
+    setIsLiked(likeUsers.includes(userId));
+    console.log(isLiked);
+  }, [likeUsers, userId]);
 
   const navigate = useNavigate();
 
@@ -134,6 +145,9 @@ const FeedCard = ({ product }) => {
       );
       if (resp.ok) {
         setIsLiked(!isLiked);
+        const result = await resp.json();
+        setLikesCount(result.likes)
+        setLikeUsers(result.likeUsers)
       }
     } catch (error) {
       toast.error("Something went wrong.");
@@ -209,7 +223,7 @@ const FeedCard = ({ product }) => {
               onClick={handleLikes}
             />
           )}
-          {product.newProduct.likes}
+          {likesCount}
         </div>
       </div>
       <div className={styles.prodescription}>

@@ -14,14 +14,23 @@ function CustomerHome() {
   const [nearby, setnearby] = useState([]);
   const [products, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [userId, setUserId] = useState("l")
   const [loggedIn, setLoggedin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchdata = async () => {
-      const resp = await fetch(process.env.REACT_APP_URL_PRODUCT + "/getAll");
+      const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/getAll",{
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await resp.json();
-      setData(data.result);
+      console.log("data:", data);
+      setData(data.result.result);
+      setUserId(data.userId)
     };
     fetchdata();
   }, []);
@@ -110,7 +119,7 @@ function CustomerHome() {
           </div>
         ))}
       </Carousel></>)}
-      <Feedlist products={products} searchTerm={searchTerm} />
+      <Feedlist products={products} searchTerm={searchTerm} userId={userId} />
       <Navbar />
     </>
   );
