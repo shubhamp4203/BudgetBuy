@@ -485,7 +485,7 @@ module.exports.chatgroup_get = async (req, res) => {
 };
 
 module.exports.authenticate = async (req, res) => {
-  res.status(200).json({ message: "Authenticated", user_id: req.authdata.id});
+  res.status(200).json({ message: "Authenticated", user_id: req.authdata.id });
 };
 
 module.exports.like_put = async (req, res) => {
@@ -501,7 +501,25 @@ module.exports.like_put = async (req, res) => {
     });
     // console.log("resp:", resp);
     if (resp.status == 200) {
-      res.status(200).json({ message: "Liked" });
+      res.status(200).json(resp.data);
+    }
+  } catch (err) {
+    console.log("400", err);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports.allproducts_get = async (req, res) => {
+  console.log("enter authcontroller");
+  const userId = req.homeauthdata ? req.homeauthdata.id : null;
+  console.log("userId:", userId);
+
+  try {
+    const resp = await axios.get(process.env.PRODUCT + "/getAll");
+
+    if (resp.status == 200) {
+      console.log({result:resp.data, userId});
+      res.status(200).json({result:resp.data, userId});
     }
   } catch (err) {
     console.log("400", err);

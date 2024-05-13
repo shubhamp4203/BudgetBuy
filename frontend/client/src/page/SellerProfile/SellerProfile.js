@@ -6,9 +6,21 @@ import { useNavigate } from "react-router-dom";
 import {toast, Toaster} from "sonner";
 
 const options = [
-  { value: "tag1", label: "Tag 1" },
-  { value: "tag2", label: "Tag 2" },
-  { value: "tag3", label: "Tag 3" },
+  { value: "clothes", label: "clothes" },
+  { value: "shoes", label: "shoes" },
+  { value: "electronic item", label: "elctronic item" },
+  { value: "jewellery", label: "jewellery" },
+  { value: "cosmetics", label: "cosmetics" },
+  { value: "electronic item", label: "elctronic item" },
+  { value: "grocery", label: "grocery" },
+  { value: "stationary", label: "stationary" },
+  { value: "books", label: "books" },
+  { value: "toys", label: "toys" },
+  { value: "sports", label: "sports" },
+  { value: "kitchen", label: "kitchen" },
+  { value: "home", label: "home" },
+  { value: "accessories", label: "accessories" },
+  { value: "bags", label: "bags" },
   // Add more predefined tags as needed
 ];
 

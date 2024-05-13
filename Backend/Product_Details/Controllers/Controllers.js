@@ -272,7 +272,7 @@ module.exports.like_put = async (req, res) => {
         }
       );
       if (updateResult.modifiedCount > 0) {
-        res.status(200).json({ message: "Product liked" });
+        res.status(200).json({ message: "Product liked", likes: newLikes, likeUsers: newLikeUsers });
       } else {
         res.status(500).json({ message: "Failed to like product" });
       }

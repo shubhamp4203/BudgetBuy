@@ -11,16 +11,26 @@ import { useNavigate } from "react-router-dom";
 function CustomerHome() {
   const [products, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [userId, setUserId] = useState("l")
   const navigate = useNavigate();
   useEffect(() => {
     const fetchdata = async () => {
-      const resp = await fetch(process.env.REACT_APP_URL_PRODUCT + "/getAll");
+      const resp = await fetch(process.env.REACT_APP_URL_AUTHENTICATION + "/getAll",{
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await resp.json();
-      setData(data.result);
+      console.log("data:", data);
+      setData(data.result.result);
+      setUserId(data.userId)
     };
     fetchdata();
   }, []);
-
+  
+  console.log("userID--:",userId);
   
   const productDetails = async (product) => {
     navigate(`/product/${product._id}`, { state: { product: product } });
@@ -58,7 +68,7 @@ function CustomerHome() {
           </div>
         ))}
       </Carousel></>)}
-      <Feedlist products={products} searchTerm={searchTerm} />
+      <Feedlist products={products} searchTerm={searchTerm} userId={userId} />
       <Navbar />
     </>
   );

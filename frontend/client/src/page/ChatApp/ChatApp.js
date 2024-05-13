@@ -68,6 +68,7 @@ const ChatApp = () => {
 
   return (
     console.log("userId:", userId),
+    console.log("groupData", groupData),
     (
       <div className={style.container}>
         <div className={style.header}>
