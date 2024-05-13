@@ -97,8 +97,16 @@ const userSchema = new mongoose.Schema({
     // required:[true,"please select atleast one tag of interest"],
     minlength: 1
   },
+  total_spent: {
+    type: Number,
+    default: 0,
+  },
+  total_orders: {
+    type: Number,
+    default: 0,
+  },
   address: [addressSchema],
-  card_details: [carddetails]
+  // card_details: [carddetails]
 });
 
 //fire a function to hash the password before being saved

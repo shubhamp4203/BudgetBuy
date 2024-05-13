@@ -252,6 +252,8 @@ def orderDelivered(request):
                 user_order.order_status = "Delivered"
             user_item.save()
         user_order.save()
+        print(micro_services['AUTHENTICATION'])
+        dash_update = requests.put(f"{micro_services['AUTHENTICATION']}/updateDashboard/", json={'user_id': user_order.user_id, 'value': user_order.total_value})
         return Response({'message': 'Order status updated successfully'}, status=status.HTTP_200_OK)
     except Exception as e:
         print(str(e))

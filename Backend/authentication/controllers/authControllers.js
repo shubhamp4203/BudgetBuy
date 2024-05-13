@@ -108,7 +108,7 @@ module.exports.callback = async (req, res) => {
             // domain: ".ngrok-free.app",
           })
           .status(201)
-          .redirect(process.env.FRONTEND + "/");
+          .redirect(process.env.FRONTEND + "/home");
       } else {
         res.redirect(process.env.FRONTEND + "/signup");
       }
@@ -345,20 +345,20 @@ module.exports.getUser = async (req, res) => {
       res.status(400).json({ message: "User not found" });
     } else {
       const cards = user.card_details;
-      cards.forEach((card) => {
-        card.card_no = CryptoJS.AES.decrypt(
-          card.card_no,
-          process.env.SECRET_KEY
-        ).toString(CryptoJS.enc.Utf8);
-        card.cardExpiryDate = CryptoJS.AES.decrypt(
-          card.cardExpiryDate,
-          process.env.SECRET_KEY
-        ).toString(CryptoJS.enc.Utf8);
-        card.cvv = CryptoJS.AES.decrypt(
-          card.cvv,
-          process.env.SECRET_KEY
-        ).toString(CryptoJS.enc.Utf8);
-      });
+      // cards.forEach((card) => {
+      //   card.card_no = CryptoJS.AES.decrypt(
+      //     card.card_no,
+      //     process.env.SECRET_KEY
+      //   ).toString(CryptoJS.enc.Utf8);
+      //   card.cardExpiryDate = CryptoJS.AES.decrypt(
+      //     card.cardExpiryDate,
+      //     process.env.SECRET_KEY
+      //   ).toString(CryptoJS.enc.Utf8);
+      //   card.cvv = CryptoJS.AES.decrypt(
+      //     card.cvv,
+      //     process.env.SECRET_KEY
+      //   ).toString(CryptoJS.enc.Utf8);
+      // });
       res.status(200).json({ user });
     }
   } catch (err) {
@@ -526,3 +526,34 @@ module.exports.allproducts_get = async (req, res) => {
     res.status(400).json({ message: "Something went wrong" });
   }
 };
+
+module.exports.updateDashboard = async (req, res) => {
+  const {user_id, value} = req.body;
+  try {
+    const upd = await User.updateOne({
+      _id: user_id
+    }, {
+      $inc: {
+        total_spent: value,
+        total_orders: 1,
+      }
+    });
+    res.status(200).json({message: "Dashboard updated", success: true});
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({message: "Something went wrong"});
+  }
+}
+
+
+module.exports.getDashboard = async (req, res) => {
+  console.log("called")
+  const user_id = req.body.user_id;
+  try {
+    const user = await User.findOne({_id: user_id});
+    console.log(user);
+    res.status(200).json({message: "Dashboard fetched", user});
+  } catch (err) {
+    res.status(400).json({message: "Something went wrong"});
+  }
+}

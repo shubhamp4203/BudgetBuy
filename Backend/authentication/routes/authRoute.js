@@ -28,5 +28,7 @@ router
   .get(auth, authController.authenticate)
   .post(auth, authController.authenticate);
 router.put("/like", auth, authController.like_put);
+router.put("/updateDashboard", authController.updateDashboard)
+router.post("/getDashboard", authController.getDashboard)
 
 module.exports = router;

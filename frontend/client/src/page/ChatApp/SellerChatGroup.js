@@ -15,13 +15,13 @@ function SellerChatGroup() {
         }
       );
       const data = await response.json();
-      console.log("data:", data);
+      // console.log("data:", data);
       setGroup(data.chatGroup);
       setUserId(data.userId);
     };
     fetchChatgroup();
   }, []);
-  console.log("chatgroup", group);
+  // console.log("chatgroup", group);
   // console.log("grouplength:", group.length);
 
   const navigate = useNavigate();
