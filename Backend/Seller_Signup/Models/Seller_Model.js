@@ -52,6 +52,18 @@ const bankSchema = new mongoose.Schema({
   }
 })
 const SellerSchema = new mongoose.Schema({
+  total_revenue: {
+    type: Number,
+    default: 0
+  },
+  total_products: {
+    type: Number,
+    default: 0
+  },
+  total_sales: {
+    type: Number,
+    default: 0
+  },
   name: {
     type: String,
     required: [true, "Enter your name"]

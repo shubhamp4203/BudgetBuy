@@ -8,3 +8,4 @@ start_envsetter.bat
 envsetter.py
 test.py
 Backend/ordermanagement/invoices/
+Backend/Product_Details/uploads/

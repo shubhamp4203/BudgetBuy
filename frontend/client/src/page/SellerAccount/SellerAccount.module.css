@@ -7,36 +7,31 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  margin: 1rem;
-  margin-top: 2rem;
+  padding: 1rem;
+  margin: 3rem;
+  /* margin-top: 2rem; */
   margin-bottom: 0rem;
+  box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
-.dash1,
-.dash2 {
+.dashchild {
+  width: auto;
   display: flex;
-  padding: 1rem;
   flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 4px;
+  width: 100%;
   justify-content: space-between;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
-.dash1 div {
-  width: 25%;
-  text-align: center;
-  padding: 1rem;
-  border: 1px solid black;
-  border-radius: 10px;
+.dashchild p {
+  margin: 0rem;
+  color: green;
+  font-weight: bold;
+
 }
-.dash2 div {
-  width: 25%;
-  text-align: center;
-  padding: 1rem;
-  border: 1px solid black;
-  border-radius: 10px;
-}
+
 .navto {
   text-decoration: none;
   color: black;

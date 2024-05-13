@@ -37,5 +37,5 @@ const connection = mongoose.connect(process.env.GEOFENCE_DB_URL);
 
 app.use(Routes);
 console.log("Geofencing Server is running");
-// app.listen(8006, process.env.GEOFENCING.split("http://")[1].split(":")[0]);
-app.listen(8006);
+app.listen(8006, process.env.GEOFENCING.split("http://")[1].split(":")[0]);
+// app.listen(8006);

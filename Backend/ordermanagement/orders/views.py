@@ -13,6 +13,7 @@ import json
 from django.template.loader import get_template
 from weasyprint import HTML
 import os
+from django.db.models import Sum
 from django.shortcuts import render
 
 
@@ -243,6 +244,7 @@ def orderDelivered(request):
         order.save()
 
         order_items = Seller_Order_item.objects.filter(seller_order_id=order.seller_order_id)
+        total_amount = order_items.aggregate(Sum('amount'))['amount__sum']
         user_order = get_object_or_404(User_Order, user_order_id=order.user_order_id)
         for i in order_items:
             user_item = User_Order_item.objects.get(user_order_id=user_order, product_id=i.product_id)
@@ -252,8 +254,8 @@ def orderDelivered(request):
                 user_order.order_status = "Delivered"
             user_item.save()
         user_order.save()
-        print(micro_services['AUTHENTICATION'])
         dash_update = requests.put(f"{micro_services['AUTHENTICATION']}/updateDashboard/", json={'user_id': user_order.user_id, 'value': user_order.total_value})
+        seller_update = requests.post(f"{micro_services['SELLER']}/updateDashboard", json={'seller_id': seller_id,  'value': order.total_value, 'sales': total_amount, 'type': "confirm_order"} ) 
         return Response({'message': 'Order status updated successfully'}, status=status.HTTP_200_OK)
     except Exception as e:
         print(str(e))

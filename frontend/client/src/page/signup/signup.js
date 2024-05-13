@@ -3,13 +3,24 @@ import styles from "./signup.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import {toast, Toaster} from "sonner";
+import { toast, Toaster } from "sonner";
 
 const options = [
-  { value: "tag1", label: "Tag 1" },
-  { value: "tag2", label: "Tag 2" },
-  { value: "tag3", label: "Tag 3" },
-  // Add more predefined tags as needed
+  { value: "clothes", label: "clothes" }, //done
+  { value: "shoes", label: "shoes" }, //done
+  { value: "electronic item", label: "elctronic item" }, //done
+  { value: "jewellery", label: "jewellery" }, //done
+  { value: "cosmetics", label: "cosmetics" }, //done
+  { value: "showpiece", label: "showpiece" },
+  { value: "grocery", label: "grocery" }, //done
+  { value: "stationary", label: "stationary" }, //done
+  { value: "books", label: "books" }, //done
+  { value: "toys", label: "toys" },
+  { value: "sports", label: "sports" },
+  { value: "kitchen", label: "kitchen" },
+  { value: "home", label: "home" },
+  { value: "accessories", label: "accessories" },
+  { value: "bags", label: "bags" },
 ];
 
 const customStyles = {
@@ -70,7 +81,7 @@ export default function Signup() {
 
   return (
     <div className={styles.signupcontainer}>
-      <Toaster richColors position="top-center"/>
+      <Toaster richColors position="top-center" />
       <h1>Sign Up</h1>
       <div className={styles.signupform}>
         <label htmlFor="name">Name</label>

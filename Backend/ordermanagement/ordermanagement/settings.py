@@ -35,6 +35,7 @@ micro_services = {
     'INVENTORY': os.getenv("INVENTORY"),
     'PRODUCT': os.getenv("PRODUCT"),
     'EMAIL': os.getenv("EMAIL"),
+    'SELLER': os.getenv("SELLER")
 }
 # Application definition
 

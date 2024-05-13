@@ -17,11 +17,21 @@ export default function EditProduct() {
   const [image, setImage] = useState(null);
 
   const options = [
-    { value: 'Clothes', label: 'Clothes' },
-    { value: 'Eletronics', label: 'Electronics' },
-    { value: 'Home Appliances', label: 'Home Appliances' },
-    { value: 'Gaming Mouse', label: 'Gaming Mouse' },
-    // Add more options as needed
+    { value: "clothes", label: "clothes" },
+    { value: "shoes", label: "shoes" },
+    { value: "electronic item", label: "elctronic item" },
+    { value: "jewellery", label: "jewellery" },
+    { value: "cosmetics", label: "cosmetics" },
+    { value: "furniture", label: "furniture" },
+    { value: "grocery", label: "grocery" },
+    { value: "stationary", label: "stationary" },
+    { value: "books", label: "books" },
+    { value: "toys", label: "toys" },
+    { value: "sports", label: "sports" },
+    { value: "kitchen", label: "kitchen" },
+    { value: "home", label: "home" },
+    { value: "accessories", label: "accessories" },
+    { value: "bags", label: "bags" },
   ];
 
   const customStyles = {

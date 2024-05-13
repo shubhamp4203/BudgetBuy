@@ -45,6 +45,10 @@ module.exports.insertProduct_post = async (req, res) => {
         invreq
       );
       if (resp.status == 201) {
+        const dash = await axios.post(process.env.SELLER + "/updateDashboard", {
+          seller_id,
+          type: "product",
+        })
         res
           .status(201)
           .json({ message: "Product inserted successfully", newProduct });

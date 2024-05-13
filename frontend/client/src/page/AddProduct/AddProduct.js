@@ -18,11 +18,21 @@ export default function AddProduct() {
   const navigate = useNavigate();
 
   const options = [
-    { value: 'Clothes', label: 'Clothes' },
-    { value: 'Eletronics', label: 'Electronics' },
-    { value: 'Home Appliances', label: 'Home Appliances' },
-    { value: 'Gaming Mouse', label: 'Gaming Mouse' },
-    // Add more options as needed
+    { value: "clothes", label: "clothes" },
+    { value: "shoes", label: "shoes" },
+    { value: "electronic item", label: "elctronic item" },
+    { value: "jewellery", label: "jewellery" },
+    { value: "cosmetics", label: "cosmetics" },
+    { value: "showpiece", label: "showpiece" },
+    { value: "grocery", label: "grocery" },
+    { value: "stationary", label: "stationary" },
+    { value: "books", label: "books" },
+    { value: "toys", label: "toys" },
+    { value: "sports", label: "sports" },
+    { value: "kitchen", label: "kitchen" },
+    { value: "home", label: "home" },
+    { value: "accessories", label: "accessories" },
+    { value: "bags", label: "bags" },
   ];
 
   const customStyles = {
@@ -38,7 +48,15 @@ export default function AddProduct() {
     setSelectedTags(selectedOptions);
   };
   const handleSubmit = async () => {
-    if(!stock || !skuId || !name || !price || !description || !selectedTags || !image){
+    if (
+      !stock ||
+      !skuId ||
+      !name ||
+      !price ||
+      !description ||
+      !selectedTags ||
+      !image
+    ) {
       toast.error("Please fill all the required fields.");
       return;
     }
@@ -51,8 +69,8 @@ export default function AddProduct() {
     formData.append("color", color);
     formData.append("dimension", dimension);
     formData.append("image", image);
-    formData.append('tags', selectedTags.value);
-    try { 
+    formData.append("tags", selectedTags.value);
+    try {
       const response = await fetch(
         process.env.REACT_APP_URL_SELLER + "/addproduct",
         {
@@ -66,10 +84,9 @@ export default function AddProduct() {
         setTimeout(() => {
           navigate("/yourproducts");
         }, 1800);
-      }   
-      else if(response.status === 401) {
+      } else if (response.status === 401) {
         toast.error("SKU ID is already in use");
-      }else {
+      } else {
         toast.error("Something went wrong.");
       }
     } catch (error) {
@@ -83,7 +100,7 @@ export default function AddProduct() {
 
   return (
     <div className={styles.signupcontainer}>
-      <Toaster richColors position="top-center"/>
+      <Toaster richColors position="top-center" />
       <h1>Add Product</h1>
       <div className={styles.signupform}>
         <label htmlFor="name">Name*</label>
@@ -174,7 +191,7 @@ export default function AddProduct() {
           Submit
         </button>
       </div>
-      <SellerNavbar/>
+      <SellerNavbar />
     </div>
   );
 }
